@@ -1,0 +1,15 @@
+//
+// Prefix header for all source files of the 'TakeMePop' target in the 'TakeMePop' project
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+#endif
+
+#import "TakeMePop.h"
+
+#ifdef DEBUG
+#define LOG(...) NSLog(__VA_ARGS__)
+#else
+#define LOG(...)
+#endif
