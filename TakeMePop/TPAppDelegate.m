@@ -10,6 +10,15 @@
 
 @implementation TPAppDelegate
 
+
+
+- (void)application:(NSApplication *)sender openFiles:(NSArray *)filenames
+{
+    [self createPopWindowWithFiles:filenames];
+    [sender replyToOpenOrPrint:NSApplicationDelegateReplySuccess];
+    
+}
+
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
 {
     if ([self.popWinCtls count]) {
@@ -21,19 +30,39 @@
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag
 {
-    [self doNewPopWindow];
+    [self createPopWindowWithFinderSelection];
     return NO;
+}
+
+- (void)applicationWillFinishLaunching:(NSNotification *)notification
+{
+    self.popWinCtls=[@[] mutableCopy];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    self.popWinCtls=[@[] mutableCopy];
-    
-    [self doNewPopWindow];
+    if ([self.popWinCtls count]==0) {
+        [self createPopWindowWithFinderSelection];
+    }
 }
 
+- (void)createPopWindowWithItems:(NSMutableArray*)items parentItem:(TPFileItem*)parentItem
+{
+    TPPopWinCtl *winCtl = [[TPPopWinCtl alloc]initWithWindowNibName:@"TPPopWinCtl"];
+    
+    winCtl.parentItem=parentItem;
+    winCtl.items=items;
+    winCtl.includesParent=[[NSUserDefaults standardUserDefaults]boolForKey:pkIncludesTarget];
+    
+    [winCtl showWindow:nil];
+    
+    //observe close
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(popWindowWillClose:) name:NSWindowWillCloseNotification object:[winCtl window]];
+    [self.popWinCtls addObject:winCtl];
+    
+}
 
-- (void)doNewPopWindow
+- (void)createPopWindowWithFinderSelection
 {
     TPFinderConnect* fc=[[TPFinderConnect alloc]init];
     NSArray* files=[fc selectedFiles];
@@ -63,22 +92,25 @@
         }
         
         //create
-        TPPopWinCtl *winCtl = [[TPPopWinCtl alloc]initWithWindowNibName:@"TPPopWinCtl"];
-
-        winCtl.parentItem=parentItem;
-        winCtl.items=items;
-        winCtl.includesParent=[[NSUserDefaults standardUserDefaults]boolForKey:pkIncludesTarget];
-        
-        [winCtl showWindow:nil];
-        
-        //observe close
-        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(popWindowWillClose:) name:NSWindowWillCloseNotification object:[winCtl window]];
-        [self.popWinCtls addObject:winCtl];
+        [self createPopWindowWithItems:items parentItem:parentItem];
     }
     
     if ([self.popWinCtls count]==0) {
         [NSApp terminate:self];
     }
+}
+
+- (void)createPopWindowWithFiles:(NSArray*)files
+{
+    NSMutableArray* items=[[NSMutableArray alloc]initWithCapacity:[files count]];
+    for (NSString* path in files) {
+        TPFileItem* itm=[[TPFileItem alloc]initWithFilePath:path];
+        if (itm) {
+            [items addObject:itm];
+        }
+    }
+    
+    [self createPopWindowWithItems:items parentItem:nil];
 }
 
 - (void)popWindowWillClose:(NSNotification *)aNotification
