@@ -6,6 +6,12 @@
 
 @implementation TPFileItem
 
++ (TPFileItem*)desktopFolderItem
+{
+    TPFileItem* itm=[[TPFileItem alloc]initWithFilePath:[@"~/Desktop" stringByStandardizingPath]];
+    return itm;
+}
+
 - (id)initWithFilePath:(NSString*)path
 {
     self = [super init];

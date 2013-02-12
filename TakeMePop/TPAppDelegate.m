@@ -68,6 +68,9 @@
 
 - (void)createPopWindowWithItems:(NSMutableArray*)items parentItem:(TPFileItem*)parentItem
 {
+    if (!items) {
+        return;
+    }
     TPPopWinCtl *winCtl = [[TPPopWinCtl alloc]initWithWindowNibName:@"TPPopWinCtl"];
     
     winCtl.parentItem=parentItem;
@@ -84,10 +87,12 @@
 
 - (void)createPopWindowWithFinderWindows
 {
+    NSMutableArray* items=nil;
     TPFinderConnect* fc=[[TPFinderConnect alloc]init];
     NSArray* files=[fc finderWindowTargets];
+    
     if ([files count]) {
-        NSMutableArray* items=[[NSMutableArray alloc]initWithCapacity:[files count]];
+        items=[[NSMutableArray alloc]initWithCapacity:[files count]];
         
         for (NSString* urlStr in files) {
             TPFileItem* itm=[[TPFileItem alloc]initWithFileURLString:urlStr];
@@ -95,10 +100,12 @@
                 [items addObject:itm];
             }
         }
-        
-        //create
-        [self createPopWindowWithItems:items parentItem:nil];
+    }else{
+        items=[[NSMutableArray alloc]initWithObjects:[TPFileItem desktopFolderItem], nil];
     }
+    
+    //create
+    [self createPopWindowWithItems:items parentItem:nil];
 }
 
 - (void)createPopWindowWithFinderSelection
