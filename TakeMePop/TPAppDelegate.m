@@ -37,12 +37,32 @@
 - (void)applicationWillFinishLaunching:(NSNotification *)notification
 {
     self.popWinCtls=[@[] mutableCopy];
+    
+    NSAppleEventManager *appleEventManager = [NSAppleEventManager sharedAppleEventManager];
+    [appleEventManager setEventHandler:self andSelector:@selector(handleGetURLEvent:withReplyEvent:) forEventClass:kInternetEventClass andEventID:kAEGetURL];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     if ([self.popWinCtls count]==0) {
         [self createPopWindowWithFinderSelection];
+    }
+}
+
+- (void)handleGetURLEvent:(NSAppleEventDescriptor *)event withReplyEvent:(NSAppleEventDescriptor *)replyEvent
+{
+    // takemepop : //command/path...
+    NSString* urlString=[[event paramDescriptorForKeyword:keyDirectObject] stringValue];
+    if (![urlString hasPrefix:@"takemepop://"]) {
+        return;
+    }
+    NSURL* url=[NSURL URLWithString:urlString];
+    
+    NSString* command=url.host;
+    //NSString* path=url.path;
+    
+    if ([command isEqualToString:@"finderwindows"]) {
+        [self createPopWindowWithFinderWindows];
     }
 }
 
@@ -60,6 +80,25 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(popWindowWillClose:) name:NSWindowWillCloseNotification object:[winCtl window]];
     [self.popWinCtls addObject:winCtl];
     
+}
+
+- (void)createPopWindowWithFinderWindows
+{
+    TPFinderConnect* fc=[[TPFinderConnect alloc]init];
+    NSArray* files=[fc finderWindowTargets];
+    if ([files count]) {
+        NSMutableArray* items=[[NSMutableArray alloc]initWithCapacity:[files count]];
+        
+        for (NSString* urlStr in files) {
+            TPFileItem* itm=[[TPFileItem alloc]initWithFileURLString:urlStr];
+            if (itm) {
+                [items addObject:itm];
+            }
+        }
+        
+        //create
+        [self createPopWindowWithItems:items parentItem:nil];
+    }
 }
 
 - (void)createPopWindowWithFinderSelection
