@@ -12,4 +12,7 @@
 - (id)initWithFilePath:(NSString*)path;
 - (id)initWithFileURLString:(NSString*)urlStr;
 
+- (BOOL)isDirectory;
+- (NSMutableArray*)directoryContentsIncludesHiddenFiles:(BOOL)includesHiddenFiles;
+
 @end

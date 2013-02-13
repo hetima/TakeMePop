@@ -6,12 +6,12 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class TPFileItem;
+@class TPFileItem, TPPopWinTableView;
 
 @interface TPPopWinCtl : NSWindowController
 @property (nonatomic,strong) TPFileItem* parentItem;
 @property (nonatomic,strong) NSMutableArray* items;
-@property (assign) IBOutlet NSTableView  *oTableView;
+@property (assign) IBOutlet TPPopWinTableView  *oTableView;
 @property (assign) IBOutlet NSMenuItem  *oVersionInfoMenuItem;
 @property BOOL includesParent;
 
@@ -19,3 +19,9 @@
 
 @end
 
+
+@interface TPPopWinTableView : NSTableView
+
+- (id)clickedIndexSetIncludesSelection;
+
+@end

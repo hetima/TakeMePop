@@ -16,4 +16,6 @@
 
 #define kApplicationWebSiteURL @"http://hetima.com/takemepop/"
 
+
+#define kSwitchToFolderContentsIncludesHiddenFilesTag 1001
 #endif

@@ -5,7 +5,7 @@
 
 
 #import "TPPopWinCtl.h"
-#import "TPItem.h"
+#import "TPFileItem.h"
 
 @interface TPPopWinCtl ()
 
@@ -33,6 +33,7 @@
     
     [self.oTableView setDraggingSourceOperationMask:NSDragOperationEvery forLocal:NO];
     [self.oTableView setAllowsEmptySelection:YES];
+    [self.oTableView.menu setFont:[NSFont systemFontOfSize:12.0]];
     
     //version information
     static NSAttributedString* versionInfoAttributedTitle=nil;
@@ -84,6 +85,52 @@
     [[NSWorkspace sharedWorkspace]openURL:URL];
 }
 
+- (IBAction)actMenuRemoveSelection:(id)sender
+{
+    NSIndexSet* iset=[self.oTableView clickedIndexSetIncludesSelection];
+    if (iset) {
+        NSMutableArray *arrayKVC=[self mutableArrayValueForKey:@"items"];
+        [arrayKVC removeObjectsAtIndexes:iset];
+    }
+}
+
+- (IBAction)actMenuSwitchToFolderContents:(id)sender
+{
+    NSInteger row=[self.oTableView clickedRow];
+    if (row>=0) {
+        TPFileItem* itm=[self.items objectAtIndex:row];
+        BOOL includesHiddenFiles=NO;
+        if ([sender tag]==kSwitchToFolderContentsIncludesHiddenFilesTag) {
+            includesHiddenFiles=YES;
+        }
+        
+        NSMutableArray* contents=[itm directoryContentsIncludesHiddenFiles:includesHiddenFiles];
+        if ([contents count]) {
+            itm.icon=[NSImage imageNamed:@"NSPathTemplate"];
+            self.parentItem=itm;
+            if (self.includesParent) {
+                [contents insertObject:itm atIndex:0];
+            }
+            self.items=contents;
+        }
+    }
+}
+
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem
+{
+    if ([menuItem action] == @selector(actMenuRemoveSelection:) ) {
+        return [self.oTableView clickedIndexSetIncludesSelection] ? YES:NO;
+    }else if ([menuItem action] == @selector(actMenuSwitchToFolderContents:) ) {
+        NSInteger row=[self.oTableView clickedRow];
+        if (row>=0) {
+            TPFileItem* itm=[self.items objectAtIndex:row];
+            return [itm isDirectory];
+        }
+    }
+    
+    return  NO;
+}
+
 #pragma mark - TableView
 
 - (id < NSPasteboardWriting >)tableView:(NSTableView *)tableView pasteboardWriterForRow:(NSInteger)row
@@ -110,5 +157,28 @@
         }
     }
 }
+
+
+@end
+
+
+
+
+@implementation TPPopWinTableView
+
+- (NSIndexSet*)clickedIndexSetIncludesSelection
+{
+    NSInteger row=[self clickedRow];
+    if (row>=0) {
+        NSIndexSet* selection=[self selectedRowIndexes];
+        if([selection containsIndex:row]){
+            return selection;
+        }else{
+            return [NSIndexSet indexSetWithIndex:row];
+        }
+    }
+    return nil;
+}
+
 
 @end
