@@ -6,12 +6,14 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class TPFileItem;
+#define TPPopWinTableViewFileDroppedNotification @"TPPopWinTableViewFileDroppedNotification"
+
+@class TPFileItem, TPPopWinTableView;
 
 @interface TPPopWinCtl : NSWindowController
 @property (nonatomic,strong) TPFileItem* parentItem;
 @property (nonatomic,strong) NSMutableArray* items;
-@property (assign) IBOutlet NSTableView  *oTableView;
+@property (assign) IBOutlet TPPopWinTableView  *oTableView;
 @property (assign) IBOutlet NSMenuItem  *oVersionInfoMenuItem;
 @property BOOL includesParent;
 
@@ -19,3 +21,11 @@
 
 @end
 
+
+@interface TPPopWinTableView : NSTableView
+@property BOOL dragEnter;
+
+- (void)setupDrag;
+- (id)clickedIndexSetIncludesSelection;
+
+@end

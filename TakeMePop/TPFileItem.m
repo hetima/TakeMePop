@@ -6,6 +6,12 @@
 
 @implementation TPFileItem
 
++ (TPFileItem*)desktopFolderItem
+{
+    TPFileItem* itm=[[TPFileItem alloc]initWithFilePath:[@"~/Desktop" stringByStandardizingPath]];
+    return itm;
+}
+
 - (id)initWithFilePath:(NSString*)path
 {
     self = [super init];
@@ -42,6 +48,37 @@
     [pitm setString:self.urlStr forType:@"public.file-url"];
     
     return pitm;
+}
+
+- (BOOL)isDirectory
+{
+    BOOL isDirectory;
+    [[NSFileManager defaultManager]fileExistsAtPath:[[NSURL URLWithString:self.urlStr]path] isDirectory:&isDirectory];
+    
+    return isDirectory;
+}
+
+- (NSMutableArray*)directoryContentsIncludesHiddenFiles:(BOOL)includesHiddenFiles
+{
+    NSDirectoryEnumerationOptions mask=NSDirectoryEnumerationSkipsHiddenFiles;
+    if (includesHiddenFiles) {
+        mask=0;
+    }
+    NSArray *ary=[[NSFileManager defaultManager]contentsOfDirectoryAtURL:[NSURL URLWithString:self.urlStr] includingPropertiesForKeys:@[NSURLEffectiveIconKey] options:mask error:nil];
+    
+    NSMutableArray* result=[[NSMutableArray alloc]initWithCapacity:[ary count]];
+    for (NSURL* url in ary) {
+        NSImage* img;
+        [url getResourceValue:&img forKey:NSURLEffectiveIconKey error:nil];
+
+        
+        TPFileItem* itm=[[TPFileItem alloc]init];
+        itm.icon=img;
+        itm.urlStr=[url absoluteString];
+        itm.name=[url.path lastPathComponent];
+        [result addObject:itm];
+    }
+    return result;
 }
 
 @end

@@ -35,6 +35,26 @@
     return [result count] ? result:nil;
 }
 
+- (NSMutableArray*)finderWindowTargets
+{
+    NSArray* finderWindows=[[self.finderApp FinderWindows]get];
+    if ([finderWindows count]<1) {
+        return nil;
+    }
+    NSMutableArray* targets=[NSMutableArray arrayWithCapacity:[finderWindows count]];
+    for (FinderFinderWindow* finderWin in finderWindows) { //FinderFinderWindow
+        if ([finderWin collapsed]) {
+            continue;
+        }
+        
+        NSString* target=[self targetOfFinderWindow:finderWin];
+        if (target && ![targets containsObject:target]) {
+            [targets addObject:target];
+        }
+    }
+    return targets;
+}
+
 
 - (NSString*)selectedTarget
 {

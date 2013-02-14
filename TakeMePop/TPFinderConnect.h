@@ -9,8 +9,8 @@
 @interface TPFinderConnect : NSObject
 @property(strong)FinderApplication* finderApp;
 
-
 - (NSString*)selectedTarget;
 - (NSMutableArray*)selectedFiles;
+- (NSMutableArray*)finderWindowTargets;
 
 @end

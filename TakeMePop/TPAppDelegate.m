@@ -31,6 +31,9 @@
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag
 {
     [self createPopWindowWithFinderSelection];
+    if ([self.popWinCtls count]==0) {
+        [NSApp terminate:self];
+    }
     return NO;
 }
 
@@ -43,11 +46,17 @@
 {
     if ([self.popWinCtls count]==0) {
         [self createPopWindowWithFinderSelection];
+        if ([self.popWinCtls count]==0) {
+            [NSApp terminate:self];
+        }
     }
 }
 
 - (void)createPopWindowWithItems:(NSMutableArray*)items parentItem:(TPFileItem*)parentItem
 {
+    if (!items) {
+        return;
+    }
     TPPopWinCtl *winCtl = [[TPPopWinCtl alloc]initWithWindowNibName:@"TPPopWinCtl"];
     
     winCtl.parentItem=parentItem;
@@ -62,19 +71,60 @@
     
 }
 
+- (void)createPopWindowWithFinderWindows
+{
+    NSMutableArray* items=nil;
+    TPFinderConnect* fc=[[TPFinderConnect alloc]init];
+    NSArray* files=[fc finderWindowTargets];
+    
+    if ([files count]) {
+        items=[[NSMutableArray alloc]initWithCapacity:[files count]];
+        
+        for (NSString* urlStr in files) {
+            TPFileItem* itm=[[TPFileItem alloc]initWithFileURLString:urlStr];
+            if (itm) {
+                [items addObject:itm];
+            }
+        }
+    }else{
+        items=[[NSMutableArray alloc]initWithObjects:[TPFileItem desktopFolderItem], nil];
+    }
+    
+    //create
+    [self createPopWindowWithItems:items parentItem:nil];
+}
+
 - (void)createPopWindowWithFinderSelection
 {
     TPFinderConnect* fc=[[TPFinderConnect alloc]init];
     NSArray* files=[fc selectedFiles];
     NSString* targetFile=nil;
     TPFileItem* parentItem=nil;
-    
+
     targetFile=[fc selectedTarget];
+    
+    if (![files count]) {
+        BOOL listFinderWindows=[[NSUserDefaults standardUserDefaults]boolForKey:pkListFinderWindowsIfNoSelection];
+        if (listFinderWindows) {
+            [self createPopWindowWithFinderWindows];
+            return;
+        }else{
+            if (targetFile) {
+                files=@[targetFile];
+                targetFile=nil;
+            }else{
+                return;
+            }
+        }
+    }
+
+    
+    /*
     
     if (![files count] && targetFile) {
         files=@[targetFile];
         targetFile=nil;
-    }
+    }*/
     
     if (targetFile) {
         parentItem=[[TPFileItem alloc]initWithFileURLString:targetFile];
@@ -95,9 +145,6 @@
         [self createPopWindowWithItems:items parentItem:parentItem];
     }
     
-    if ([self.popWinCtls count]==0) {
-        [NSApp terminate:self];
-    }
 }
 
 - (void)createPopWindowWithFiles:(NSArray*)files
