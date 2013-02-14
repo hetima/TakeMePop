@@ -167,6 +167,37 @@
 											<string key="NSAction">_popUpItemAction:</string>
 											<reference key="NSTarget" ref="684498817"/>
 										</object>
+										<object class="NSMenuItem" id="1009268313">
+											<reference key="NSMenu" ref="134721278"/>
+											<string key="NSTitle">When Finder Has No Selection</string>
+											<string key="NSKeyEquiv"/>
+											<int key="NSMnemonicLoc">2147483647</int>
+											<reference key="NSOnImage" ref="1010534547"/>
+											<reference key="NSMixedImage" ref="749312987"/>
+											<string key="NSAction">submenuAction:</string>
+											<object class="NSMenu" key="NSSubmenu" id="573565598">
+												<string key="NSTitle">When Finder Has No Selection</string>
+												<array class="NSMutableArray" key="NSMenuItems">
+													<object class="NSMenuItem" id="980603236">
+														<reference key="NSMenu" ref="573565598"/>
+														<string key="NSTitle">Take Front Window</string>
+														<string key="NSKeyEquiv"/>
+														<int key="NSMnemonicLoc">2147483647</int>
+														<reference key="NSOnImage" ref="1010534547"/>
+														<reference key="NSMixedImage" ref="749312987"/>
+													</object>
+													<object class="NSMenuItem" id="810302003">
+														<reference key="NSMenu" ref="573565598"/>
+														<string key="NSTitle">Take All Windows</string>
+														<string key="NSKeyEquiv"/>
+														<int key="NSMnemonicLoc">2147483647</int>
+														<reference key="NSOnImage" ref="1010534547"/>
+														<reference key="NSMixedImage" ref="749312987"/>
+														<int key="NSTag">1</int>
+													</object>
+												</array>
+											</object>
+										</object>
 										<object class="NSMenuItem" id="831323219">
 											<reference key="NSMenu" ref="134721278"/>
 											<bool key="NSIsDisabled">YES</bool>
@@ -779,6 +810,42 @@
 					</object>
 					<int key="connectionID">117</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.pkListFinderWindowsIfNoSelection</string>
+						<reference key="source" ref="980603236"/>
+						<reference key="destination" ref="860040417"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="980603236"/>
+							<reference key="NSDestination" ref="860040417"/>
+							<string key="NSLabel">value: values.pkListFinderWindowsIfNoSelection</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.pkListFinderWindowsIfNoSelection</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSValueTransformerName</string>
+								<string key="NS.object.0">NSNegateBoolean</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">158</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: values.pkListFinderWindowsIfNoSelection</string>
+						<reference key="source" ref="810302003"/>
+						<reference key="destination" ref="860040417"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="810302003"/>
+							<reference key="NSDestination" ref="860040417"/>
+							<string key="NSLabel">value: values.pkListFinderWindowsIfNoSelection</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">values.pkListFinderWindowsIfNoSelection</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">159</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -851,6 +918,7 @@
 							<reference ref="1058839952"/>
 							<reference ref="509389252"/>
 							<reference ref="193867274"/>
+							<reference ref="1009268313"/>
 						</array>
 						<reference key="parent" ref="684498817"/>
 					</object>
@@ -1031,6 +1099,33 @@
 						<reference key="object" ref="150051116"/>
 						<reference key="parent" ref="978219189"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">144</int>
+						<reference key="object" ref="1009268313"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="573565598"/>
+						</array>
+						<reference key="parent" ref="134721278"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">145</int>
+						<reference key="object" ref="573565598"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="980603236"/>
+							<reference ref="810302003"/>
+						</array>
+						<reference key="parent" ref="1009268313"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">146</int>
+						<reference key="object" ref="980603236"/>
+						<reference key="parent" ref="573565598"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">147</int>
+						<reference key="object" ref="810302003"/>
+						<reference key="parent" ref="573565598"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -1050,6 +1145,10 @@
 				<string key="134.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="135.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="139.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="144.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="145.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="146.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="147.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="32.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="33.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="34.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1083,7 +1182,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">140</int>
+			<int key="maxID">159</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">

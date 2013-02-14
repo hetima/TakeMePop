@@ -13,6 +13,9 @@
 //BOOL
 #define pkIncludesTarget @"pkIncludesTarget"
 
+//BOOL
+#define pkListFinderWindowsIfNoSelection @"pkListFinderWindowsIfNoSelection"
+
 
 #define kApplicationWebSiteURL @"http://hetima.com/takemepop/"
 
