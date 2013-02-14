@@ -66,6 +66,7 @@
 							<int key="NSvFlags">292</int>
 							<string key="NSFrame">{{-4, 2}, {40, 20}}</string>
 							<reference key="NSSuperview" ref="562682387"/>
+							<reference key="NSWindow"/>
 							<array key="NSViewContentFilters">
 								<object class="CIGammaAdjust">
 									<real value="0.5" key="CI_inputPower"/>
@@ -165,7 +166,7 @@
 											<string key="NSAction">_popUpItemAction:</string>
 											<reference key="NSTarget" ref="684498817"/>
 										</object>
-										<object class="NSMenuItem" id="156835012">
+										<object class="NSMenuItem" id="318248166">
 											<reference key="NSMenu" ref="134721278"/>
 											<string key="NSTitle">When Finder Has No Selection</string>
 											<string key="NSKeyEquiv"/>
@@ -173,19 +174,19 @@
 											<reference key="NSOnImage" ref="1010534547"/>
 											<reference key="NSMixedImage" ref="749312987"/>
 											<string key="NSAction">submenuAction:</string>
-											<object class="NSMenu" key="NSSubmenu" id="122593362">
+											<object class="NSMenu" key="NSSubmenu" id="628647738">
 												<string key="NSTitle">When Finder Has No Selection</string>
 												<array class="NSMutableArray" key="NSMenuItems">
-													<object class="NSMenuItem" id="372362745">
-														<reference key="NSMenu" ref="122593362"/>
+													<object class="NSMenuItem" id="322587934">
+														<reference key="NSMenu" ref="628647738"/>
 														<string key="NSTitle">Take Front Window</string>
 														<string key="NSKeyEquiv"/>
 														<int key="NSMnemonicLoc">2147483647</int>
 														<reference key="NSOnImage" ref="1010534547"/>
 														<reference key="NSMixedImage" ref="749312987"/>
 													</object>
-													<object class="NSMenuItem" id="140403672">
-														<reference key="NSMenu" ref="122593362"/>
+													<object class="NSMenuItem" id="1013399574">
+														<reference key="NSMenu" ref="628647738"/>
 														<string key="NSTitle">Take All Windows</string>
 														<string key="NSKeyEquiv"/>
 														<int key="NSMnemonicLoc">2147483647</int>
@@ -261,7 +262,7 @@
 						</object>
 						<object class="NSScrollView" id="166116240">
 							<reference key="NSNextResponder" ref="562682387"/>
-							<int key="NSvFlags">8466</int>
+							<int key="NSvFlags">4370</int>
 							<array class="NSMutableArray" key="NSSubviews">
 								<object class="NSClipView" id="883064475">
 									<reference key="NSNextResponder" ref="166116240"/>
@@ -269,10 +270,11 @@
 									<array class="NSMutableArray" key="NSSubviews">
 										<object class="NSTableView" id="327939491">
 											<reference key="NSNextResponder" ref="883064475"/>
-											<int key="NSvFlags">8448</int>
+											<int key="NSvFlags">4352</int>
 											<array class="NSMutableArray" key="NSSubviews"/>
 											<string key="NSFrameSize">{300, 137}</string>
 											<reference key="NSSuperview" ref="883064475"/>
+											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="346806086"/>
 											<string key="NSReuseIdentifierKey">_NS:13</string>
 											<bool key="NSEnabled">YES</bool>
@@ -369,6 +371,7 @@
 									</array>
 									<string key="NSFrameSize">{300, 137}</string>
 									<reference key="NSSuperview" ref="166116240"/>
+									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="327939491"/>
 									<string key="NSReuseIdentifierKey">_NS:11</string>
 									<reference key="NSDocView" ref="327939491"/>
@@ -380,6 +383,7 @@
 									<int key="NSvFlags">-2147483392</int>
 									<string key="NSFrame">{{224, 17}, {15, 102}}</string>
 									<reference key="NSSuperview" ref="166116240"/>
+									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="921416478"/>
 									<string key="NSReuseIdentifierKey">_NS:58</string>
 									<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
@@ -392,6 +396,7 @@
 									<int key="NSvFlags">-2147483392</int>
 									<string key="NSFrame">{{1, 119}, {238, 15}}</string>
 									<reference key="NSSuperview" ref="166116240"/>
+									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="154253292"/>
 									<string key="NSReuseIdentifierKey">_NS:60</string>
 									<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
@@ -403,6 +408,7 @@
 							</array>
 							<string key="NSFrame">{{0, 23}, {300, 137}}</string>
 							<reference key="NSSuperview" ref="562682387"/>
+							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="883064475"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<int key="NSsFlags">133680</int>
@@ -417,6 +423,7 @@
 					</array>
 					<string key="NSFrameSize">{300, 160}</string>
 					<reference key="NSSuperview"/>
+					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="166116240"/>
 					<bool key="NSViewIsLayerTreeHost">YES</bool>
 					<string key="NSReuseIdentifierKey">_NS:21</string>
@@ -804,10 +811,10 @@
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: values.pkListFinderWindowsIfNoSelection</string>
-						<reference key="source" ref="372362745"/>
+						<reference key="source" ref="322587934"/>
 						<reference key="destination" ref="860040417"/>
 						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="372362745"/>
+							<reference key="NSSource" ref="322587934"/>
 							<reference key="NSDestination" ref="860040417"/>
 							<string key="NSLabel">value: values.pkListFinderWindowsIfNoSelection</string>
 							<string key="NSBinding">value</string>
@@ -824,10 +831,10 @@
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
 						<string key="label">value: values.pkListFinderWindowsIfNoSelection</string>
-						<reference key="source" ref="140403672"/>
+						<reference key="source" ref="1013399574"/>
 						<reference key="destination" ref="860040417"/>
 						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="140403672"/>
+							<reference key="NSSource" ref="1013399574"/>
 							<reference key="NSDestination" ref="860040417"/>
 							<string key="NSLabel">value: values.pkListFinderWindowsIfNoSelection</string>
 							<string key="NSBinding">value</string>
@@ -909,7 +916,7 @@
 							<reference ref="1058839952"/>
 							<reference ref="509389252"/>
 							<reference ref="193867274"/>
-							<reference ref="156835012"/>
+							<reference ref="318248166"/>
 						</array>
 						<reference key="parent" ref="684498817"/>
 					</object>
@@ -1092,30 +1099,30 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">144</int>
-						<reference key="object" ref="156835012"/>
+						<reference key="object" ref="318248166"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="122593362"/>
+							<reference ref="628647738"/>
 						</array>
 						<reference key="parent" ref="134721278"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">145</int>
-						<reference key="object" ref="122593362"/>
+						<reference key="object" ref="628647738"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="372362745"/>
-							<reference ref="140403672"/>
+							<reference ref="322587934"/>
+							<reference ref="1013399574"/>
 						</array>
-						<reference key="parent" ref="156835012"/>
+						<reference key="parent" ref="318248166"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">146</int>
-						<reference key="object" ref="372362745"/>
-						<reference key="parent" ref="122593362"/>
+						<reference key="object" ref="322587934"/>
+						<reference key="parent" ref="628647738"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">147</int>
-						<reference key="object" ref="140403672"/>
-						<reference key="parent" ref="122593362"/>
+						<reference key="object" ref="1013399574"/>
+						<reference key="parent" ref="628647738"/>
 					</object>
 				</array>
 			</object>
@@ -1175,7 +1182,51 @@
 			<nil key="sourceID"/>
 			<int key="maxID">159</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">TPPopWinCtl</string>
+					<string key="superclassName">NSWindowController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">actOpenWebSite:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">actOpenWebSite:</string>
+						<object class="IBActionInfo" key="NS.object.0">
+							<string key="name">actOpenWebSite:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</object>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="oTableView">TPPopWinTableView</string>
+						<string key="oVersionInfoMenuItem">NSMenuItem</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="oTableView">
+							<string key="name">oTableView</string>
+							<string key="candidateClassName">TPPopWinTableView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="oVersionInfoMenuItem">
+							<string key="name">oVersionInfoMenuItem</string>
+							<string key="candidateClassName">NSMenuItem</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/TPPopWinCtl.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">TPPopWinTableView</string>
+					<string key="superclassName">NSTableView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/TPPopWinTableView.h</string>
+					</object>
+				</object>
+			</array>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">

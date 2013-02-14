@@ -16,6 +16,7 @@
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
     [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:pkIncludesTarget];
     [self.oTableView setDelegate:nil];
     [self.oTableView setDataSource:nil];   
@@ -68,8 +69,13 @@
 {
     NSArray* files=[[note userInfo]objectForKey:@"files"];
     
-    
-    
+    NSMutableArray *arrayKVC=[self mutableArrayValueForKey:@"items"];
+    for (NSString* urlStr in files) {
+        TPFileItem* itm=[[TPFileItem alloc]initWithFileURLString:urlStr];
+        if (itm) {
+            [arrayKVC addObject:itm];
+        }
+    }
 }
 
 - (BOOL)includesParent
@@ -195,22 +201,21 @@
 
 #pragma mark - drag drop
 
+/*
 - (void)drawRect:(NSRect)dirtyRect
 {
-
     if (self.dragEnter) {
-
     }else {
     }
     [super drawRect:dirtyRect];
 }
+*/
 
 - (void)setupDrag
 {
     self.dragEnter=NO;
     NSArray* types=@[NSFilenamesPboardType];
     [self registerForDraggedTypes:types];
-    
 }
 
 
@@ -218,13 +223,14 @@
     if ([sender draggingSource]==self) {
         return NSDragOperationNone;
     }
-    //DRAppDelegate* delegate=[NSApp delegate];
-    //BOOL canHandle=[delegate canHandlePasteboard:[sender draggingPasteboard]];
+    
+    // hope dragging items are valid
     BOOL canHandle=YES;
-    
     self.dragEnter=canHandle;
-    [self setNeedsDisplay:YES];
+    //currently no visual feedback
+    //[self setNeedsDisplay:YES];
     
+    //change cursor
     return NSDragOperationCopy;
 }
 
@@ -243,7 +249,8 @@
         return;
     }
     self.dragEnter=NO;
-    [self setNeedsDisplay:YES];
+    //currently no visual feedback
+    //[self setNeedsDisplay:YES];
     
 }
 
