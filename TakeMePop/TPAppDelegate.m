@@ -40,9 +40,6 @@
 - (void)applicationWillFinishLaunching:(NSNotification *)notification
 {
     self.popWinCtls=[@[] mutableCopy];
-    
-    NSAppleEventManager *appleEventManager = [NSAppleEventManager sharedAppleEventManager];
-    [appleEventManager setEventHandler:self andSelector:@selector(handleGetURLEvent:withReplyEvent:) forEventClass:kInternetEventClass andEventID:kAEGetURL];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -52,23 +49,6 @@
         if ([self.popWinCtls count]==0) {
             [NSApp terminate:self];
         }
-    }
-}
-
-- (void)handleGetURLEvent:(NSAppleEventDescriptor *)event withReplyEvent:(NSAppleEventDescriptor *)replyEvent
-{
-    // takemepop : //command/path...
-    NSString* urlString=[[event paramDescriptorForKeyword:keyDirectObject] stringValue];
-    if (![urlString hasPrefix:@"takemepop://"]) {
-        return;
-    }
-    NSURL* url=[NSURL URLWithString:urlString];
-    
-    NSString* command=url.host;
-    //NSString* path=url.path;
-    
-    if ([command isEqualToString:@"finderwindows"]) {
-        [self createPopWindowWithFinderWindows];
     }
 }
 
