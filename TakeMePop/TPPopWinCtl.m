@@ -34,6 +34,12 @@
     [self.oTableView setDraggingSourceOperationMask:NSDragOperationEvery forLocal:NO];
     [self.oTableView setAllowsEmptySelection:YES];
     [self.oTableView.menu setFont:[NSFont systemFontOfSize:12.0]];
+    [self.oTableView setupDrag];
+    [[NSNotificationCenter defaultCenter]addObserver:self
+                                            selector:@selector(noteFileDropped:)
+                                            name:TPPopWinTableViewFileDroppedNotification
+                                            object:self.oTableView];
+    
     
     //version information
     static NSAttributedString* versionInfoAttributedTitle=nil;
@@ -48,7 +54,6 @@
     [self.oVersionInfoMenuItem setAttributedTitle:versionInfoAttributedTitle];
 }
 
-
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if(object==[NSUserDefaults standardUserDefaults]){
@@ -59,6 +64,13 @@
     }
 }
 
+- (void)noteFileDropped:(NSNotification*)note
+{
+    NSArray* files=[[note userInfo]objectForKey:@"files"];
+    
+    
+    
+}
 
 - (BOOL)includesParent
 {
@@ -180,5 +192,90 @@
     return nil;
 }
 
+
+#pragma mark - drag drop
+
+- (void)drawRect:(NSRect)dirtyRect
+{
+
+    if (self.dragEnter) {
+
+    }else {
+    }
+    [super drawRect:dirtyRect];
+}
+
+- (void)setupDrag
+{
+    self.dragEnter=NO;
+    NSArray* types=@[NSFilenamesPboardType];
+    [self registerForDraggedTypes:types];
+    
+}
+
+
+- (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender {
+    if ([sender draggingSource]==self) {
+        return NSDragOperationNone;
+    }
+    //DRAppDelegate* delegate=[NSApp delegate];
+    //BOOL canHandle=[delegate canHandlePasteboard:[sender draggingPasteboard]];
+    BOOL canHandle=YES;
+    
+    self.dragEnter=canHandle;
+    [self setNeedsDisplay:YES];
+    
+    return NSDragOperationCopy;
+}
+
+- (NSDragOperation)draggingUpdated:(id < NSDraggingInfo >)sender
+{
+    if (self.dragEnter) {
+        return NSDragOperationCopy;
+    }
+    return NSDragOperationGeneric;
+
+}
+
+- (void)draggingExited:(id < NSDraggingInfo >)sender
+{
+    if ([sender draggingSource]==self) {
+        return;
+    }
+    self.dragEnter=NO;
+    [self setNeedsDisplay:YES];
+    
+}
+
+- (void)draggingEnded:(id < NSDraggingInfo >)sender
+{
+    if ([sender draggingSource]==self) {
+        return;
+    }
+    self.dragEnter=NO;
+    [self setNeedsDisplay:YES];
+    
+}
+
+
+- (BOOL)performDragOperation:(id <NSDraggingInfo>)sender
+{
+    if ([sender draggingSource]==self) {
+        return NO;
+    }
+    NSPasteboard* pb=[sender draggingPasteboard];
+    NSArray* pasteboardItems=[pb pasteboardItems];
+    NSMutableArray* files=[[NSMutableArray alloc]initWithCapacity:[pasteboardItems count]];
+    
+    for (NSPasteboardItem* pitm in pasteboardItems) {
+        NSString* file=[pitm stringForType:@"public.file-url"];
+        [files addObject:file];
+    }
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:TPPopWinTableViewFileDroppedNotification
+                                                       object:self userInfo:@{@"files":files}];
+    
+    return YES;
+}
 
 @end

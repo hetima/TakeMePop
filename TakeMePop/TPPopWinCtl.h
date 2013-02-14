@@ -6,6 +6,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+#define TPPopWinTableViewFileDroppedNotification @"TPPopWinTableViewFileDroppedNotification"
+
 @class TPFileItem, TPPopWinTableView;
 
 @interface TPPopWinCtl : NSWindowController
@@ -21,7 +23,9 @@
 
 
 @interface TPPopWinTableView : NSTableView
+@property BOOL dragEnter;
 
+- (void)setupDrag;
 - (id)clickedIndexSetIncludesSelection;
 
 @end
