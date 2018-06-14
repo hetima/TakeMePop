@@ -14,7 +14,7 @@
 
 - (void)application:(NSApplication *)sender openFiles:(NSArray *)filenames
 {
-    [self createPopWindowWithFiles:filenames];
+    [self createPopWindowOrAddItemsWithFiles:filenames];
     [sender replyToOpenOrPrint:NSApplicationDelegateReplySuccess];
     
 }
@@ -147,7 +147,7 @@
     
 }
 
-- (void)createPopWindowWithFiles:(NSArray*)files
+- (void)createPopWindowOrAddItemsWithFiles:(NSArray *)files
 {
     NSMutableArray* items=[[NSMutableArray alloc]initWithCapacity:[files count]];
     for (NSString* path in files) {
@@ -157,7 +157,14 @@
         }
     }
     
-    [self createPopWindowWithItems:items parentItem:nil];
+    TPPopWinCtl *winCtl = [self frontmostWinCtl];
+    if (winCtl) {
+        NSMutableArray *arrayKVC=[winCtl mutableArrayValueForKey:@"items"];
+        [arrayKVC addObjectsFromArray:items];
+    }else{
+        [self createPopWindowWithItems:items parentItem:nil];
+        
+    }
 }
 
 - (void)popWindowWillClose:(NSNotification *)aNotification
@@ -172,6 +179,25 @@
             break;
         }
     }
+}
+
+
+- (TPPopWinCtl*)frontmostWinCtl
+{
+    if (self.popWinCtls.count == 0) {
+        return nil;
+    }
+    
+    NSArray* ary=[NSWindow windowNumbersWithOptions:0];
+    for (NSNumber* num in ary) {
+        for (TPPopWinCtl* ctl in self.popWinCtls) {
+            if (ctl.window.windowNumber == num.integerValue) {
+                return ctl;
+            }
+        }
+    }
+
+    return self.popWinCtls.lastObject;
 }
 
 @end
