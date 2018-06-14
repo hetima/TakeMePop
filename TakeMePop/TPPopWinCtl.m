@@ -25,6 +25,10 @@
 - (void)windowDidLoad
 {
     [super windowDidLoad];
+    
+    self.window.titlebarAppearsTransparent=YES;
+    self.window.movableByWindowBackground=YES;
+    
     //observe for defaultStorage
     [[NSUserDefaults standardUserDefaults] addObserver:self forKeyPath:pkIncludesTarget
                                                options:(NSKeyValueObservingOptionNew) context:NULL];
