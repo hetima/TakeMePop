@@ -1,4 +1,4 @@
-#TakeMePop
+# TakeMePop
 
 Finder で選択されている項目をフローティングパネルに表示するアプリケーションです。Mac OS X 10.7 、10.8 に対応しています。
 
@@ -11,10 +11,11 @@ Finder で選択されている項目をフローティングパネルに表示�
 - パネルにファイルをドロップするとリストに追加されます。
 - Dock には現れず、すべてのパネルが閉じられたら終了します。
 
-#Download
+# Download
+
 ビルド済みのバイナリは <http://hetima.com/takemepop/> で公開しています。
 
-#Option
+# Option
 
 パネル左下のギアアイコンをクリックするとメニューが出てきます。以下の項目を設定できます
 
@@ -22,5 +23,6 @@ Finder で選択されている項目をフローティングパネルに表示�
 - Includes Window Target : 親フォルダもリストに表示されるようになります
 - When Finder Has No Selection : Finder でなにも選択してなかった場合、最前面ウインドウのみを追加するか、開いているウインドウ全部を追加するか選べます
 
-#License
+# License
+
 MIT License
