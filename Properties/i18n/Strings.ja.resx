@@ -296,4 +296,16 @@
     <value>基本アクション ショートカットキー</value>
   </data>
 
+  <data name="MenuItemGitHub" xml:space="preserve">
+    <value>GitHub</value>
+  </data>
+
+  <data name="MenuItemSetting" xml:space="preserve">
+    <value>環境設定</value>
+  </data>
+
+  <data name="MenuItemQuit" xml:space="preserve">
+    <value>終了</value>
+  </data>
+
 </root>

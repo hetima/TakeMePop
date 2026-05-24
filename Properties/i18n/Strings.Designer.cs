@@ -226,6 +226,24 @@ namespace Listhing {
             }
         }
 
+        public static string MenuItemGitHub {
+            get {
+                return ResourceManager.GetString("MenuItemGitHub", resourceCulture);
+            }
+        }
+
+        public static string MenuItemQuit {
+            get {
+                return ResourceManager.GetString("MenuItemQuit", resourceCulture);
+            }
+        }
+
+        public static string MenuItemSetting {
+            get {
+                return ResourceManager.GetString("MenuItemSetting", resourceCulture);
+            }
+        }
+
         public static string MenuPreferences {
             get {
                 return ResourceManager.GetString("MenuPreferences", resourceCulture);

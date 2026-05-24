@@ -296,4 +296,16 @@
     <value>Basic Action Shortcut Key</value>
   </data>
 
+  <data name="MenuItemQuit" xml:space="preserve">
+    <value>Quit</value>
+  </data>
+
+  <data name="MenuItemGitHub" xml:space="preserve">
+    <value>GitHub</value>
+  </data>
+
+  <data name="MenuItemSetting" xml:space="preserve">
+    <value>Setting</value>
+  </data>
+
 </root>

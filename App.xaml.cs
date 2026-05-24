@@ -1,14 +1,17 @@
-﻿using System.Diagnostics;
-using System.IO;
+﻿using System;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shell;
 using Listhing.Helpers;
 using Listhing.Models;
+using System.Windows.Controls;
 using Listhing.Services;
 using Listhing.ViewModels;
+using Hardcodet.Wpf.TaskbarNotification;
 
 namespace Listhing;
 
@@ -65,6 +68,8 @@ public partial class App : Application
     /// </summary>
     public static SettingsService SettingsService { get; private set; } = null!;
 
+    public static TaskbarIcon? TrayIcon { get; set; }
+
     /// <summary>
     /// Constructor
     /// </summary>
@@ -77,7 +82,7 @@ public partial class App : Application
         // Initialize services
         SettingsService = new SettingsService();
 
-        ShutdownMode = ShutdownMode.OnLastWindowClose;
+        ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
     }
 
@@ -168,15 +173,38 @@ public partial class App : Application
 
     private void Application_Startup(object sender, StartupEventArgs e)
     {
+        // TRAY ICON
+        Version? _version = Assembly.GetExecutingAssembly().GetName().Version;
+        string _vstring = _version?.ToString(3) ?? "0.0.0";
+        TrayIcon = FindResource("TrayIcon") as TaskbarIcon;
+        if (TrayIcon != null)
+        {
+            TrayIcon.ToolTipText = string.Format("{0} v{1}", AppConstants.AppName, _vstring);
+        }
         bool anyWindowOpen = false;
 
-        if(!anyWindowOpen)
+        if (!anyWindowOpen)
         {
             // リストがnullか空の場合やワークスペースが存在しなかった場合はデフォルトワークスペースを開く
             CreateMainWindow(AppConstants.AppName);
         }
     }
 
+
+    private void Setting_Click(object sender, EventArgs e)
+    {
+        ShowSettingsWindow();
+    }
+
+    private void GitHub_Click(object sender, RoutedEventArgs e)
+    {
+        Process.Start(new ProcessStartInfo("https://github.com/hetima/TakeMePop") { UseShellExecute = true });
+    }
+    private void Quit_Click(object sender, EventArgs e)
+    {
+        Shutdown();
+    }
+    
     public static bool CreateMainWindow(string title)
     {
 
@@ -317,7 +345,7 @@ public partial class App : Application
     protected override void OnExit(ExitEventArgs e)
     {
         SaveOpenedWorkspaces();
-
+        TrayIcon?.Dispose();
         // COMライブラリを解放
         CoUninitialize();
 
