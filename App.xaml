@@ -1,0 +1,45 @@
+﻿<Application x:Class="Listhing.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Listhing"
+             xmlns:converters="clr-namespace:Listhing.Converters"
+             xmlns:views="clr-namespace:Listhing.Views"
+             xmlns:vm="clr-namespace:Listhing.ViewModels"
+             Startup="Application_Startup">
+     <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary
+                        Source="pack://application:,,,/PresentationFramework.Fluent;component/Themes/Fluent.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+              <Style x:Key="DefaultControlFocusVisualStyle">
+                <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                    <Rectangle RadiusX="2" RadiusY="2" Margin="0" SnapsToDevicePixels="True" Stroke="{DynamicResource KeyboardFocusBorderColorBrush}" StrokeThickness="1" />
+                    </ControlTemplate>
+                </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="{x:Static SystemParameters.FocusVisualStyleKey}" BasedOn="{StaticResource DefaultControlFocusVisualStyle}" />
+            <Style x:Key="DefaultCollectionFocusVisualStyle">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                <ControlTemplate>
+                    <Rectangle RadiusX="2" RadiusY="2" SnapsToDevicePixels="True" Stroke="{DynamicResource KeyboardFocusBorderColorBrush}" StrokeThickness="1" />
+                </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            </Style>
+            <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{DynamicResource ControlAltFillColorQuarternary}" />    
+            <SolidColorBrush x:Key="MenuBarItemBackgroundSelected" Color="{DynamicResource ControlStrokeColorDefault}" /> 
+
+            <!-- Converters -->
+            <converters:ThemeToIndexConverter x:Key="ThemeToIndexConverter"/>
+            <converters:LanguageToIndexConverter x:Key="LanguageToIndexConverter"/>
+            <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
+            <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

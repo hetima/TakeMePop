@@ -1,0 +1,36 @@
+<UserControl x:Class="Listhing.Views.OkCancelModalView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="200" d:DesignWidth="400">
+    <Grid>
+        <StackPanel Margin="24" VerticalAlignment="Center">
+            <!-- メッセージ -->
+            <TextBlock Text="{Binding Message}"
+                       FontSize="14"
+                       TextWrapping="Wrap"
+                       Margin="0,0,0,24"/>
+            
+            <!-- ボタンエリア -->
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <Button x:Name="CancelButton"
+                        Content="{Binding CancelLabel}"
+                        Command="{Binding CancelCommand}"
+                        MinWidth="100"
+                        Padding="16,8"
+                        Margin="0,0,6,0"
+                        Visibility="{Binding OkOnly, Converter={StaticResource InverseBooleanToVisibilityConverter}}"/>
+                <Button x:Name="OkButton"
+                        Content="{Binding OkLabel}"
+                        Command="{Binding OkCommand}"
+                        MinWidth="100"
+                        Padding="16,8"
+                        Margin="6,0,0,0"/>
+
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

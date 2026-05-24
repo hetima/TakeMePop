@@ -1,0 +1,88 @@
+<UserControl x:Class="Listhing.Views.EditShortcutKeyView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Listhing.Views"
+             xmlns:vm="clr-namespace:Listhing.ViewModels"
+             xmlns:res="clr-namespace:Listhing"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="400"
+             d:DataContext="{d:DesignInstance vm:EditShortcutKeyViewModel}"
+             Loaded="OnLoaded">
+    <Grid Margin="24,-18,24,24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- タイトル -->
+        <TextBlock Grid.Row="0"
+                   Text="{Binding ActionName}"
+                   FontSize="18"
+                   FontWeight="SemiBold"
+                   Margin="0,0,0,24"/>
+
+        <!-- ショートカット入力エリア -->
+        <StackPanel Grid.Row="1">
+            <TextBlock Text="{x:Static res:Strings.ShortcutInputLabel}"
+                       Margin="0,0,0,8"/>
+            <TextBox x:Name="ShortcutInputTextBox"
+                     Text="{Binding DisplayString, Mode=OneWay}"
+                     IsReadOnly="true"
+                     FontFamily="Consolas"
+                     FontSize="14"
+                     Padding="12,8"
+                     MinHeight="40"
+                     HorizontalContentAlignment="Center"
+                     VerticalContentAlignment="Center"
+                     BorderThickness="1"
+                     PreviewKeyDown="ShortcutInputTextBox_PreviewKeyDown"
+                     GotFocus="ShortcutInputTextBox_GotFocus"
+                     LostFocus="ShortcutInputTextBox_LostFocus"/>
+        </StackPanel>
+
+        <!-- 警告メッセージ -->
+        <TextBlock Grid.Row="2"
+                   Text="{Binding WarningMessage}"
+                   Foreground="#D32F2F"
+                   FontSize="13"
+                   Margin="0,12,0,0"
+                   TextWrapping="Wrap"
+                   Visibility="{Binding WarningMessage, Converter={StaticResource StringToVisibilityConverter}}"/>
+
+        <!-- 他のショートカットを削除ボタン -->
+        <Button Grid.Row="3"
+                Content="{x:Static res:Strings.RemoveConflictingShortcutButton}"
+                Command="{Binding RemoveConflictingShortcutCommand}"
+                Padding="16,8"
+                Margin="0,8,0,0"
+                HorizontalAlignment="Left"
+                MinWidth="200"
+                Visibility="{Binding ShortcutConflicted, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+        <!-- ボタンエリア -->
+        <StackPanel Grid.Row="4"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0,24,0,0">
+            <Button Content="{x:Static res:Strings.ClearShortcutButton}"
+                    Command="{Binding ClearCommand}"
+                    Padding="16,8"
+                    Margin="0,0,8,0"
+                    MinWidth="100"/>
+            <Button Content="{x:Static res:Strings.CancelButton}"
+                    Command="{Binding CloseCommand}"
+                    Padding="16,8"
+                    Margin="0,0,8,0"
+                    MinWidth="80"/>
+            <Button Content="{x:Static res:Strings.SetButton}"
+                    Command="{Binding SaveCommand}"
+                    Padding="16,8"
+                    MinWidth="80"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    Microsoft ResX Schema
+  
+    Version 2.0
+  
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
+    associated with the data types.
+  
+    Example:
+  
+    ... ado.net/XML headers/schema ...
+    <resheader name="resmimetype">
+      <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+      <value>2.0</value>
+    </resheader>
+    <resheader name="reader">
+      <value>System.Resources.ResXResourceReader, System.Windows.Forms, ...</value>
+    </resheader>
+    <resheader name="writer">
+      <value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value>
+    </resheader>
+  -->
+
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <data name="ApplicationTitle" xml:space="preserve">
+    <value>Listhing</value>
+  </data>
+
+  <data name="ThemeLabel" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+
+  <data name="ThemeAuto" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+
+  <data name="ThemeLight" xml:space="preserve">
+    <value>Light</value>
+  </data>
+
+  <data name="ThemeDark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+
+  <data name="LanguageLabel" xml:space="preserve">
+    <value>Language</value>
+  </data>
+
+  <data name="LanguageEn" xml:space="preserve">
+    <value>English</value>
+  </data>
+
+  <data name="LanguageJa" xml:space="preserve">
+    <value>Japanese</value>
+  </data>
+
+  <data name="RestartRequired" xml:space="preserve">
+    <value>Restart required for changes to take effect</value>
+  </data>
+
+  <data name="OpenSettingsFolder" xml:space="preserve">
+    <value>Open Settings Folder</value>
+  </data>
+
+  <data name="FontSizeLabel" xml:space="preserve">
+    <value>Font Size</value>
+  </data>
+
+  <data name="MenuSave" xml:space="preserve">
+    <value>Save</value>
+  </data>
+
+  <data name="MenuPreferences" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+
+  <data name="MenuExit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+
+  <data name="ContextMenuOpen" xml:space="preserve">
+    <value>Open</value>
+  </data>
+
+  <data name="ContextMenuShowInExplorer" xml:space="preserve">
+    <value>Show in Explorer</value>
+  </data>
+
+  <data name="ContextMenuOpenWith" xml:space="preserve">
+    <value>Open With </value>
+  </data>
+
+  <data name="ContextMenuMoveItem" xml:space="preserve">
+    <value>Move Item...</value>
+  </data>
+
+  <data name="ContextMenuDeleteItem" xml:space="preserve">
+    <value>Delete Item</value>
+  </data>
+
+  <data name="UndoAddGroupDescription" xml:space="preserve">
+    <value>Add group</value>
+  </data>
+
+  <data name="UndoDeleteGroupDescription" xml:space="preserve">
+    <value>Delete group</value>
+  </data>
+
+  <data name="UndoDeleteItemsDescription" xml:space="preserve">
+    <value>Delete items</value>
+  </data>
+
+  <data name="UndoAddItemsDescription" xml:space="preserve">
+    <value>Add items</value>
+  </data>
+
+  <data name="UndoRenameItemDescription" xml:space="preserve">
+    <value>Rename item</value>
+  </data>
+
+  <data name="UndoMoveItemsDescription" xml:space="preserve">
+    <value>Move items</value>
+  </data>
+
+  <data name="UndoMoveGroupDescription" xml:space="preserve">
+    <value>Move group</value>
+  </data>
+
+  <data name="SettingsSectionAppearance" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+
+  <data name="SettingsSectionOther" xml:space="preserve">
+    <value>Other</value>
+  </data>
+
+  <data name="SettingsSectionAction" xml:space="preserve">
+    <value>Action</value>
+  </data>
+
+  <data name="DefaultOpenActionLabel" xml:space="preserve">
+    <value>Default Action</value>
+  </data>
+
+  <data name="RevealActionLabel" xml:space="preserve">
+    <value>Show in Explorer</value>
+  </data>
+
+  <data name="EditButtonLabel" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+
+  <data name="EditShortcutTitle" xml:space="preserve">
+    <value>Edit Shortcut: {0}</value>
+  </data>
+
+  <data name="ShortcutInputLabel" xml:space="preserve">
+    <value>Press shortcut keys</value>
+  </data>
+
+  <data name="NonePlaceholder" xml:space="preserve">
+    <value>None</value>
+  </data>
+
+  <data name="ClearShortcutButton" xml:space="preserve">
+    <value>Clear Shortcut</value>
+  </data>
+
+  <data name="CancelButton" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+
+  <data name="AddButton" xml:space="preserve">
+    <value>Add</value>
+  </data>
+
+  <data name="SetButton" xml:space="preserve">
+    <value>Set</value>
+  </data>
+
+  <data name="ForbiddenShortcutMessage" xml:space="preserve">
+    <value>This shortcut key cannot be assigned</value>
+  </data>
+
+  <data name="DuplicateShortcutMessage" xml:space="preserve">
+    <value>This shortcut is already assigned to another action</value>
+  </data>
+
+  <data name="ModalCloseButtonTooltip" xml:space="preserve">
+    <value>Close (Esc)</value>
+  </data>
+
+  <data name="CloseTabTooltip" xml:space="preserve">
+    <value>Close tab</value>
+  </data>
+
+  <data name="DeleteButton" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+
+  <data name="ConfirmDeleteTitle" xml:space="preserve">
+    <value>Confirm Delete</value>
+  </data>
+
+  <data name="ConfirmDeleteFromListMessage" xml:space="preserve">
+    <value>Are you sure you want to delete {0} from the list?</value>
+  </data>
+
+  <data name="RemoveConflictingShortcutButton" xml:space="preserve">
+    <value>Remove Conflicting Shortcut</value>
+  </data>
+
+  <data name="TerminalFontNameLabel" xml:space="preserve">
+    <value>Font</value>
+  </data>
+
+  <data name="TerminalFontSizeLabel" xml:space="preserve">
+    <value>Font Size</value>
+  </data>
+
+  <data name="TerminalThemeLabel" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+
+  <data name="ShowAllFontsLabel" xml:space="preserve">
+    <value>Show All Fonts</value>
+  </data>
+
+  <data name="OkButton" xml:space="preserve">
+    <value>OK</value>
+  </data>
+
+  <data name="DestinationGroup" xml:space="preserve">
+    <value>Destination Group</value>
+  </data>
+
+  <data name="MoveButton" xml:space="preserve">
+    <value>Move</value>
+  </data>
+
+  <data name="SelectOtherButton" xml:space="preserve">
+    <value>Other...</value>
+  </data>
+
+  <data name="InfoPaneTooltip" xml:space="preserve">
+    <value>Info</value>
+  </data>
+
+  <data name="DefaultWorkspaceName" xml:space="preserve">
+    <value>Default</value>
+  </data>
+
+  <data name="ShortcutLabel" xml:space="preserve">
+    <value>Shortcut:</value>
+  </data>
+
+  <data name="Importing" xml:space="preserve">
+    <value>Importing</value>
+  </data>
+
+  <data name="ImportCanceled" xml:space="preserve">
+    <value>Import Canceled</value>
+  </data>
+
+  <data name="ImportFailed" xml:space="preserve">
+    <value>Import Failed</value>
+  </data>
+
+  <data name="FileNotFound" xml:space="preserve">
+    <value>File Not Found</value>
+  </data>
+
+  <data name="BasicActionLabel" xml:space="preserve">
+    <value>Basic Action Shortcut Key</value>
+  </data>
+
+</root>
