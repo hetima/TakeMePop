@@ -12,6 +12,18 @@
   <PropertyGroup>
     <DefineConstants>$(DefineConstants);WPF</DefineConstants>
   </PropertyGroup>
-
-
+  <ItemGroup>
+    <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="2.0.1" />
+  </ItemGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Properties/app-icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="AGENTS.md" />
+    <None Remove="README.md" />
+    <None Remove="メモ.md" />
+  </ItemGroup>
+    <ItemGroup>
+    <Resource Include="Properties/tray-icon.ico" />
+  </ItemGroup>
 </Project>
