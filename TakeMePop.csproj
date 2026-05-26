@@ -14,12 +14,14 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="2.0.1" />
+    <PackageReference Include="SharpHook" Version="7.1.2" />
   </ItemGroup>
   <PropertyGroup>
     <ApplicationIcon>Properties/app-icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="AGENTS.md" />
+    <None Remove="CLAUDE.md" />
     <None Remove="README.md" />
     <None Remove="メモ.md" />
   </ItemGroup>

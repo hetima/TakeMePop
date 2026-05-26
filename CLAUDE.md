@@ -1,0 +1,70 @@
+# TakeMePop
+
+## アプリ概要
+
+マウスの動きをグローバルに監視し、ドラッグ＆ドロップ操作中にポインタ近くへ小さなウィンドウをポップアップするユーティリティ。
+
+**主なシナリオ:**
+1. ドラッグ開始直後（約0.5秒以内）にマウス近くに小さな透明ウィンドウを表示し、そこへドロップすることでファイル等を受け取る（最速キャプチャ）
+2. ドラッグ中に激しく振る（シェイク）ジェスチャーを検出してウィンドウを表示
+3. マウスポインタがスクリーン端に到達したらウィンドウを表示
+4. グローバルホットキーでウィンドウを手動表示
+
+**救済ユースケース:** クリックのつもりがドラッグになった、意図しない場所にドロップしてしまった、などの場面での受け皿となる。
+
+## 技術スタック
+
+- .NET 10.0 / WPF / C#
+- x64 Windows
+- グローバルマウスフック: **SharpHook** を使用予定
+  - `MouseDragged` イベントで D&D 中を検出
+  - `MousePressed` / `MouseReleased` でドラッグ開始/終了を判定
+  - 管理者権限不要（SetWindowsHookEx は標準ユーザーで動作）
+
+## ライブラリ選定
+
+### SharpHook（採用）
+- NuGet: `SharpHook` / `SharpHook.Reactive`
+- クロスプラットフォーム対応（libuiohook ラッパー）
+- `MouseDragged` イベントを直接サポート（D&D 検出が容易）
+- Rx.NET 対応でイベントの Throttle・フィルタが簡潔
+- 管理者権限不要
+
+## 実装計画
+
+### Phase 1: グローバルマウスフック基盤
+- [x] SharpHook NuGet パッケージ追加
+- [ ] `Services/MouseHookService.cs` — バックグラウンドスレッドでフックを起動・管理
+- [ ] ドラッグ中フラグ管理（`MousePressed` → `MouseDragged` → `MouseReleased`）
+- [ ] ドラッグ開始から 0.5 秒以内の「早期キャプチャウィンドウ」表示ロジック
+
+### Phase 2: ポップアップウィンドウ
+- [ ] `Features/PopupWindow/` — ドロップ受付用の小さな透明ウィンドウ
+  - マウス座標付近に表示、WPF AllowDrop=true
+  - ドロップ受付後に格納先を選択する UI
+- [ ] ウィンドウ表示トリガー判定
+  - タイマー（0.5秒）
+  - シェイクジェスチャー検出（速度・方向転換頻度でスコアリング）
+  - スクリーン端到達検出
+
+### Phase 3: グローバルホットキー
+- [ ] 既存の `ShortcutKey` / `SettingsService` を再利用
+- [ ] SharpHook または RegisterHotKey (Win32) でグローバルホットキー登録
+
+### Phase 4: ドロップ後の処理
+- [ ] ドロップされたファイル/URL/テキストの受け取り
+- [ ] 格納先（タブ/フォルダ）への振り分け UI
+
+## アーキテクチャ方針
+
+- `MouseHookService` はシングルトンとして `App.xaml.cs` で初期化・破棄
+- ポップアップウィンドウは WPF の通常ウィンドウ（`Topmost=true`、`ShowInTaskbar=false`）
+- ドラッグ中の判定は「MousePressed かつ MouseDragged イベントを受信中」で行う
+- Rx.NET の `Observable.Throttle` でマウス移動イベントを間引く
+
+## 注意事項
+
+- 管理者権限不要（SetWindowsHookEx は標準ユーザーで動作する）
+- SharpHook のフックは専用スレッドで動作するため、UI 操作は Dispatcher 経由で行う
+- `MouseDragged` イベントは「マウスボタンを押しながら移動」を意味し、OS レベルの D&D 状態とは別物
+  - 真の D&D 判定は `DragEnter` / `DragLeave` の WPF イベントと組み合わせて補完する
