@@ -1,0 +1,26 @@
+<Window x:Class="Listhing.Features.TransparentWindow.TransparentWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Width="48" Height="48"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
+        ShowInTaskbar="False"
+        IsHitTestVisible="True"
+        AllowDrop="True"
+        ResizeMode="NoResize"
+        ShowActivated="False">
+    <!-- TODO:ウィンドウサイズは仮の値。後からユーザーが設定可能にする -->
+    <Grid>
+        <!-- ドロップ受付エリア: 半透明の円形 -->
+        <Ellipse x:Name="DropTarget"
+                 Width="48" Height="48"
+                 Fill="#33FFFFFF"
+                 Stroke="#66FFFFFF"
+                 StrokeThickness="1"/>
+    </Grid>
+</Window>

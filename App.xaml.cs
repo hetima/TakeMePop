@@ -9,6 +9,7 @@ using System.Windows.Shell;
 using Listhing.Helpers;
 using Listhing.Models;
 using System.Windows.Controls;
+using Listhing.Features.TransparentWindow;
 using Listhing.Services;
 using Listhing.ViewModels;
 using Hardcodet.Wpf.TaskbarNotification;
@@ -68,6 +69,10 @@ public partial class App : Application
     /// </summary>
     public static SettingsService SettingsService { get; private set; } = null!;
 
+    public static MouseHookService MouseHookService { get; private set; } = null!;
+
+    private static TransparentWindow? _transparentWindow;
+
     public static TaskbarIcon? TrayIcon { get; set; }
 
     /// <summary>
@@ -81,6 +86,7 @@ public partial class App : Application
 
         // Initialize services
         SettingsService = new SettingsService();
+        MouseHookService = new MouseHookService(Dispatcher);
 
         ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
@@ -188,6 +194,29 @@ public partial class App : Application
             // リストがnullか空の場合やワークスペースが存在しなかった場合はデフォルトワークスペースを開く
             CreateMainWindow(AppConstants.AppName);
         }
+
+        _transparentWindow = new TransparentWindow();
+        _transparentWindow.DataDropped += OnTransparentWindowDataDropped;
+
+        MouseHookService.EarlyCaptureRequested += OnEarlyCaptureRequested;
+        MouseHookService.DragEnded += OnDragEnded;
+
+        MouseHookService.Start();
+    }
+
+    private static void OnEarlyCaptureRequested(object? sender, System.Drawing.Point point)
+    {
+        _transparentWindow?.ShowNearPoint(point);
+    }
+
+    private static void OnDragEnded(object? sender, EventArgs e)
+    {
+        _transparentWindow?.Hide();
+    }
+
+    private static void OnTransparentWindowDataDropped(object? sender, IDataObject data)
+    {
+        // TODO: ドロップ受け皿ウィンドウを表示してデータを渡す
     }
 
 
@@ -345,6 +374,8 @@ public partial class App : Application
     protected override void OnExit(ExitEventArgs e)
     {
         SaveOpenedWorkspaces();
+        MouseHookService?.Dispose();
+        _transparentWindow?.Close();
         TrayIcon?.Dispose();
         // COMライブラリを解放
         CoUninitialize();

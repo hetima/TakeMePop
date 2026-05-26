@@ -24,11 +24,19 @@
 ## ライブラリ選定
 
 ### SharpHook（採用）
-- NuGet: `SharpHook` / `SharpHook.Reactive`
+- NuGet: `SharpHook` / `SharpHook.Reactive` https://github.com/TolikPylypchuk/SharpHook
 - クロスプラットフォーム対応（libuiohook ラッパー）
 - `MouseDragged` イベントを直接サポート（D&D 検出が容易）
 - Rx.NET 対応でイベントの Throttle・フィルタが簡潔
-- 管理者権限不要
+- まず SharpHook だけ追加して通常のイベントハンドラで実装するのが最もシンプル。後から「マウス移動イベントを間引きたい」となったときに .Reactive を足すという順序でも問題なし
+
+## 必要なUI
+
+### ドロップ受け皿ウィンドウ
+- ドロップを受け取り、そこからドラッグを開始することができる「中継地点」
+
+### 透明ウィンドウ
+- ドロップを受け取りドロップ受け皿ウィンドウを出してドロップを渡す
 
 ## 実装計画
 
@@ -64,7 +72,6 @@
 
 ## 注意事項
 
-- 管理者権限不要（SetWindowsHookEx は標準ユーザーで動作する）
 - SharpHook のフックは専用スレッドで動作するため、UI 操作は Dispatcher 経由で行う
 - `MouseDragged` イベントは「マウスボタンを押しながら移動」を意味し、OS レベルの D&D 状態とは別物
   - 真の D&D 判定は `DragEnter` / `DragLeave` の WPF イベントと組み合わせて補完する
