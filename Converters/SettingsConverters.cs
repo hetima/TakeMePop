@@ -50,6 +50,7 @@ public class ThemeModeJsonConverter : JsonConverter<ThemeMode>
         if (reader.TokenType == JsonTokenType.String)
         {
             var value = reader.GetString();
+            if (string.IsNullOrEmpty(value)) return ThemeMode.System;
             return new ThemeMode(value);
         }
         return ThemeMode.System;

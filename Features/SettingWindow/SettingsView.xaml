@@ -49,7 +49,7 @@
                         <TextBlock Text="{x:Static res:Strings.ThemeLabel}"
                                    FontWeight="SemiBold"
                                    Margin="0,0,0,8"/>
-                        <ComboBox SelectedIndex="{Binding SelectedTheme, Converter={StaticResource ThemeToIndexConverter}}"
+                        <ComboBox SelectedIndex="{Binding SelectedTheme, Converter={StaticResource ThemeToIndexConverter}, Mode=TwoWay}"
                                   HorizontalAlignment="Stretch"
                                   Padding="12,8">
                             <ComboBoxItem Content="{x:Static res:Strings.ThemeAuto}"/>

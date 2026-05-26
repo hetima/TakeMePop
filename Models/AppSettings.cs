@@ -16,7 +16,6 @@ public class AppSettings
     /// </summary>
     [JsonPropertyName("theme")]
     public ThemeMode Theme { get; set; } = ThemeMode.System;
-    // public AppTheme Theme { get; set; } = AppTheme.Auto;
 
     /// <summary>
     /// 言語設定（En, Ja）
@@ -85,26 +84,6 @@ public class WindowSettings
 
 }
 
-// /// <summary>
-// /// テーマの種類
-// /// </summary>
-// public enum AppTheme
-// {
-//     /// <summary>
-//     /// Windowsのテーマに従う
-//     /// </summary>
-//     Auto,
-
-//     /// <summary>
-//     /// ライトテーマ
-//     /// </summary>
-//     Light,
-
-//     /// <summary>
-//     /// ダークテーマ
-//     /// </summary>
-//     Dark
-// }
 
 /// <summary>
 /// 言語の種類

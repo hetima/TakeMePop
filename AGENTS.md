@@ -22,7 +22,7 @@ Listhing/
 ├── Converters/       # 値コンバータ
 ├── Controls/         # カスタムコントロール
 ├── Helpers/          # ユーティリティクラス
-└── Resources/        # 画像、スタイル、リソースディクショナリ
+└── Properties/        # 画像、スタイル、リソースディクショナリ
 ```
 - 機能ごとにFeaturesにまとめる。複数機能で使われるファイルはそれぞれの種類フォルダに入れる
 - Features内のnamespaceはフォルダパスではなくファイル種類に従う（Listhing.Features.XXX ではなく Listhing.Viewsなど）
