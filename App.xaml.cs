@@ -74,6 +74,7 @@ public partial class App : Application
     public static GlobalHookService GlobalHookService { get; private set; } = null!;
     public static MouseHookService MouseHookService { get; private set; } = null!;
     public static KeyboardHookService KeyboardHookService { get; private set; } = null!;
+    public static ClipboardService ClipboardService { get; private set; } = null!;
 
     private static TransparentWindow? _transparentWindow;
     private static readonly List<PopWindow> _popWindows = new();
@@ -93,7 +94,6 @@ public partial class App : Application
         SettingsService = new SettingsService();
         GlobalHookService = new GlobalHookService();
         MouseHookService = new MouseHookService(GlobalHookService, Dispatcher);
-        KeyboardHookService = new KeyboardHookService(GlobalHookService, Dispatcher);
 
         ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
@@ -201,6 +201,10 @@ public partial class App : Application
             // リストがnullか空の場合やワークスペースが存在しなかった場合はデフォルトワークスペースを開く
             CreateMainWindow(AppConstants.AppName);
         }
+
+        // HwndSource を使うため WPF 初期化後に生成する
+        ClipboardService = new ClipboardService();
+        KeyboardHookService = new KeyboardHookService(GlobalHookService, Dispatcher, ClipboardService);
 
         _transparentWindow = new TransparentWindow();
 
@@ -448,6 +452,7 @@ public partial class App : Application
         SaveOpenedWorkspaces();
         MouseHookService?.Dispose();
         GlobalHookService?.Dispose();
+        ClipboardService?.Dispose();
         _transparentWindow?.Close();
         TrayIcon?.Dispose();
         // COMライブラリを解放
