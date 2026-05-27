@@ -1,5 +1,4 @@
 using System.Runtime.InteropServices;
-using System.Windows;
 using System.Windows.Interop;
 
 namespace Listhing.Services;
@@ -18,15 +17,17 @@ public class ClipboardService : IDisposable
     private const int WM_CLIPBOARDUPDATE = 0x031D;
 
     private readonly HwndSource _hwndSource;
-    private string? _snapshotText;
 
+    // NotifyFirstCtrlC() 呼び出し時点のタイムスタンプ。これより新しいアイテムが来たら変化あり
+    private DateTime _snapshotTime = DateTime.MinValue;
+
+    /// <summary>NotifyFirstCtrlC() 以降にクリップボードが更新されたか</summary>
     public bool IsContentChanged { get; private set; }
 
-    public List<string> History { get; } = new();
+    public List<ClipboardItem> History { get; } = [];
 
     public ClipboardService()
     {
-        // メッセージ受信用の不可視ウィンドウを作成
         var p = new HwndSourceParameters("ClipboardWatcher")
         {
             Width = 0,
@@ -39,43 +40,31 @@ public class ClipboardService : IDisposable
     }
 
     /// <summary>
-    /// Ctrl+C 1回目のタイミングで呼ぶ。現在のクリップボード内容をスナップショットとして保存し、
-    /// 以降の変化検知をリセットする
+    /// Ctrl+C 1回目のタイミングで呼ぶ。以降の変化検知をリセットし、スナップショット時刻を記録する
     /// </summary>
     public void NotifyFirstCtrlC()
     {
+        _snapshotTime = DateTime.UtcNow;
         IsContentChanged = false;
-        _snapshotText = GetCurrentText();
     }
 
     private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
     {
-        if (msg == WM_CLIPBOARDUPDATE)
-        {
-            var text = GetCurrentText();
-            if (text != null)
-            {
-                if (History.Count == 0 || History[^1] != text)
-                    History.Add(text);
-            }
+        if (msg != WM_CLIPBOARDUPDATE) return IntPtr.Zero;
 
-            // スナップショット以降に内容が変化したか判定
-            if (_snapshotText != null && text != _snapshotText)
-                IsContentChanged = true;
-        }
+        var item = ClipboardItem.TryCapture();
+        if (item == null) return IntPtr.Zero;
+
+        // 直前の履歴と内容が同じテキストなら追加しない
+        var last = History.Count > 0 ? History[^1] : null;
+        if (last == null || last.Text != item.Text || last.HasFiles != item.HasFiles)
+            History.Add(item);
+
+        // スナップショット時刻より新しければ変化あり
+        if (item.Timestamp > _snapshotTime)
+            IsContentChanged = true;
+
         return IntPtr.Zero;
-    }
-
-    private static string? GetCurrentText()
-    {
-        try
-        {
-            return Clipboard.ContainsText() ? Clipboard.GetText() : null;
-        }
-        catch
-        {
-            return null;
-        }
     }
 
     public void Dispose()
