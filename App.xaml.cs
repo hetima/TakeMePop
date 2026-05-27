@@ -226,7 +226,7 @@ public partial class App : Application
     {
         _activationDelayTimer?.Stop();
         if (_transparentWindow != null)
-            _transparentWindow.IsHitTestVisible = true;
+            _transparentWindow.AllowDrop = true;
     }
 
     private static void OnEarlyCaptureRequested(object? sender, System.Drawing.Point point)
@@ -239,14 +239,14 @@ public partial class App : Application
         int delayMs = tg.ActivationDelayMs;
         if (delayMs > 0)
         {
-            _transparentWindow.IsHitTestVisible = false;
+            _transparentWindow.AllowDrop = false;
             _activationDelayTimer!.Interval = TimeSpan.FromMilliseconds(delayMs);
             _activationDelayTimer.Stop();
             _activationDelayTimer.Start();
         }
         else
         {
-            _transparentWindow.IsHitTestVisible = true;
+            _transparentWindow.AllowDrop = true;
         }
 
         _transparentWindow.ShowNearPoint(point);
