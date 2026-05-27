@@ -151,37 +151,37 @@ public class SettingsViewModel : INotifyPropertyChanged
     public bool TgIsEnabled
     {
         get => Tg.IsEnabled;
-        set { if (Tg.IsEnabled != value) { Tg.IsEnabled = value; _settingsService.Save(); OnPropertyChanged(); } }
+        set { if (Tg.IsEnabled != value) { Tg.IsEnabled = value; _settingsService.Save(); _settingsService.NotifyTransparentGuardChanged(); OnPropertyChanged(); } }
     }
 
     public double TgSize
     {
         get => Tg.Size;
-        set { if (Tg.Size != value) { Tg.Size = value; _settingsService.Save(); OnPropertyChanged(); } }
+        set { if (Tg.Size != value) { Tg.Size = value; _settingsService.Save(); _settingsService.NotifyTransparentGuardChanged(); OnPropertyChanged(); } }
     }
 
     public int TgActivationPixels
     {
         get => Tg.ActivationPixels;
-        set { if (Tg.ActivationPixels != value) { Tg.ActivationPixels = value; _settingsService.Save(); OnPropertyChanged(); } }
+        set { if (Tg.ActivationPixels != value) { Tg.ActivationPixels = value; _settingsService.Save(); _settingsService.NotifyTransparentGuardChanged(); OnPropertyChanged(); } }
     }
 
     public int TgActivationDelayMs
     {
         get => Tg.ActivationDelayMs;
-        set { if (Tg.ActivationDelayMs != value) { Tg.ActivationDelayMs = value; _settingsService.Save(); OnPropertyChanged(); } }
+        set { if (Tg.ActivationDelayMs != value) { Tg.ActivationDelayMs = value; _settingsService.Save(); _settingsService.NotifyTransparentGuardChanged(); OnPropertyChanged(); } }
     }
 
     public int TgDismissDelayMs
     {
         get => Tg.DismissDelayMs;
-        set { if (Tg.DismissDelayMs != value) { Tg.DismissDelayMs = value; _settingsService.Save(); OnPropertyChanged(); } }
+        set { if (Tg.DismissDelayMs != value) { Tg.DismissDelayMs = value; _settingsService.Save(); _settingsService.NotifyTransparentGuardChanged(); OnPropertyChanged(); } }
     }
 
     public bool TgShowPattern
     {
         get => Tg.ShowPattern;
-        set { if (Tg.ShowPattern != value) { Tg.ShowPattern = value; _settingsService.Save(); OnPropertyChanged(); } }
+        set { if (Tg.ShowPattern != value) { Tg.ShowPattern = value; _settingsService.Save(); _settingsService.NotifyTransparentGuardChanged(); OnPropertyChanged(); } }
     }
 
     /// <summary>

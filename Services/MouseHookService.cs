@@ -13,18 +13,15 @@ public class MouseHookService : IDisposable
     private readonly Dispatcher _dispatcher;
     private readonly DispatcherTimer _earlyCapturTimer;
 
-    // システムのドラッグ開始判定距離（UIスレッドで一度だけ読む）
-    private readonly double _minDragX;
-    private readonly double _minDragY;
+    private double _minDragX;
+    private double _minDragY;
 
     private bool _isButtonDown = false;
     private bool _isDragging = false;
     private bool _earlyCaptureShown = false;
     private System.Drawing.Point _dragStartPoint;
 
-    // 早期キャプチャウィンドウを自動的に隠すまでの時間
-    // TODO: 仮の時間。後でユーザーが設定可能にする
-    private static readonly TimeSpan EarlyCaptureHideDelay = TimeSpan.FromMilliseconds(1500);
+    private TimeSpan _earlyCaptureHideDelay = TimeSpan.FromMilliseconds(1500);
 
     /// <summary>ドラッグが開始されたとき（MouseDown 直後）</summary>
     public event EventHandler<System.Drawing.Point>? DragStarted;
@@ -42,7 +39,6 @@ public class MouseHookService : IDisposable
     {
         _dispatcher = dispatcher;
 
-        // TODO: 後で設定UIから変更可能にする
         _minDragX = 6;
         _minDragY = 6;
 
@@ -51,8 +47,17 @@ public class MouseHookService : IDisposable
         _hook.MouseReleased += OnMouseReleased;
         _hook.MouseDragged += OnMouseDragged;
 
-        _earlyCapturTimer = new DispatcherTimer { Interval = EarlyCaptureHideDelay };
+        _earlyCapturTimer = new DispatcherTimer { Interval = _earlyCaptureHideDelay };
         _earlyCapturTimer.Tick += OnEarlyCaptureTimerTick;
+    }
+
+    /// <summary>ドラッグ判定距離と消失タイマーを更新する</summary>
+    public void ApplySettings(int activationPixels, int dismissDelayMs)
+    {
+        _minDragX = activationPixels;
+        _minDragY = activationPixels;
+        _earlyCaptureHideDelay = TimeSpan.FromMilliseconds(dismissDelayMs);
+        _earlyCapturTimer.Interval = _earlyCaptureHideDelay;
     }
 
     /// <summary>フックを開始する</summary>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Threading;
 using System.Windows.Media;
 using System.Windows.Shell;
 using Listhing.Helpers;
@@ -72,6 +73,7 @@ public partial class App : Application
     public static MouseHookService MouseHookService { get; private set; } = null!;
 
     private static TransparentWindow? _transparentWindow;
+    private static DispatcherTimer? _activationDelayTimer;
 
     public static TaskbarIcon? TrayIcon { get; set; }
 
@@ -198,19 +200,61 @@ public partial class App : Application
         _transparentWindow = new TransparentWindow();
         _transparentWindow.DataDropped += OnTransparentWindowDataDropped;
 
+        var tg = SettingsService.Settings.TransparentGuard;
+        _transparentWindow.ApplySettings(tg.Size, tg.ShowPattern);
+        MouseHookService.ApplySettings(tg.ActivationPixels, tg.DismissDelayMs);
+
+        SettingsService.TransparentGuardChanged += OnTransparentGuardChanged;
+
+        _activationDelayTimer = new System.Windows.Threading.DispatcherTimer();
+        _activationDelayTimer.Tick += OnActivationDelayTick;
+
         MouseHookService.EarlyCaptureRequested += OnEarlyCaptureRequested;
         MouseHookService.DragEnded += OnDragEnded;
 
         MouseHookService.Start();
     }
 
+    private static void OnTransparentGuardChanged(object? sender, EventArgs e)
+    {
+        var tg = SettingsService.Settings.TransparentGuard;
+        _transparentWindow?.ApplySettings(tg.Size, tg.ShowPattern);
+        MouseHookService.ApplySettings(tg.ActivationPixels, tg.DismissDelayMs);
+    }
+
+    private static void OnActivationDelayTick(object? sender, EventArgs e)
+    {
+        _activationDelayTimer?.Stop();
+        if (_transparentWindow != null)
+            _transparentWindow.IsHitTestVisible = true;
+    }
+
     private static void OnEarlyCaptureRequested(object? sender, System.Drawing.Point point)
     {
-        _transparentWindow?.ShowNearPoint(point);
+        var tg = SettingsService.Settings.TransparentGuard;
+        if (!tg.IsEnabled) return;
+
+        if (_transparentWindow == null) return;
+
+        int delayMs = tg.ActivationDelayMs;
+        if (delayMs > 0)
+        {
+            _transparentWindow.IsHitTestVisible = false;
+            _activationDelayTimer!.Interval = TimeSpan.FromMilliseconds(delayMs);
+            _activationDelayTimer.Stop();
+            _activationDelayTimer.Start();
+        }
+        else
+        {
+            _transparentWindow.IsHitTestVisible = true;
+        }
+
+        _transparentWindow.ShowNearPoint(point);
     }
 
     private static void OnDragEnded(object? sender, EventArgs e)
     {
+        _activationDelayTimer?.Stop();
         _transparentWindow?.Hide();
     }
 

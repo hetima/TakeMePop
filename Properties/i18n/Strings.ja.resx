@@ -357,7 +357,7 @@
   </data>
 
   <data name="TgShowPatternTooltip" xml:space="preserve">
-    <value>半透明の円模様をウィンドウに描画します</value>
+    <value>半透明の円模様をウィンドウに描画します（動作確認用です。通常使用ではかなり邪魔です）</value>
   </data>
 
 </root>

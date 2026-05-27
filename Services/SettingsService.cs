@@ -24,6 +24,9 @@ public class SettingsService
     /// </summary>
     public AppSettings Settings => _settings;
 
+    /// <summary>TransparentGuard 設定が変更されたとき</summary>
+    public event EventHandler? TransparentGuardChanged;
+
     /// <summary>
     /// 設定ファイルのパス
     /// </summary>
@@ -88,6 +91,9 @@ public class SettingsService
             SetDefaultLanguageFromSystem();
         }
     }
+
+    /// <summary>TransparentGuard 設定の変更を通知する</summary>
+    public void NotifyTransparentGuardChanged() => TransparentGuardChanged?.Invoke(this, EventArgs.Empty);
 
     /// <summary>
     /// 設定をファイルに保存する

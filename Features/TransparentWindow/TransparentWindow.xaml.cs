@@ -23,6 +23,16 @@ public partial class TransparentWindow : Window
         DragLeave += OnDragLeave;
     }
 
+    /// <summary>設定値をウィンドウに反映する</summary>
+    public void ApplySettings(double size, bool showPattern)
+    {
+        Width = size;
+        Height = size;
+        DropTarget.Width = size;
+        DropTarget.Height = size;
+        DropTarget.Visibility = showPattern ? Visibility.Visible : Visibility.Hidden;
+    }
+
     /// <summary>マウス座標の近くにウィンドウを移動して表示する</summary>
     public void ShowNearPoint(System.Drawing.Point screenPoint)
     {
