@@ -1,6 +1,6 @@
 namespace Listhing {
     using System;
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("hetima.resx-designer", "0.2.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("hetima.resx-designer", "0.2.1")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Strings {
@@ -367,6 +367,84 @@ namespace Listhing {
         public static string TerminalThemeLabel {
             get {
                 return ResourceManager.GetString("TerminalThemeLabel", resourceCulture);
+            }
+        }
+
+        public static string TgActivationDelayLabel {
+            get {
+                return ResourceManager.GetString("TgActivationDelayLabel", resourceCulture);
+            }
+        }
+
+        public static string TgActivationDelayTooltip {
+            get {
+                return ResourceManager.GetString("TgActivationDelayTooltip", resourceCulture);
+            }
+        }
+
+        public static string TgActivationPixelsLabel {
+            get {
+                return ResourceManager.GetString("TgActivationPixelsLabel", resourceCulture);
+            }
+        }
+
+        public static string TgActivationPixelsTooltip {
+            get {
+                return ResourceManager.GetString("TgActivationPixelsTooltip", resourceCulture);
+            }
+        }
+
+        public static string TgDismissDelayLabel {
+            get {
+                return ResourceManager.GetString("TgDismissDelayLabel", resourceCulture);
+            }
+        }
+
+        public static string TgDismissDelayTooltip {
+            get {
+                return ResourceManager.GetString("TgDismissDelayTooltip", resourceCulture);
+            }
+        }
+
+        public static string TgIsEnabledLabel {
+            get {
+                return ResourceManager.GetString("TgIsEnabledLabel", resourceCulture);
+            }
+        }
+
+        public static string TgIsEnabledTooltip {
+            get {
+                return ResourceManager.GetString("TgIsEnabledTooltip", resourceCulture);
+            }
+        }
+
+        public static string TgSectionTitle {
+            get {
+                return ResourceManager.GetString("TgSectionTitle", resourceCulture);
+            }
+        }
+
+        public static string TgShowPatternLabel {
+            get {
+                return ResourceManager.GetString("TgShowPatternLabel", resourceCulture);
+            }
+        }
+
+        public static string TgShowPatternTooltip {
+            get {
+                return ResourceManager.GetString("TgShowPatternTooltip", resourceCulture);
+            }
+        }
+
+        public static string TgSizeLabel {
+            get {
+                return ResourceManager.GetString("TgSizeLabel", resourceCulture);
+            }
+        }
+
+        public static string TgSizeTooltip {
+            get {
+                return ResourceManager.GetString("TgSizeTooltip", resourceCulture);
             }
         }
 

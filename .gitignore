@@ -401,3 +401,5 @@ FodyWeavers.xsd
 *.sln.iml
 
 /publish/
+*.code-workspace
+

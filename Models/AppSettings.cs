@@ -42,6 +42,30 @@ public class AppSettings
     /// </summary>
     [JsonPropertyName("openedWorkspaceNames")]
     public List<string> OpenedWorkspaceNames { get; set; } = new List<string>();
+
+    [JsonPropertyName("transparentGuard")]
+    public TransparentGuardSettings TransparentGuard { get; set; } = new TransparentGuardSettings();
+}
+
+public class TransparentGuardSettings
+{
+    [JsonPropertyName("isEnabled")]
+    public bool IsEnabled { get; set; } = true;
+
+    [JsonPropertyName("size")]
+    public double Size { get; set; } = 120;
+
+    [JsonPropertyName("activationPixels")]
+    public int ActivationPixels { get; set; } = 16;
+
+    [JsonPropertyName("activationDelayMs")]
+    public int ActivationDelayMs { get; set; } = 0;
+
+    [JsonPropertyName("dismissDelayMs")]
+    public int DismissDelayMs { get; set; } = 1500;
+
+    [JsonPropertyName("showPattern")]
+    public bool ShowPattern { get; set; } = true;
 }
 
 /// <summary>

@@ -308,4 +308,56 @@
     <value>Setting</value>
   </data>
 
+  <data name="TgSectionTitle" xml:space="preserve">
+    <value>Transparent Guard</value>
+  </data>
+
+  <data name="TgIsEnabledLabel" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+
+  <data name="TgIsEnabledTooltip" xml:space="preserve">
+    <value>Enable or disable the Transparent Guard window</value>
+  </data>
+
+  <data name="TgSizeLabel" xml:space="preserve">
+    <value>Size</value>
+  </data>
+
+  <data name="TgSizeTooltip" xml:space="preserve">
+    <value>Size of the Transparent Guard window (80–400 px)</value>
+  </data>
+
+  <data name="TgActivationPixelsLabel" xml:space="preserve">
+    <value>Activation Distance (px)</value>
+  </data>
+
+  <data name="TgActivationPixelsTooltip" xml:space="preserve">
+    <value>Mouse movement distance required to activate the window (8–64 px)</value>
+  </data>
+
+  <data name="TgActivationDelayLabel" xml:space="preserve">
+    <value>Activation Delay</value>
+  </data>
+
+  <data name="TgActivationDelayTooltip" xml:space="preserve">
+    <value>Delay after the window appears before it becomes active (0–1000 ms)</value>
+  </data>
+
+  <data name="TgDismissDelayLabel" xml:space="preserve">
+    <value>Dismiss Delay</value>
+  </data>
+
+  <data name="TgDismissDelayTooltip" xml:space="preserve">
+    <value>Time before the window automatically disappears (0–3000 ms)</value>
+  </data>
+
+  <data name="TgShowPatternLabel" xml:space="preserve">
+    <value>Show Pattern</value>
+  </data>
+
+  <data name="TgShowPatternTooltip" xml:space="preserve">
+    <value>Draw a semi-transparent circle pattern on the window</value>
+  </data>
+
 </root>

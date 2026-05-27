@@ -308,4 +308,56 @@
     <value>終了</value>
   </data>
 
+  <data name="TgSectionTitle" xml:space="preserve">
+    <value>透明ガード</value>
+  </data>
+
+  <data name="TgIsEnabledLabel" xml:space="preserve">
+    <value>有効</value>
+  </data>
+
+  <data name="TgIsEnabledTooltip" xml:space="preserve">
+    <value>透明ガードウィンドウの有効/無効を切り替えます</value>
+  </data>
+
+  <data name="TgSizeLabel" xml:space="preserve">
+    <value>大きさ</value>
+  </data>
+
+  <data name="TgSizeTooltip" xml:space="preserve">
+    <value>透明ガードウィンドウのサイズ（80〜400 px）</value>
+  </data>
+
+  <data name="TgActivationPixelsLabel" xml:space="preserve">
+    <value>発動条件移動ピクセル</value>
+  </data>
+
+  <data name="TgActivationPixelsTooltip" xml:space="preserve">
+    <value>ウィンドウを表示するために必要なマウス移動量（8〜64 px）</value>
+  </data>
+
+  <data name="TgActivationDelayLabel" xml:space="preserve">
+    <value>発動タイマー</value>
+  </data>
+
+  <data name="TgActivationDelayTooltip" xml:space="preserve">
+    <value>ウィンドウが出現してから機能するまでのタイムラグ（0〜1000 ms）</value>
+  </data>
+
+  <data name="TgDismissDelayLabel" xml:space="preserve">
+    <value>消失タイマー</value>
+  </data>
+
+  <data name="TgDismissDelayTooltip" xml:space="preserve">
+    <value>ウィンドウが出現してから自動的に消えるまでの時間（0〜3000 ms）</value>
+  </data>
+
+  <data name="TgShowPatternLabel" xml:space="preserve">
+    <value>模様を出す</value>
+  </data>
+
+  <data name="TgShowPatternTooltip" xml:space="preserve">
+    <value>半透明の円模様をウィンドウに描画します</value>
+  </data>
+
 </root>

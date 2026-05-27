@@ -146,6 +146,44 @@ public class SettingsViewModel : INotifyPropertyChanged
     public ShortcutKey RevealKey => _settingsService.Settings.ShortcutSettings.RevealKey;
 
 
+    private TransparentGuardSettings Tg => _settingsService.Settings.TransparentGuard;
+
+    public bool TgIsEnabled
+    {
+        get => Tg.IsEnabled;
+        set { if (Tg.IsEnabled != value) { Tg.IsEnabled = value; _settingsService.Save(); OnPropertyChanged(); } }
+    }
+
+    public double TgSize
+    {
+        get => Tg.Size;
+        set { if (Tg.Size != value) { Tg.Size = value; _settingsService.Save(); OnPropertyChanged(); } }
+    }
+
+    public int TgActivationPixels
+    {
+        get => Tg.ActivationPixels;
+        set { if (Tg.ActivationPixels != value) { Tg.ActivationPixels = value; _settingsService.Save(); OnPropertyChanged(); } }
+    }
+
+    public int TgActivationDelayMs
+    {
+        get => Tg.ActivationDelayMs;
+        set { if (Tg.ActivationDelayMs != value) { Tg.ActivationDelayMs = value; _settingsService.Save(); OnPropertyChanged(); } }
+    }
+
+    public int TgDismissDelayMs
+    {
+        get => Tg.DismissDelayMs;
+        set { if (Tg.DismissDelayMs != value) { Tg.DismissDelayMs = value; _settingsService.Save(); OnPropertyChanged(); } }
+    }
+
+    public bool TgShowPattern
+    {
+        get => Tg.ShowPattern;
+        set { if (Tg.ShowPattern != value) { Tg.ShowPattern = value; _settingsService.Save(); OnPropertyChanged(); } }
+    }
+
     /// <summary>
     /// ショートカットキーの表示を更新する
     /// </summary>

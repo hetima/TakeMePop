@@ -33,6 +33,7 @@
                 <ListBoxItem Content="{x:Static res:Strings.SettingsSectionAppearance}"/>
                 <ListBoxItem Content="{x:Static res:Strings.SettingsSectionAction}"/>
                 <ListBoxItem Content="{x:Static res:Strings.SettingsSectionOther}"/>
+                <ListBoxItem Content="{x:Static res:Strings.TgSectionTitle}"/>
             </ListBox>
 
             <!-- セクションコンテンツ（ScrollViewer内） -->
@@ -174,6 +175,127 @@
                                 Padding="24,12"
                                 Click="OpenSettingsFolder_Click"
                                 Margin="0,0,0,16"/>
+                    </StackPanel>
+
+                    <!-- Transparent Guard Section -->
+                    <StackPanel x:Name="TransparentGuardSection"
+                                Margin="42,8"
+                                MaxWidth="600"
+                                Visibility="Collapsed">
+                        <!-- Enabled -->
+                        <CheckBox Content="{x:Static res:Strings.TgIsEnabledLabel}"
+                                  ToolTip="{x:Static res:Strings.TgIsEnabledTooltip}"
+                                  IsChecked="{Binding TgIsEnabled}"
+                                  Margin="0,0,0,24"/>
+
+                        <!-- Size -->
+                        <TextBlock Text="{x:Static res:Strings.TgSizeLabel}"
+                                   FontWeight="SemiBold"
+                                   ToolTip="{x:Static res:Strings.TgSizeTooltip}"
+                                   Margin="0,0,0,8"/>
+                        <Grid Margin="0,0,0,24"
+                              ToolTip="{x:Static res:Strings.TgSizeTooltip}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Slider Grid.Column="0"
+                                    Minimum="80"
+                                    Maximum="400"
+                                    Value="{Binding TgSize}"
+                                    TickFrequency="1"
+                                    IsSnapToTickEnabled="True"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,16,0"/>
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding TgSize, StringFormat={}{0:F0}}"
+                                       Width="40"
+                                       TextAlignment="Right"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
+
+                        <!-- Activation Pixels -->
+                        <TextBlock Text="{x:Static res:Strings.TgActivationPixelsLabel}"
+                                   FontWeight="SemiBold"
+                                   ToolTip="{x:Static res:Strings.TgActivationPixelsTooltip}"
+                                   Margin="0,0,0,8"/>
+                        <Grid Margin="0,0,0,24"
+                              ToolTip="{x:Static res:Strings.TgActivationPixelsTooltip}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Slider Grid.Column="0"
+                                    Minimum="8"
+                                    Maximum="64"
+                                    Value="{Binding TgActivationPixels}"
+                                    TickFrequency="1"
+                                    IsSnapToTickEnabled="True"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,16,0"/>
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding TgActivationPixels, StringFormat={}{0}}"
+                                       Width="40"
+                                       TextAlignment="Right"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
+
+                        <!-- Activation Delay -->
+                        <TextBlock Text="{x:Static res:Strings.TgActivationDelayLabel}"
+                                   FontWeight="SemiBold"
+                                   ToolTip="{x:Static res:Strings.TgActivationDelayTooltip}"
+                                   Margin="0,0,0,8"/>
+                        <Grid Margin="0,0,0,24"
+                              ToolTip="{x:Static res:Strings.TgActivationDelayTooltip}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Slider Grid.Column="0"
+                                    Minimum="0"
+                                    Maximum="1000"
+                                    Value="{Binding TgActivationDelayMs}"
+                                    TickFrequency="50"
+                                    IsSnapToTickEnabled="True"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,16,0"/>
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding TgActivationDelayMs, StringFormat={}{0}ms}"
+                                       Width="50"
+                                       TextAlignment="Right"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
+
+                        <!-- Dismiss Delay -->
+                        <TextBlock Text="{x:Static res:Strings.TgDismissDelayLabel}"
+                                   FontWeight="SemiBold"
+                                   ToolTip="{x:Static res:Strings.TgDismissDelayTooltip}"
+                                   Margin="0,0,0,8"/>
+                        <Grid Margin="0,0,0,24"
+                              ToolTip="{x:Static res:Strings.TgDismissDelayTooltip}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Slider Grid.Column="0"
+                                    Minimum="0"
+                                    Maximum="3000"
+                                    Value="{Binding TgDismissDelayMs}"
+                                    TickFrequency="100"
+                                    IsSnapToTickEnabled="True"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,16,0"/>
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding TgDismissDelayMs, StringFormat={}{0}ms}"
+                                       Width="50"
+                                       TextAlignment="Right"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
+
+                        <!-- Show Pattern -->
+                        <CheckBox Content="{x:Static res:Strings.TgShowPatternLabel}"
+                                  ToolTip="{x:Static res:Strings.TgShowPatternTooltip}"
+                                  IsChecked="{Binding TgShowPattern}"/>
                     </StackPanel>
                 </Grid>
             </ScrollViewer>

@@ -26,7 +26,12 @@ public enum SettingsSection
     /// <summary>
     /// その他セクション
     /// </summary>
-    Other = 2
+    Other = 2,
+
+    /// <summary>
+    /// Transparent Guard セクション
+    /// </summary>
+    TransparentGuard = 3
 }
 
 /// <summary>
@@ -85,7 +90,7 @@ public partial class SettingsView : UserControl
     private void SectionListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         // コントロール初期化前はnullの場合がある
-        if (AppearanceSection == null || ActionSection == null || OtherSection == null)
+        if (AppearanceSection == null || ActionSection == null || OtherSection == null || TransparentGuardSection == null)
             return;
 
         var selectedSection = (SettingsSection)SectionListBox.SelectedIndex;
@@ -94,6 +99,7 @@ public partial class SettingsView : UserControl
         AppearanceSection.Visibility = Visibility.Collapsed;
         ActionSection.Visibility = Visibility.Collapsed;
         OtherSection.Visibility = Visibility.Collapsed;
+        TransparentGuardSection.Visibility = Visibility.Collapsed;
 
         // 選択されたセクションのみを表示する
         switch (selectedSection)
@@ -106,6 +112,9 @@ public partial class SettingsView : UserControl
                 break;
             case SettingsSection.Other:
                 OtherSection.Visibility = Visibility.Visible;
+                break;
+            case SettingsSection.TransparentGuard:
+                TransparentGuardSection.Visibility = Visibility.Visible;
                 break;
             default:
                 // 未知のセクションの場合は最初のセクションを表示
