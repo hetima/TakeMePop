@@ -68,16 +68,13 @@ public class TransparentGuardSettings
     public bool IsEnabled { get; set; } = true;
 
     [JsonPropertyName("size")]
-    public double Size { get; set; } = 120;
+    public double Size { get; set; } = 60;
 
     [JsonPropertyName("activationPixels")]
     public int ActivationPixels { get; set; } = 16;
 
-    [JsonPropertyName("activationDelayMs")]
-    public int ActivationDelayMs { get; set; } = 0;
-
     [JsonPropertyName("dismissDelayMs")]
-    public int DismissDelayMs { get; set; } = 1500;
+    public int DismissDelayMs { get; set; } = 500;
 
     [JsonPropertyName("showPattern")]
     public bool ShowPattern { get; set; } = true;

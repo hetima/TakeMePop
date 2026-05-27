@@ -325,7 +325,7 @@
   </data>
 
   <data name="TgSizeTooltip" xml:space="preserve">
-    <value>Size of the Transparent Guard window (80–400 px)</value>
+    <value>Size of the Transparent Guard window (20–200 px)</value>
   </data>
 
   <data name="TgActivationPixelsLabel" xml:space="preserve">
@@ -333,7 +333,7 @@
   </data>
 
   <data name="TgActivationPixelsTooltip" xml:space="preserve">
-    <value>Mouse movement distance required to activate the window (8–64 px)</value>
+    <value>Mouse movement distance required to activate the window (8–32 px)</value>
   </data>
 
   <data name="TgActivationDelayLabel" xml:space="preserve">
@@ -349,7 +349,7 @@
   </data>
 
   <data name="TgDismissDelayTooltip" xml:space="preserve">
-    <value>Time before the window automatically disappears (0–3000 ms)</value>
+    <value>Time before the window automatically disappears (0–1000 ms)</value>
   </data>
 
   <data name="TgShowPatternLabel" xml:space="preserve">

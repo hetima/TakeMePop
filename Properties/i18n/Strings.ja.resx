@@ -325,7 +325,7 @@
   </data>
 
   <data name="TgSizeTooltip" xml:space="preserve">
-    <value>透明ガードウィンドウのサイズ（80〜400 px）</value>
+    <value>透明ガードウィンドウのサイズ（20〜200 px）</value>
   </data>
 
   <data name="TgActivationPixelsLabel" xml:space="preserve">
@@ -333,7 +333,7 @@
   </data>
 
   <data name="TgActivationPixelsTooltip" xml:space="preserve">
-    <value>ウィンドウを表示するために必要なマウス移動量（8〜64 px）</value>
+    <value>ウィンドウを表示するために必要なマウス移動量（8〜32 px）</value>
   </data>
 
   <data name="TgActivationDelayLabel" xml:space="preserve">
@@ -349,7 +349,7 @@
   </data>
 
   <data name="TgDismissDelayTooltip" xml:space="preserve">
-    <value>ウィンドウが出現してから自動的に消えるまでの時間（0〜3000 ms）</value>
+    <value>ウィンドウが出現してから自動的に消えるまでの時間（0〜1000 ms）</value>
   </data>
 
   <data name="TgShowPatternLabel" xml:space="preserve">

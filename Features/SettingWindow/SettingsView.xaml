@@ -201,8 +201,8 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <Slider Grid.Column="0"
-                                    Minimum="80"
-                                    Maximum="400"
+                                    Minimum="20"
+                                    Maximum="200"
                                     Value="{Binding TgSize}"
                                     TickFrequency="1"
                                     IsSnapToTickEnabled="True"
@@ -228,7 +228,7 @@
                             </Grid.ColumnDefinitions>
                             <Slider Grid.Column="0"
                                     Minimum="8"
-                                    Maximum="64"
+                                    Maximum="32"
                                     Value="{Binding TgActivationPixels}"
                                     TickFrequency="1"
                                     IsSnapToTickEnabled="True"
@@ -237,32 +237,6 @@
                             <TextBlock Grid.Column="1"
                                        Text="{Binding TgActivationPixels, StringFormat={}{0}}"
                                        Width="40"
-                                       TextAlignment="Right"
-                                       VerticalAlignment="Center"/>
-                        </Grid>
-
-                        <!-- Activation Delay -->
-                        <TextBlock Text="{x:Static res:Strings.TgActivationDelayLabel}"
-                                   FontWeight="SemiBold"
-                                   ToolTip="{x:Static res:Strings.TgActivationDelayTooltip}"
-                                   Margin="0,0,0,8"/>
-                        <Grid Margin="0,0,0,24"
-                              ToolTip="{x:Static res:Strings.TgActivationDelayTooltip}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Slider Grid.Column="0"
-                                    Minimum="0"
-                                    Maximum="1000"
-                                    Value="{Binding TgActivationDelayMs}"
-                                    TickFrequency="50"
-                                    IsSnapToTickEnabled="True"
-                                    VerticalAlignment="Center"
-                                    Margin="0,0,16,0"/>
-                            <TextBlock Grid.Column="1"
-                                       Text="{Binding TgActivationDelayMs, StringFormat={}{0}ms}"
-                                       Width="50"
                                        TextAlignment="Right"
                                        VerticalAlignment="Center"/>
                         </Grid>
@@ -280,9 +254,9 @@
                             </Grid.ColumnDefinitions>
                             <Slider Grid.Column="0"
                                     Minimum="0"
-                                    Maximum="3000"
+                                    Maximum="1000"
                                     Value="{Binding TgDismissDelayMs}"
-                                    TickFrequency="100"
+                                    TickFrequency="50"
                                     IsSnapToTickEnabled="True"
                                     VerticalAlignment="Center"
                                     Margin="0,0,16,0"/>

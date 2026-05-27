@@ -74,7 +74,6 @@ public partial class App : Application
     public static MouseHookService MouseHookService { get; private set; } = null!;
 
     private static TransparentWindow? _transparentWindow;
-    private static DispatcherTimer? _activationDelayTimer;
     private static readonly List<PopWindow> _popWindows = new();
 
     public static TaskbarIcon? TrayIcon { get; set; }
@@ -207,9 +206,6 @@ public partial class App : Application
 
         SettingsService.TransparentGuardChanged += OnTransparentGuardChanged;
 
-        _activationDelayTimer = new System.Windows.Threading.DispatcherTimer();
-        _activationDelayTimer.Tick += OnActivationDelayTick;
-
         MouseHookService.EarlyCaptureRequested += OnEarlyCaptureRequested;
         MouseHookService.DragEnded += OnDragEnded;
 
@@ -223,39 +219,16 @@ public partial class App : Application
         MouseHookService.ApplySettings(tg.ActivationPixels, tg.DismissDelayMs);
     }
 
-    private static void OnActivationDelayTick(object? sender, EventArgs e)
-    {
-        _activationDelayTimer?.Stop();
-        if (_transparentWindow != null)
-            _transparentWindow.AllowDrop = true;
-    }
-
     private static void OnEarlyCaptureRequested(object? sender, System.Drawing.Point point)
     {
         var tg = SettingsService.Settings.TransparentGuard;
         if (!tg.IsEnabled) return;
 
-        if (_transparentWindow == null) return;
-
-        int delayMs = tg.ActivationDelayMs;
-        if (delayMs > 0)
-        {
-            _transparentWindow.AllowDrop = false;
-            _activationDelayTimer!.Interval = TimeSpan.FromMilliseconds(delayMs);
-            _activationDelayTimer.Stop();
-            _activationDelayTimer.Start();
-        }
-        else
-        {
-            _transparentWindow.AllowDrop = true;
-        }
-
-        _transparentWindow.ShowNearPoint(point);
+        _transparentWindow?.ShowNearPoint(point);
     }
 
     private static void OnDragEnded(object? sender, EventArgs e)
     {
-        _activationDelayTimer?.Stop();
         _transparentWindow?.Hide();
     }
 

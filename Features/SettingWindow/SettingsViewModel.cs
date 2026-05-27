@@ -166,12 +166,6 @@ public class SettingsViewModel : INotifyPropertyChanged
         set { if (Tg.ActivationPixels != value) { Tg.ActivationPixels = value; _settingsService.Save(); _settingsService.NotifyTransparentGuardChanged(); OnPropertyChanged(); } }
     }
 
-    public int TgActivationDelayMs
-    {
-        get => Tg.ActivationDelayMs;
-        set { if (Tg.ActivationDelayMs != value) { Tg.ActivationDelayMs = value; _settingsService.Save(); _settingsService.NotifyTransparentGuardChanged(); OnPropertyChanged(); } }
-    }
-
     public int TgDismissDelayMs
     {
         get => Tg.DismissDelayMs;
