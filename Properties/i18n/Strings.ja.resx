@@ -360,4 +360,16 @@
     <value>半透明の円模様をウィンドウに描画します（動作確認用です。通常使用ではかなり邪魔です）</value>
   </data>
 
+  <data name="PwSectionTitle" xml:space="preserve">
+    <value>ポップウィンドウ</value>
+  </data>
+
+  <data name="PwReuseDistanceLabel" xml:space="preserve">
+    <value>最利用距離</value>
+  </data>
+
+  <data name="PwReuseDistanceTooltip" xml:space="preserve">
+    <value>既存のポップウィンドウがこの距離以内にある場合、新規作成せず再利用します（40〜200 px）</value>
+  </data>
+
 </root>

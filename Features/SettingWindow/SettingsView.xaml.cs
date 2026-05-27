@@ -31,7 +31,12 @@ public enum SettingsSection
     /// <summary>
     /// Transparent Guard セクション
     /// </summary>
-    TransparentGuard = 3
+    TransparentGuard = 3,
+
+    /// <summary>
+    /// Pop Window セクション
+    /// </summary>
+    PopWindow = 4
 }
 
 /// <summary>
@@ -90,7 +95,7 @@ public partial class SettingsView : UserControl
     private void SectionListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         // コントロール初期化前はnullの場合がある
-        if (AppearanceSection == null || ActionSection == null || OtherSection == null || TransparentGuardSection == null)
+        if (AppearanceSection == null || ActionSection == null || OtherSection == null || TransparentGuardSection == null || PopWindowSection == null)
             return;
 
         var selectedSection = (SettingsSection)SectionListBox.SelectedIndex;
@@ -100,6 +105,7 @@ public partial class SettingsView : UserControl
         ActionSection.Visibility = Visibility.Collapsed;
         OtherSection.Visibility = Visibility.Collapsed;
         TransparentGuardSection.Visibility = Visibility.Collapsed;
+        PopWindowSection.Visibility = Visibility.Collapsed;
 
         // 選択されたセクションのみを表示する
         switch (selectedSection)
@@ -115,6 +121,9 @@ public partial class SettingsView : UserControl
                 break;
             case SettingsSection.TransparentGuard:
                 TransparentGuardSection.Visibility = Visibility.Visible;
+                break;
+            case SettingsSection.PopWindow:
+                PopWindowSection.Visibility = Visibility.Visible;
                 break;
             default:
                 // 未知のセクションの場合は最初のセクションを表示

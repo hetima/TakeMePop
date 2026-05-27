@@ -45,6 +45,21 @@ public class AppSettings
 
     [JsonPropertyName("transparentGuard")]
     public TransparentGuardSettings TransparentGuard { get; set; } = new TransparentGuardSettings();
+
+    [JsonPropertyName("popWindow")]
+    public PopWindowSettings PopWindow { get; set; } = new PopWindowSettings();
+}
+
+public class PopWindowSettings
+{
+    [JsonPropertyName("width")]
+    public double Width { get; set; } = 120;
+
+    [JsonPropertyName("height")]
+    public double Height { get; set; } = 120;
+
+    [JsonPropertyName("reuseDistance")]
+    public double ReuseDistance { get; set; } = 100;
 }
 
 public class TransparentGuardSettings

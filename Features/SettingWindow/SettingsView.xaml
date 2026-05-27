@@ -34,6 +34,7 @@
                 <ListBoxItem Content="{x:Static res:Strings.SettingsSectionAction}"/>
                 <ListBoxItem Content="{x:Static res:Strings.SettingsSectionOther}"/>
                 <ListBoxItem Content="{x:Static res:Strings.TgSectionTitle}"/>
+                <ListBoxItem Content="{x:Static res:Strings.PwSectionTitle}"/>
             </ListBox>
 
             <!-- セクションコンテンツ（ScrollViewer内） -->
@@ -296,6 +297,35 @@
                         <CheckBox Content="{x:Static res:Strings.TgShowPatternLabel}"
                                   ToolTip="{x:Static res:Strings.TgShowPatternTooltip}"
                                   IsChecked="{Binding TgShowPattern}"/>
+                    </StackPanel>
+
+                    <!-- Pop Window Section -->
+                    <StackPanel x:Name="PopWindowSection" Margin="42,8" MaxWidth="600" Visibility="Collapsed">
+                        <!-- Reuse Distance -->
+                        <TextBlock Text="{x:Static res:Strings.PwReuseDistanceLabel}"
+                                   FontWeight="SemiBold"
+                                   ToolTip="{x:Static res:Strings.PwReuseDistanceTooltip}"
+                                   Margin="0,0,0,8"/>
+                        <Grid Margin="0,0,0,24"
+                              ToolTip="{x:Static res:Strings.PwReuseDistanceTooltip}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Slider Grid.Column="0"
+                                    Minimum="40"
+                                    Maximum="200"
+                                    Value="{Binding PwReuseDistance}"
+                                    TickFrequency="1"
+                                    IsSnapToTickEnabled="True"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,16,0"/>
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding PwReuseDistance, StringFormat={}{0:F0}}"
+                                       Width="40"
+                                       TextAlignment="Right"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
                     </StackPanel>
                 </Grid>
             </ScrollViewer>

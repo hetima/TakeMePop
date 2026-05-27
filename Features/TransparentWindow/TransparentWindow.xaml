@@ -6,17 +6,17 @@
         mc:Ignorable="d"
         Width="48" Height="48"
         WindowStyle="None"
-        AllowsTransparency="True"
-        Background="Transparent"
+        AllowsTransparency="False"
+        Background="Black"
+        Opacity="0.01"
         Topmost="True"
         ShowInTaskbar="False"
         IsHitTestVisible="True"
         AllowDrop="True"
         ResizeMode="NoResize"
         ShowActivated="False">
-    <!-- TODO:ウィンドウサイズは仮の値。後からユーザーが設定可能にする -->
     <Grid>
-        <!-- ドロップ受付エリア: 半透明の円形 -->
+        <!-- デバッグ用: 模様表示（ShowPattern設定で制御） -->
         <Ellipse x:Name="DropTarget"
                  Width="48" Height="48"
                  Fill="#33FFFFFF"

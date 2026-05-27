@@ -11,6 +11,7 @@ using Listhing.Helpers;
 using Listhing.Models;
 using System.Windows.Controls;
 using Listhing.Features.TransparentWindow;
+using Listhing.Features.PopWindow;
 using Listhing.Services;
 using Listhing.ViewModels;
 using Hardcodet.Wpf.TaskbarNotification;
@@ -74,6 +75,7 @@ public partial class App : Application
 
     private static TransparentWindow? _transparentWindow;
     private static DispatcherTimer? _activationDelayTimer;
+    private static readonly List<PopWindow> _popWindows = new();
 
     public static TaskbarIcon? TrayIcon { get; set; }
 
@@ -198,7 +200,6 @@ public partial class App : Application
         }
 
         _transparentWindow = new TransparentWindow();
-        _transparentWindow.DataDropped += OnTransparentWindowDataDropped;
 
         var tg = SettingsService.Settings.TransparentGuard;
         _transparentWindow.ApplySettings(tg.Size, tg.ShowPattern);
@@ -258,9 +259,48 @@ public partial class App : Application
         _transparentWindow?.Hide();
     }
 
-    private static void OnTransparentWindowDataDropped(object? sender, IDataObject data)
+    public static void CreatePopWindow(System.Drawing.Point nearPoint)
     {
-        // TODO: ドロップ受け皿ウィンドウを表示してデータを渡す
+        var existing = FindNearbyPopWindow(nearPoint);
+        if (existing != null)
+        {
+            existing.Activate();
+            return;
+        }
+
+        var pw = SettingsService.Settings.PopWindow;
+        var win = new PopWindow();
+        win.Width = pw.Width;
+        win.Height = pw.Height;
+        win.Left = nearPoint.X - pw.Width / 2;
+        win.Top = nearPoint.Y - pw.Height / 2;
+        _popWindows.Add(win);
+        win.Show();
+        ApplyTheme(SettingsService.Settings.Theme, win);
+    }
+
+    private static PopWindow? FindNearbyPopWindow(System.Drawing.Point p)
+    {
+        double limit = SettingsService.Settings.PopWindow.ReuseDistance;
+        return _popWindows.FirstOrDefault(w =>
+        {
+            double cx = w.Left + w.Width / 2;
+            double cy = w.Top + w.Height / 2;
+            double dx = cx - p.X, dy = cy - p.Y;
+            return Math.Sqrt(dx * dx + dy * dy) < limit;
+        });
+    }
+
+    public static void RemovePopWindow(PopWindow w)
+    {
+        _popWindows.Remove(w);
+    }
+
+    public static void SavePopWindowSize(double width, double height)
+    {
+        SettingsService.Settings.PopWindow.Width = width;
+        SettingsService.Settings.PopWindow.Height = height;
+        SettingsService.Save();
     }
 
 

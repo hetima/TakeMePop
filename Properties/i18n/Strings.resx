@@ -360,4 +360,16 @@
     <value>Draw a semi-transparent circle pattern on the window</value>
   </data>
 
+  <data name="PwSectionTitle" xml:space="preserve">
+    <value>Pop Window</value>
+  </data>
+
+  <data name="PwReuseDistanceLabel" xml:space="preserve">
+    <value>Reuse Distance</value>
+  </data>
+
+  <data name="PwReuseDistanceTooltip" xml:space="preserve">
+    <value>If an existing Pop Window is within this distance, it will be reused instead of creating a new one (40–200 px)</value>
+  </data>
+
 </root>
