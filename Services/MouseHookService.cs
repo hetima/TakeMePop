@@ -4,24 +4,19 @@ using System.Windows.Threading;
 
 namespace Listhing.Services;
 
-/// <summary>
-/// グローバルマウスフックを管理し、ドラッグ状態を追跡するサービス
-/// </summary>
 public class MouseHookService : IDisposable
 {
-    private readonly SimpleGlobalHook _hook;
     private readonly Dispatcher _dispatcher;
     private readonly DispatcherTimer _earlyCapturTimer;
 
-    private double _minDragX;
-    private double _minDragY;
+    private double _minDragX = 6;
+    private double _minDragY = 6;
+    private TimeSpan _earlyCaptureHideDelay = TimeSpan.FromMilliseconds(1500);
 
     private bool _isButtonDown = false;
     private bool _isDragging = false;
     private bool _earlyCaptureShown = false;
     private System.Drawing.Point _dragStartPoint;
-
-    private TimeSpan _earlyCaptureHideDelay = TimeSpan.FromMilliseconds(1500);
 
     /// <summary>ドラッグが開始されたとき（MouseDown 直後）</summary>
     public event EventHandler<System.Drawing.Point>? DragStarted;
@@ -35,35 +30,24 @@ public class MouseHookService : IDisposable
     /// <summary>現在ドラッグ中かどうか</summary>
     public bool IsDragging => _isDragging;
 
-    public MouseHookService(Dispatcher dispatcher)
+    public MouseHookService(GlobalHookService globalHook, Dispatcher dispatcher)
     {
         _dispatcher = dispatcher;
 
-        _minDragX = 6;
-        _minDragY = 6;
-
-        _hook = new SimpleGlobalHook(runAsyncOnBackgroundThread: true);
-        _hook.MousePressed += OnMousePressed;
-        _hook.MouseReleased += OnMouseReleased;
-        _hook.MouseDragged += OnMouseDragged;
+        globalHook.MousePressed += OnMousePressed;
+        globalHook.MouseReleased += OnMouseReleased;
+        globalHook.MouseDragged += OnMouseDragged;
 
         _earlyCapturTimer = new DispatcherTimer { Interval = _earlyCaptureHideDelay };
         _earlyCapturTimer.Tick += OnEarlyCaptureTimerTick;
     }
 
-    /// <summary>ドラッグ判定距離と消失タイマーを更新する</summary>
     public void ApplySettings(int activationPixels, int dismissDelayMs)
     {
         _minDragX = activationPixels;
         _minDragY = activationPixels;
         _earlyCaptureHideDelay = TimeSpan.FromMilliseconds(dismissDelayMs);
         _earlyCapturTimer.Interval = _earlyCaptureHideDelay;
-    }
-
-    /// <summary>フックを開始する</summary>
-    public void Start()
-    {
-        _hook.RunAsync();
     }
 
     private void OnMousePressed(object? sender, MouseHookEventArgs e)
@@ -101,7 +85,6 @@ public class MouseHookService : IDisposable
     {
         if (!_isButtonDown || _earlyCaptureShown) return;
 
-        // システムのドラッグ判定距離を超えたら表示
         double dx = Math.Abs(e.Data.X - _dragStartPoint.X);
         double dy = Math.Abs(e.Data.Y - _dragStartPoint.Y);
         if (dx < _minDragX && dy < _minDragY) return;
@@ -127,9 +110,5 @@ public class MouseHookService : IDisposable
     public void Dispose()
     {
         _earlyCapturTimer.Stop();
-        _hook.MousePressed -= OnMousePressed;
-        _hook.MouseReleased -= OnMouseReleased;
-        _hook.MouseDragged -= OnMouseDragged;
-        _hook.Dispose();
     }
 }

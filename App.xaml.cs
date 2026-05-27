@@ -71,7 +71,9 @@ public partial class App : Application
     /// </summary>
     public static SettingsService SettingsService { get; private set; } = null!;
 
+    public static GlobalHookService GlobalHookService { get; private set; } = null!;
     public static MouseHookService MouseHookService { get; private set; } = null!;
+    public static KeyboardHookService KeyboardHookService { get; private set; } = null!;
 
     private static TransparentWindow? _transparentWindow;
     private static readonly List<PopWindow> _popWindows = new();
@@ -89,7 +91,9 @@ public partial class App : Application
 
         // Initialize services
         SettingsService = new SettingsService();
-        MouseHookService = new MouseHookService(Dispatcher);
+        GlobalHookService = new GlobalHookService();
+        MouseHookService = new MouseHookService(GlobalHookService, Dispatcher);
+        KeyboardHookService = new KeyboardHookService(GlobalHookService, Dispatcher);
 
         ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
@@ -209,7 +213,18 @@ public partial class App : Application
         MouseHookService.EarlyCaptureRequested += OnEarlyCaptureRequested;
         MouseHookService.DragEnded += OnDragEnded;
 
-        MouseHookService.Start();
+        GlobalHookService.Start();
+
+        KeyboardHookService.CtrlCDoubleTapped += OnCtrlCDoubleTapped;
+    }
+
+    [DllImport("user32.dll")]
+    private static extern bool GetCursorPos(out System.Drawing.Point lpPoint);
+
+    private static void OnCtrlCDoubleTapped(object? sender, EventArgs e)
+    {
+        GetCursorPos(out var pos);
+        CreatePopWindow(pos);
     }
 
     private static void OnTransparentGuardChanged(object? sender, EventArgs e)
@@ -432,6 +447,7 @@ public partial class App : Application
     {
         SaveOpenedWorkspaces();
         MouseHookService?.Dispose();
+        GlobalHookService?.Dispose();
         _transparentWindow?.Close();
         TrayIcon?.Dispose();
         // COMライブラリを解放
