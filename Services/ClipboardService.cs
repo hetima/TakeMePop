@@ -74,6 +74,35 @@ public class ClipboardService : IDisposable
     }
 
     /// <summary>
+    /// 最新の履歴を削除し、2番目の履歴をクリップボードにセットして返す。
+    /// 履歴が1件以下の場合は何もせず null を返す。
+    /// </summary>
+    public ClipboardItem? PopLatestAndRestorePrevious()
+    {
+        if (History.Count < 2) return null;
+
+        History.RemoveAt(History.Count - 1);
+        var prev = History[^1];
+
+        // クリップボード更新による履歴追加を抑制するためスナップショット時刻を更新
+        _snapshotTime = DateTime.UtcNow;
+        IsContentChanged = false;
+
+        if (prev.HasFiles && prev.Files != null)
+        {
+            var coll = new System.Collections.Specialized.StringCollection();
+            coll.AddRange(prev.Files.ToArray());
+            System.Windows.Clipboard.SetFileDropList(coll);
+        }
+        else if (prev.HasText && prev.Text != null)
+        {
+            System.Windows.Clipboard.SetText(prev.Text);
+        }
+
+        return prev;
+    }
+
+    /// <summary>
     /// 履歴件数が上限に達したら古い方から半分削除する。
     /// </summary>
     private void TrimHistoryIfNeeded()

@@ -217,6 +217,7 @@ public partial class App : Application
         GlobalHookService.Start();
 
         KeyboardHookService.CtrlCDoubleTapped += OnCtrlCDoubleTapped;
+        KeyboardHookService.CtrlVXTriggered += OnCtrlVXTriggered;
 
         ApplyHotkeySettings();
     }
@@ -280,6 +281,21 @@ public partial class App : Application
 
     [DllImport("user32.dll")]
     private static extern bool GetCursorPos(out System.Drawing.Point lpPoint);
+
+    /// <summary>
+    /// Ctrl+V → Ctrl+X シーケンス検出時にクリップボード履歴を1つ戻す。
+    /// </summary>
+    private static void OnCtrlVXTriggered(object? sender, EventArgs e)
+    {
+        var prev = ClipboardService.PopLatestAndRestorePrevious();
+        if (prev == null) return;
+
+        var label = prev.HasText && prev.Text != null
+            ? prev.Text
+            : prev.Files?[0] is string f ? System.IO.Path.GetFileName(f) : "?";
+        var message = $"Clipboard: {label}";
+        ShowToast(message, fontSize: 20, durationMs: 3500, position: Features.ToastWindow.ToastPosition.ScreenBottom);
+    }
 
     /// <summary>
     /// Ctrl+C ダブルタップ時にクリップボード内容を PopWindow へ表示する。
