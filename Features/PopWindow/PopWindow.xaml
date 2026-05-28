@@ -7,6 +7,7 @@
         WindowStyle="None"
         AllowsTransparency="False"
         Topmost="True"
+        ResizeMode="CanResize"
         ShowInTaskbar="False"
         MinWidth="120" MinHeight="120">
     <Window.Resources>
