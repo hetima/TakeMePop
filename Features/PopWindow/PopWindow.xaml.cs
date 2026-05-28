@@ -60,6 +60,8 @@ public partial class PopWindow : Window
         {
             Clipboard.SetText(item.Text);
         }
+
+        App.ShowToast(Listhing.Strings.CopiedMessage, durationMs: 600, position: Features.ToastWindow.ToastPosition.NearMouse);
     }
 
     private void CloseOnSuccessButton_Click(object sender, RoutedEventArgs e)

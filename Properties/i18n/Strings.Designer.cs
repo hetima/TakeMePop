@@ -124,6 +124,12 @@ namespace Listhing {
             }
         }
 
+        public static string CopiedMessage {
+            get {
+                return ResourceManager.GetString("CopiedMessage", resourceCulture);
+            }
+        }
+
         public static string DefaultOpenActionLabel {
             get {
                 return ResourceManager.GetString("DefaultOpenActionLabel", resourceCulture);

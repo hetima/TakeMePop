@@ -88,6 +88,10 @@
     <value>クリップボード履歴上限</value>
   </data>
 
+  <data name="CopiedMessage" xml:space="preserve">
+    <value>コピーしました</value>
+  </data>
+
   <data name="ClipboardHistoryLimitDescription" xml:space="preserve">
     <value>この件数に達したら履歴を半分まで減らします</value>
   </data>

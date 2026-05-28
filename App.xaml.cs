@@ -12,6 +12,7 @@ using Listhing.Models;
 using System.Windows.Controls;
 using Listhing.Features.TransparentWindow;
 using Listhing.Features.PopWindow;
+using Listhing.Features.ToastWindow;
 using Listhing.Services;
 using Listhing.ViewModels;
 using Hardcodet.Wpf.TaskbarNotification;
@@ -341,6 +342,18 @@ public partial class App : Application
         win.Show();
         if (item != null) win.SetItem(item);
         ApplyTheme(SettingsService.Settings.Theme, win);
+    }
+
+    /// <summary>
+    /// トースト通知を表示する。
+    /// </summary>
+    /// <param name="text">表示テキスト</param>
+    /// <param name="fontSize">フォントサイズ（省略時 13）</param>
+    /// <param name="durationMs">表示時間ミリ秒（省略時 3000）</param>
+    /// <param name="position">表示位置（省略時 ScreenBottom）</param>
+    public static void ShowToast(string text, double fontSize = 13, int durationMs = 3000, ToastPosition position = ToastPosition.ScreenBottom)
+    {
+        ToastWindow.Show(text, fontSize, durationMs, position);
     }
 
     /// <summary>
