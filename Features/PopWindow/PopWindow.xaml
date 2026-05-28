@@ -66,8 +66,8 @@
                             Style="{StaticResource CloseButtonStyle}"
                             Foreground="{DynamicResource TextControlForeground}"
                             Content="&#xE8C8;"
-                            Width="26" Height="26"
-                            FontSize="16"
+                            Width="24" Height="24"
+                            FontSize="14"
                             Visibility="{Binding HasContent, Converter={StaticResource BooleanToVisibilityConverter}}"
                             Click="CopyButton_Click"/>
                     <Button x:Name="CloseButton"
@@ -75,8 +75,8 @@
                             Style="{StaticResource CloseButtonStyle}"
                             Foreground="{DynamicResource TextControlForeground}"
                             Content="&#xE106;"
-                            Width="26" Height="26"
-                            FontSize="16"
+                            Width="24" Height="24"
+                            FontSize="14"
                             Click="CloseButton_Click"/>
                 </StackPanel>
             </Grid>
@@ -85,10 +85,10 @@
             <Border Grid.Row="1"
                     x:Name="ContentArea"
                     Style="{StaticResource ContentAreaStyle}"
-                    Margin="4,0,4,4"
+                    Margin="5,0,5,5"
                     CornerRadius="6"
                     BorderThickness="2"
-                    BorderBrush="{DynamicResource SurfaceStrokeColorDefaultBrush}"
+                    BorderBrush="{DynamicResource ControlAltFillColorQuarternaryBrush}"
                     AllowDrop="True"
                     Cursor="Hand"
                     MouseLeftButtonDown="ContentArea_MouseLeftButtonDown"
