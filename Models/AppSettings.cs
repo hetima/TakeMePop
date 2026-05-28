@@ -32,6 +32,12 @@ public class AppSettings
     public double FontSize { get; set; } = 14;
 
     /// <summary>
+    /// クリップボード履歴の最大保持件数。この件数に達したら古い方から半分削除する。
+    /// </summary>
+    [JsonPropertyName("clipboardHistoryLimit")]
+    public int ClipboardHistoryLimit { get; set; } = 100;
+
+    /// <summary>
     /// ショートカットキーの設定
     /// </summary>
     [JsonPropertyName("shortcutSettings")]

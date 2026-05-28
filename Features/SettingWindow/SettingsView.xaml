@@ -75,6 +75,7 @@
                                    Margin="0,24,0,0"
                                    Visibility="{Binding IsRestartRequired, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
+
                         <!-- Font Size Selection -->
                         <TextBlock Text="{x:Static res:Strings.FontSizeLabel}"
                                    FontWeight="SemiBold"
@@ -98,6 +99,31 @@
                                        TextAlignment="Right"
                                        VerticalAlignment="Center"/>
                         </Grid>
+
+                        <!-- Clipboard History Limit -->
+                        <TextBlock Text="{x:Static res:Strings.ClipboardHistoryLimitLabel}"
+                                   FontWeight="SemiBold"
+                                   Margin="0,24,0,4"/>
+                        <TextBlock Text="{x:Static res:Strings.ClipboardHistoryLimitDescription}"
+                                   FontStyle="Italic"
+                                   Opacity="0.75"
+                                   Margin="0,4,0,8"
+                                   TextWrapping="Wrap"/>
+                        <ComboBox x:Name="ClipboardHistoryLimitCombo"
+                                  HorizontalAlignment="Stretch"
+                                  Padding="12,8"
+                                  SelectionChanged="ClipboardHistoryLimitCombo_SelectionChanged">
+                            <ComboBoxItem Content="50"
+                                    Tag="50"/>
+                            <ComboBoxItem Content="100"
+                                    Tag="100"/>
+                            <ComboBoxItem Content="500"
+                                    Tag="500"/>
+                            <ComboBoxItem Content="1000"
+                                    Tag="1000"/>
+                        </ComboBox>
+
+
                     </StackPanel>
 
                     <!-- Action Section -->

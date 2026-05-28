@@ -44,12 +44,40 @@ public enum SettingsSection
 /// </summary>
 public partial class SettingsView : UserControl
 {
+    private static readonly int[] ClipboardHistoryLimitValues = [50, 100, 500, 1000];
+
     /// <summary>
     /// コンストラクタ
     /// </summary>
     public SettingsView()
     {
         InitializeComponent();
+        DataContextChanged += OnDataContextChanged;
+    }
+
+    private void OnDataContextChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
+    {
+        if (DataContext is ViewModels.SettingsViewModel vm)
+            SyncClipboardHistoryLimitCombo(vm.ClipboardHistoryLimit);
+    }
+
+    /// <summary>
+    /// 設定値に対応するコンボボックスのインデックスを選択する
+    /// </summary>
+    private void SyncClipboardHistoryLimitCombo(int limit)
+    {
+        var idx = Array.IndexOf(ClipboardHistoryLimitValues, limit);
+        ClipboardHistoryLimitCombo.SelectedIndex = idx >= 0 ? idx : 1; // デフォルト100
+    }
+
+    /// <summary>
+    /// クリップボード履歴上限コンボボックスの選択変更イベント
+    /// </summary>
+    private void ClipboardHistoryLimitCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (ClipboardHistoryLimitCombo.SelectedIndex < 0) return;
+        if (DataContext is not ViewModels.SettingsViewModel vm) return;
+        vm.ClipboardHistoryLimit = ClipboardHistoryLimitValues[ClipboardHistoryLimitCombo.SelectedIndex];
     }
 
     /// <summary>

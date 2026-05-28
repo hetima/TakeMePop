@@ -64,6 +64,18 @@ namespace Listhing {
             }
         }
 
+        public static string ClipboardHistoryLimitDescription {
+            get {
+                return ResourceManager.GetString("ClipboardHistoryLimitDescription", resourceCulture);
+            }
+        }
+
+        public static string ClipboardHistoryLimitLabel {
+            get {
+                return ResourceManager.GetString("ClipboardHistoryLimitLabel", resourceCulture);
+            }
+        }
+
         public static string CloseTabTooltip {
             get {
                 return ResourceManager.GetString("CloseTabTooltip", resourceCulture);

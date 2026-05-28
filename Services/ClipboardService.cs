@@ -61,13 +61,26 @@ public class ClipboardService : IDisposable
             last.Text == item.Text &&
             Enumerable.SequenceEqual(last.Files ?? [], item.Files ?? []);
         if (!isDuplicate)
+        {
             History.Add(item);
+            TrimHistoryIfNeeded();
+        }
 
         // スナップショット時刻より新しく、かつ内容が変化していれば変化あり
         if (!isDuplicate && item.Timestamp > _snapshotTime)
             IsContentChanged = true;
 
         return IntPtr.Zero;
+    }
+
+    /// <summary>
+    /// 履歴件数が上限に達したら古い方から半分削除する。
+    /// </summary>
+    private void TrimHistoryIfNeeded()
+    {
+        var limit = App.SettingsService.Settings.ClipboardHistoryLimit;
+        if (History.Count >= limit)
+            History.RemoveRange(0, limit / 2);
     }
 
     public void Dispose()

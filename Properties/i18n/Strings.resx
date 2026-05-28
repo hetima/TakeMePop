@@ -84,6 +84,14 @@
     <value>Font Size</value>
   </data>
 
+  <data name="ClipboardHistoryLimitLabel" xml:space="preserve">
+    <value>Clipboard History Limit</value>
+  </data>
+
+  <data name="ClipboardHistoryLimitDescription" xml:space="preserve">
+    <value>When this limit is reached, the history will be trimmed to half.</value>
+  </data>
+
   <data name="MenuSave" xml:space="preserve">
     <value>Save</value>
   </data>

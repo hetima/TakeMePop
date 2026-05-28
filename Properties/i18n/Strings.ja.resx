@@ -84,6 +84,14 @@
     <value>フォントサイズ</value>
   </data>
 
+  <data name="ClipboardHistoryLimitLabel" xml:space="preserve">
+    <value>クリップボード履歴上限</value>
+  </data>
+
+  <data name="ClipboardHistoryLimitDescription" xml:space="preserve">
+    <value>この件数に達したら履歴を半分まで減らします</value>
+  </data>
+
   <data name="MenuSave" xml:space="preserve">
     <value>保存</value>
   </data>

@@ -136,6 +136,23 @@ public class SettingsViewModel : INotifyPropertyChanged
     public bool IsRestartRequired => _selectedTheme != _originalTheme || _selectedLanguage != _originalLanguage;
 
     /// <summary>
+    /// クリップボード履歴の上限件数
+    /// </summary>
+    public int ClipboardHistoryLimit
+    {
+        get => _settingsService.Settings.ClipboardHistoryLimit;
+        set
+        {
+            if (_settingsService.Settings.ClipboardHistoryLimit != value)
+            {
+                _settingsService.Settings.ClipboardHistoryLimit = value;
+                _settingsService.Save();
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    /// <summary>
     /// デフォルトのアイテムを開くショートカットキー
     /// </summary>
     public ShortcutKey DefaultOpenKey => _settingsService.Settings.ShortcutSettings.DefaultOpenKey;
