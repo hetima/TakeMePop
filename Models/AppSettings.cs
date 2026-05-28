@@ -192,13 +192,13 @@ public class ShortcutSetting
     /// デフォルトのアイテムを開くショートカットキー（デフォルト: Enter）
     /// </summary>
     [JsonPropertyName("defaultOpenKey")]
-    public ShortcutKey DefaultOpenKey { get; set; } = new ShortcutKey(System.Windows.Input.Key.Enter);
+    public ShortcutKey DefaultOpenKey { get; set; } = new ShortcutKey(System.Windows.Input.Key.None);
 
     /// <summary>
-    /// アイテムの場所を表示するショートカットキー（デフォルト: Ctrl+Enter）
+    /// アイテムの場所を表示するショートカットキー
     /// </summary>
     [JsonPropertyName("revealKey")]
-    public ShortcutKey RevealKey { get; set; } = new ShortcutKey(System.Windows.Input.Key.Enter, System.Windows.Input.ModifierKeys.Control);
+    public ShortcutKey RevealKey { get; set; } = new ShortcutKey(System.Windows.Input.Key.None);
 
 
 }

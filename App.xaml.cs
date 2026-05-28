@@ -220,6 +220,50 @@ public partial class App : Application
         GlobalHookService.Start();
 
         KeyboardHookService.CtrlCDoubleTapped += OnCtrlCDoubleTapped;
+
+        ApplyHotkeySettings();
+    }
+
+    /// <summary>
+    /// ShortcutSettings のグローバルホットキーを KeyboardHookService に登録する。
+    /// 設定変更時にも呼び出して再適用する。
+    /// </summary>
+    public static void ApplyHotkeySettings()
+    {
+        var shortcuts = SettingsService.Settings.ShortcutSettings;
+
+        KeyboardHookService.UnregisterHotkey(shortcuts.DefaultOpenKey);
+        KeyboardHookService.UnregisterHotkey(shortcuts.RevealKey);
+
+        if (!shortcuts.DefaultOpenKey.IsEmpty)
+            KeyboardHookService.RegisterHotkey(shortcuts.DefaultOpenKey, OnDefaultOpenHotkey);
+
+        if (!shortcuts.RevealKey.IsEmpty)
+            KeyboardHookService.RegisterHotkey(shortcuts.RevealKey, OnRevealHotkey);
+    }
+
+    private static void OnDefaultOpenHotkey()
+    {
+        // PopWindow が1つも開いていなければマウス位置に新規作成
+        if (_popWindows.Count == 0)
+        {
+            GetCursorPos(out var pos);
+            CreatePopWindow(pos);
+        }
+    }
+
+    private static void OnRevealHotkey()
+    {
+        // 開いている PopWindow から最初のファイルを探してエクスプローラーで表示
+        foreach (var win in _popWindows)
+        {
+            var files = win.GetFiles();
+            if (files is { Count: > 0 })
+            {
+                FileSystemHelper.OpenFolderAndSelect(files[0]);
+                return;
+            }
+        }
     }
 
     [DllImport("user32.dll")]

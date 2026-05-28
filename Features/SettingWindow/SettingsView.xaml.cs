@@ -143,7 +143,8 @@ public partial class SettingsView : UserControl
             {
                 App.SettingsService.Settings.ShortcutSettings.DefaultOpenKey = shortcut;
                 App.SettingsService.Save();
-                
+                App.ApplyHotkeySettings();
+
                 // ListViewの表示を更新
                 var viewModel = DataContext as ViewModels.SettingsViewModel;
                 viewModel?.RefreshShortcutKeys();
@@ -162,7 +163,8 @@ public partial class SettingsView : UserControl
             {
                 App.SettingsService.Settings.ShortcutSettings.RevealKey = shortcut;
                 App.SettingsService.Save();
-                
+                App.ApplyHotkeySettings();
+
                 // ListViewの表示を更新
                 var viewModel = DataContext as ViewModels.SettingsViewModel;
                 viewModel?.RefreshShortcutKeys();

@@ -57,6 +57,7 @@ public class KeyboardHookService
         {
             if (key.MatchesHook(e))
             {
+                e.SuppressEvent = true;
                 var cb = callback;
                 _dispatcher.BeginInvoke(cb);
                 break;
@@ -123,6 +124,7 @@ public class KeyboardHookService
         {
             if (key.MatchesHook(e))
             {
+                e.SuppressEvent = true;
                 var cb = callback;
                 _dispatcher.BeginInvoke(cb);
                 break;

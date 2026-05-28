@@ -21,6 +21,9 @@ public partial class PopWindow : Window
 
     public void SetItem(ClipboardItem item) => _viewModel.Item = item;
 
+    /// <summary>保持しているファイルパスのリストを返す（ファイルがなければ null）</summary>
+    public IReadOnlyList<string>? GetFiles() => _viewModel.Item?.Files;
+
     protected override void OnKeyDown(KeyEventArgs e)
     {
         if (e.Key == Key.Escape) Close();
