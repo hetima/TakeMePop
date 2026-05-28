@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:res="clr-namespace:Listhing"
         Width="120" Height="120"
         WindowStyle="None"
         AllowsTransparency="False"
@@ -109,6 +110,12 @@
                     DragLeave="ContentArea_DragLeave"
                     DragOver="ContentArea_DragOver"
                     Drop="ContentArea_Drop">
+                <Border.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="{x:Static res:Strings.MenuItemSetting}" Click="Setting_Click"/>
+                        <MenuItem Header="{x:Static res:Strings.MenuItemQuit}" Click="Quit_Click"/>
+                    </ContextMenu>
+                </Border.ContextMenu>
                 <Grid>
                     <!-- 中身なし: ドロップ誘導テキスト -->
                     <TextBlock Text="Drop here"

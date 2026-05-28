@@ -69,6 +69,16 @@ public partial class PopWindow : Window
         _viewModel.Pinned = !_viewModel.Pinned;
     }
 
+    private void Setting_Click(object sender, RoutedEventArgs e)
+    {
+        App.ShowSettingsWindow();
+    }
+
+    private void Quit_Click(object sender, RoutedEventArgs e)
+    {
+        Application.Current.Shutdown();
+    }
+
     private void ContentArea_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         if (_viewModel.Item == null) return;
