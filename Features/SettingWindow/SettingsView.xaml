@@ -271,6 +271,10 @@
 
                     <!-- Pop Window Section -->
                     <StackPanel x:Name="PopWindowSection" Margin="42,8" MaxWidth="600" Visibility="Collapsed">
+                        <!-- Allow Multiple Windows -->
+                        <CheckBox Content="{x:Static res:Strings.PwAllowMultipleWindowsLabel}"
+                                  IsChecked="{Binding PwAllowMultipleWindows}"
+                                  Margin="0,0,0,24"/>
                         <!-- Reuse Distance -->
                         <TextBlock Text="{x:Static res:Strings.PwReuseDistanceLabel}"
                                    FontWeight="SemiBold"

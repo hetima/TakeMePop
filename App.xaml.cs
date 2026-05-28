@@ -254,15 +254,31 @@ public partial class App : Application
 
     public static void CreatePopWindow(System.Drawing.Point nearPoint, ClipboardItem? item = null)
     {
-        var existing = FindNearbyPopWindow(nearPoint);
-        if (existing != null)
+        var pw = SettingsService.Settings.PopWindow;
+
+        if (!pw.AllowMultipleWindows)
         {
-            if (item != null) existing.SetItem(item);
-            existing.Activate();
-            return;
+            // 単一ウィンドウモード: 既存のウィンドウを再利用
+            var existing = _popWindows.FirstOrDefault();
+            if (existing != null)
+            {
+                if (item != null) existing.SetItem(item);
+                existing.Activate();
+                return;
+            }
+        }
+        else
+        {
+            // 複数ウィンドウモード: 近くのウィンドウを再利用
+            var existing = FindNearbyPopWindow(nearPoint);
+            if (existing != null)
+            {
+                if (item != null) existing.SetItem(item);
+                existing.Activate();
+                return;
+            }
         }
 
-        var pw = SettingsService.Settings.PopWindow;
         var win = new PopWindow();
         win.Width = pw.Width;
         win.Height = pw.Height;

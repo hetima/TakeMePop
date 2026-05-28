@@ -372,4 +372,8 @@
     <value>既存のポップウィンドウがこの距離以内にある場合、新規作成せず再利用します（40〜200 px）</value>
   </data>
 
+  <data name="PwAllowMultipleWindowsLabel" xml:space="preserve">
+    <value>複数のウィンドウを使用</value>
+  </data>
+
 </root>
