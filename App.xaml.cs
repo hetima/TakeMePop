@@ -184,6 +184,9 @@ public partial class App : Application
         }
     }
 
+    /// <summary>
+    /// アプリケーション起動時の初期化処理
+    /// </summary>
     private void Application_Startup(object sender, StartupEventArgs e)
     {
         // TRAY ICON
@@ -193,13 +196,6 @@ public partial class App : Application
         if (TrayIcon != null)
         {
             TrayIcon.ToolTipText = string.Format("{0} v{1}", AppConstants.AppName, _vstring);
-        }
-        bool anyWindowOpen = false;
-
-        if (!anyWindowOpen)
-        {
-            // リストがnullか空の場合やワークスペースが存在しなかった場合はデフォルトワークスペースを開く
-            CreateMainWindow(AppConstants.AppName);
         }
 
         // HwndSource を使うため WPF 初期化後に生成する
@@ -242,6 +238,10 @@ public partial class App : Application
             KeyboardHookService.RegisterHotkey(shortcuts.RevealKey, OnRevealHotkey);
     }
 
+    /// <summary>
+    /// DefaultOpenKey ホットキー押下時の処理。
+    /// 既存の PopWindow があればマウスカーソル位置へ移動し、なければ新規作成する。
+    /// </summary>
     private static void OnDefaultOpenHotkey()
     {
         GetCursorPos(out var pos);
@@ -259,6 +259,10 @@ public partial class App : Application
         }
     }
 
+    /// <summary>
+    /// RevealKey ホットキー押下時の処理。
+    /// 開いている PopWindow の最初のファイルをエクスプローラーで表示する。
+    /// </summary>
     private static void OnRevealHotkey()
     {
         // 開いている PopWindow から最初のファイルを探してエクスプローラーで表示
@@ -276,6 +280,9 @@ public partial class App : Application
     [DllImport("user32.dll")]
     private static extern bool GetCursorPos(out System.Drawing.Point lpPoint);
 
+    /// <summary>
+    /// Ctrl+C ダブルタップ時にクリップボード内容を PopWindow へ表示する。
+    /// </summary>
     private static void OnCtrlCDoubleTapped(object? sender, EventArgs e)
     {
         GetCursorPos(out var pos);
@@ -283,6 +290,9 @@ public partial class App : Application
         CreatePopWindow(pos, item);
     }
 
+    /// <summary>
+    /// TransparentGuard 設定変更時に各サービスへ再適用する。
+    /// </summary>
     private static void OnTransparentGuardChanged(object? sender, EventArgs e)
     {
         var tg = SettingsService.Settings.TransparentGuard;
@@ -290,6 +300,9 @@ public partial class App : Application
         MouseHookService.ApplySettings(tg.ActivationPixels, tg.DismissDelayMs);
     }
 
+    /// <summary>
+    /// ドラッグ開始後の早期キャプチャ要求時に TransparentWindow をポインタ近くへ表示する。
+    /// </summary>
     private static void OnEarlyCaptureRequested(object? sender, System.Drawing.Point point)
     {
         var tg = SettingsService.Settings.TransparentGuard;
@@ -298,6 +311,9 @@ public partial class App : Application
         _transparentWindow?.ShowNearPoint(point);
     }
 
+    /// <summary>
+    /// ドラッグ終了時に TransparentWindow を非表示にする。
+    /// </summary>
     private static void OnDragEnded(object? sender, EventArgs e)
     {
         _transparentWindow?.Hide();
@@ -327,11 +343,17 @@ public partial class App : Application
         ApplyTheme(SettingsService.Settings.Theme, win);
     }
 
+    /// <summary>
+    /// 管理リストから PopWindow を削除する（ウィンドウのクローズ時に呼ばれる）。
+    /// </summary>
     public static void RemovePopWindow(PopWindow w)
     {
         _popWindows.Remove(w);
     }
 
+    /// <summary>
+    /// PopWindow のサイズを設定に保存する。
+    /// </summary>
     public static void SavePopWindowSize(double width, double height)
     {
         SettingsService.Settings.PopWindow.Width = width;
@@ -340,15 +362,24 @@ public partial class App : Application
     }
 
 
+    /// <summary>
+    /// トレイアイコンの「設定」メニュークリック時に設定ウィンドウを開く。
+    /// </summary>
     private void Setting_Click(object sender, EventArgs e)
     {
         ShowSettingsWindow();
     }
 
+    /// <summary>
+    /// トレイアイコンの「GitHub」メニュークリック時にブラウザでリポジトリを開く。
+    /// </summary>
     private void GitHub_Click(object sender, RoutedEventArgs e)
     {
         Process.Start(new ProcessStartInfo("https://github.com/hetima/TakeMePop") { UseShellExecute = true });
     }
+    /// <summary>
+    /// トレイアイコンの「終了」メニュークリック時にアプリを終了する。
+    /// </summary>
     private void Quit_Click(object sender, EventArgs e)
     {
         Shutdown();
