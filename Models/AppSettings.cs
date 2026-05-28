@@ -61,11 +61,6 @@ public class PopWindowSettings
     [JsonPropertyName("reuseDistance")]
     public double ReuseDistance { get; set; } = 100;
 
-    [JsonPropertyName("allowMultipleWindows")]
-    public bool AllowMultipleWindows { get; set; } = false;
-
-    [JsonPropertyName("dontCloseAtSuccess")]
-    public bool DontCloseAtSuccess { get; set; } = false;
 }
 
 public class TransparentGuardSettings

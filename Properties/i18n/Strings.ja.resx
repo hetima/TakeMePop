@@ -157,7 +157,7 @@
   </data>
 
   <data name="DefaultOpenActionLabel" xml:space="preserve">
-    <value>デフォルト動作</value>
+    <value>ポップパネルを表示</value>
   </data>
 
   <data name="RevealActionLabel" xml:space="preserve">
@@ -361,7 +361,7 @@
   </data>
 
   <data name="PwSectionTitle" xml:space="preserve">
-    <value>ポップウィンドウ</value>
+    <value>ポップパネル</value>
   </data>
 
   <data name="PwReuseDistanceLabel" xml:space="preserve">

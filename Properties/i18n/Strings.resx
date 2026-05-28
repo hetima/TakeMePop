@@ -157,7 +157,7 @@
   </data>
 
   <data name="DefaultOpenActionLabel" xml:space="preserve">
-    <value>Default Shortcut</value>
+    <value>Show Pop Panel</value>
   </data>
 
   <data name="RevealActionLabel" xml:space="preserve">
@@ -361,7 +361,7 @@
   </data>
 
   <data name="PwSectionTitle" xml:space="preserve">
-    <value>Pop Window</value>
+    <value>Pop Panel</value>
   </data>
 
   <data name="PwReuseDistanceLabel" xml:space="preserve">

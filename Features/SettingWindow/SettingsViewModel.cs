@@ -180,12 +180,6 @@ public class SettingsViewModel : INotifyPropertyChanged
         set { if (Pw.ReuseDistance != value) { Pw.ReuseDistance = value; _settingsService.Save(); OnPropertyChanged(); } }
     }
 
-    public bool PwAllowMultipleWindows
-    {
-        get => Pw.AllowMultipleWindows;
-        set { if (Pw.AllowMultipleWindows != value) { Pw.AllowMultipleWindows = value; _settingsService.Save(); OnPropertyChanged(); } }
-    }
-
     /// <summary>
     /// ショートカットキーの表示を更新する
     /// </summary>

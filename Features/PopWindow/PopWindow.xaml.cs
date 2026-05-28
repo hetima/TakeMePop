@@ -23,6 +23,7 @@ public partial class PopWindow : Window
     }
 
     public void SetItem(ClipboardItem item) => _viewModel.Item = item;
+    public bool Pinned => _viewModel.Pinned;
 
     /// <summary>保持しているファイルパスのリストを返す（ファイルがなければ null）</summary>
     public IReadOnlyList<string>? GetFiles() => _viewModel.Item?.Files;
@@ -63,7 +64,7 @@ public partial class PopWindow : Window
 
     private void CloseOnSuccessButton_Click(object sender, RoutedEventArgs e)
     {
-        _viewModel.DontCloseAtSuccess = !_viewModel.DontCloseAtSuccess;
+        _viewModel.Pinned = !_viewModel.Pinned;
     }
 
     private void ContentArea_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -94,7 +95,7 @@ public partial class PopWindow : Window
         var effect = DragDrop.DoDragDrop(ContentArea, data, DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link);
         _isDraggingOut = false;
 
-        if (effect != DragDropEffects.None && !_droppedOnSelf && !_viewModel.DontCloseAtSuccess)
+        if (effect != DragDropEffects.None && !_droppedOnSelf && !_viewModel.Pinned)
             Close();
     }
 

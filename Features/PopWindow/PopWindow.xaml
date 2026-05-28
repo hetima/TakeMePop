@@ -60,7 +60,7 @@
                 <Button FontFamily="{StaticResource SymbolThemeFontFamily}"
                         Style="{StaticResource CloseButtonStyle}"
                         Foreground="{DynamicResource TextControlForeground}"
-                        Content="{Binding CloseOnSuccessIconText}"
+                        Content="{Binding PinnedIconText}"
                         Width="24" Height="24"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"

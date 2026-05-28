@@ -244,8 +244,8 @@ public partial class App : Application
 
     private static void OnDefaultOpenHotkey()
     {
-        // PopWindow が1つも開いていなければマウス位置に新規作成
-        if (_popWindows.Count == 0)
+        // Pinned=false の PopWindow が1つも開いていなければマウス位置に新規作成
+        if (!_popWindows.Any(w => !w.Pinned))
         {
             GetCursorPos(out var pos);
             CreatePopWindow(pos);
@@ -298,31 +298,16 @@ public partial class App : Application
 
     public static void CreatePopWindow(System.Drawing.Point nearPoint, ClipboardItem? item = null)
     {
+        // Pinned=false のウィンドウを再利用（最大1個）
+        var existing = _popWindows.FirstOrDefault(w => !w.Pinned);
+        if (existing != null)
+        {
+            if (item != null) existing.SetItem(item);
+            existing.Activate();
+            return;
+        }
+
         var pw = SettingsService.Settings.PopWindow;
-
-        if (!pw.AllowMultipleWindows)
-        {
-            // 単一ウィンドウモード: 既存のウィンドウを再利用
-            var existing = _popWindows.FirstOrDefault();
-            if (existing != null)
-            {
-                if (item != null) existing.SetItem(item);
-                existing.Activate();
-                return;
-            }
-        }
-        else
-        {
-            // 複数ウィンドウモード: 近くのウィンドウを再利用
-            var existing = FindNearbyPopWindow(nearPoint);
-            if (existing != null)
-            {
-                if (item != null) existing.SetItem(item);
-                existing.Activate();
-                return;
-            }
-        }
-
         var win = new PopWindow();
         win.Width = pw.Width;
         win.Height = pw.Height;
@@ -333,18 +318,6 @@ public partial class App : Application
         win.Show();
         if (item != null) win.SetItem(item);
         ApplyTheme(SettingsService.Settings.Theme, win);
-    }
-
-    private static PopWindow? FindNearbyPopWindow(System.Drawing.Point p)
-    {
-        double limit = SettingsService.Settings.PopWindow.ReuseDistance;
-        return _popWindows.FirstOrDefault(w =>
-        {
-            double cx = w.Left + w.Width / 2;
-            double cy = w.Top + w.Height / 2;
-            double dx = cx - p.X, dy = cy - p.Y;
-            return Math.Sqrt(dx * dx + dy * dy) < limit;
-        });
     }
 
     public static void RemovePopWindow(PopWindow w)
