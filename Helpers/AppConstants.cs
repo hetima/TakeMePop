@@ -152,26 +152,14 @@ public static class AppConstants
     /// </summary>
     public static class IconTexts
     {
-        public const string GroupDefault = "\uE8B7";
-        public const string Group = "\uE9A4";
-        public const string Inbox = "\uE75A";
-        public const string CommandPrompt = "\uE756";
-        public const string Document = "\uE8A5";
-        public const string Folder = "\uE8B7";
-        public const string SyncFolder = "\uE8F7";
-        public const string UnsyncFolder = "\uE8F6";
-        public const string FolderOpen = "\uE838";
-        public const string FolderExp = "\uEC50";
-        public const string WebSite = "\uE774";
-        public const string Tag = "\uE8EC";
-        public const string FavoriteStar = "\uE734";
-        public const string SearchBox = "\uE773";
-        public const string Search = "\uF78B";
-        public const string DockRight = "\uE90D";
-        public const string NewFolder = "\uE8F4";
-        public const string NewGroup = "\uED0E";
-        public const string Sort = "\uE8CB";
-        public const string Help = "\uE9CE";
+        // x
+        // public const string Close = "\uE8BB";
+        // ●の中にx
+        public const string Close = "\uEB90";
+        public const string Copy = "\uE8C8";
+        public const string Pin = "\uECCA";
+        public const string Pinned = "\uECCB";
+        public const string Stack = "\uF156";
 
     }
 
