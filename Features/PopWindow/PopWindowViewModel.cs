@@ -25,6 +25,8 @@ public class PopWindowViewModel : ObservableObject
             OnPropertyChanged(nameof(IsText));
             OnPropertyChanged(nameof(IsFile));
             OnPropertyChanged(nameof(HasContent));
+            OnPropertyChanged(nameof(IsImageFile));
+            OnPropertyChanged(nameof(Thumbnail));
         }
     }
 
@@ -67,6 +69,44 @@ public class PopWindowViewModel : ObservableObject
     public bool IsText => _item?.HasText == true && !(_item?.HasFiles == true);
     public bool IsFile => _item?.HasFiles == true;
     public bool HasContent => _item != null;
+
+    private static readonly HashSet<string> ImageExtensions =
+        [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp", ".tiff", ".tif", ".ico"];
+
+    /// <summary>単一画像ファイルかどうか</summary>
+    public bool IsImageFile
+    {
+        get
+        {
+            if (_item?.Files is not { Count: 1 }) return false;
+            var ext = Path.GetExtension(_item.Files[0]).ToLowerInvariant();
+            return ImageExtensions.Contains(ext);
+        }
+    }
+
+    /// <summary>画像ファイルのサムネイル（画像以外はnull）</summary>
+    public ImageSource? Thumbnail
+    {
+        get
+        {
+            if (!IsImageFile || _item?.Files is null) return null;
+            try
+            {
+                var bmp = new BitmapImage();
+                bmp.BeginInit();
+                bmp.UriSource = new Uri(_item.Files[0]);
+                bmp.DecodePixelWidth = 256;
+                bmp.CacheOption = BitmapCacheOption.OnLoad;
+                bmp.EndInit();
+                bmp.Freeze();
+                return bmp;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+    }
 
     private bool _isDropTarget;
     public bool IsDropTarget
