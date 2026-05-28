@@ -172,12 +172,6 @@ public class SettingsViewModel : INotifyPropertyChanged
         set { if (Tg.DismissDelayMs != value) { Tg.DismissDelayMs = value; _settingsService.Save(); _settingsService.NotifyTransparentGuardChanged(); OnPropertyChanged(); } }
     }
 
-    public bool TgShowPattern
-    {
-        get => Tg.ShowPattern;
-        set { if (Tg.ShowPattern != value) { Tg.ShowPattern = value; _settingsService.Save(); _settingsService.NotifyTransparentGuardChanged(); OnPropertyChanged(); } }
-    }
-
     private Models.PopWindowSettings Pw => _settingsService.Settings.PopWindow;
 
     public double PwReuseDistance

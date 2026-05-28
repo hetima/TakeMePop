@@ -76,8 +76,6 @@ public class TransparentGuardSettings
     [JsonPropertyName("dismissDelayMs")]
     public int DismissDelayMs { get; set; } = 500;
 
-    [JsonPropertyName("showPattern")]
-    public bool ShowPattern { get; set; } = true;
 }
 
 /// <summary>

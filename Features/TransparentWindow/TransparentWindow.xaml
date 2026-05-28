@@ -6,9 +6,9 @@
         mc:Ignorable="d"
         Width="48" Height="48"
         WindowStyle="None"
-        AllowsTransparency="False"
-        Background="Black"
-        Opacity="0.01"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Opacity="1"
         Topmost="True"
         ShowInTaskbar="False"
         IsHitTestVisible="True"
@@ -16,11 +16,7 @@
         ResizeMode="NoResize"
         ShowActivated="False">
     <Grid>
-        <!-- デバッグ用: 模様表示（ShowPattern設定で制御） -->
         <Ellipse x:Name="DropTarget"
-                 Width="48" Height="48"
-                 Fill="#33FFFFFF"
-                 Stroke="#66FFFFFF"
-                 StrokeThickness="1"/>
+                 Fill="#01FFFFFF"/>
     </Grid>
 </Window>

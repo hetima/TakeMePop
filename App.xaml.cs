@@ -209,7 +209,7 @@ public partial class App : Application
         _transparentWindow = new TransparentWindow();
 
         var tg = SettingsService.Settings.TransparentGuard;
-        _transparentWindow.ApplySettings(tg.Size, tg.ShowPattern);
+        _transparentWindow.ApplySettings(tg.Size);
         MouseHookService.ApplySettings(tg.ActivationPixels, tg.DismissDelayMs);
 
         SettingsService.TransparentGuardChanged += OnTransparentGuardChanged;
@@ -235,7 +235,7 @@ public partial class App : Application
     private static void OnTransparentGuardChanged(object? sender, EventArgs e)
     {
         var tg = SettingsService.Settings.TransparentGuard;
-        _transparentWindow?.ApplySettings(tg.Size, tg.ShowPattern);
+        _transparentWindow?.ApplySettings(tg.Size);
         MouseHookService.ApplySettings(tg.ActivationPixels, tg.DismissDelayMs);
     }
 

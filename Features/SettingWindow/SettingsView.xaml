@@ -267,10 +267,6 @@
                                        VerticalAlignment="Center"/>
                         </Grid>
 
-                        <!-- Show Pattern -->
-                        <CheckBox Content="{x:Static res:Strings.TgShowPatternLabel}"
-                                  ToolTip="{x:Static res:Strings.TgShowPatternTooltip}"
-                                  IsChecked="{Binding TgShowPattern}"/>
                     </StackPanel>
 
                     <!-- Pop Window Section -->
