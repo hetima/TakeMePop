@@ -364,13 +364,6 @@
     <value>Pop Panel</value>
   </data>
 
-  <data name="PwReuseDistanceLabel" xml:space="preserve">
-    <value>Reuse Distance</value>
-  </data>
-
-  <data name="PwReuseDistanceTooltip" xml:space="preserve">
-    <value>If an existing Pop Window is within this distance, it will be reused instead of creating a new one (40–200 px)</value>
-  </data>
 
   <data name="PwAllowMultipleWindowsLabel" xml:space="preserve">
     <value>Allow Multiple Windows</value>

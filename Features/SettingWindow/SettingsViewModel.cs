@@ -172,14 +172,6 @@ public class SettingsViewModel : INotifyPropertyChanged
         set { if (Tg.DismissDelayMs != value) { Tg.DismissDelayMs = value; _settingsService.Save(); _settingsService.NotifyTransparentGuardChanged(); OnPropertyChanged(); } }
     }
 
-    private Models.PopWindowSettings Pw => _settingsService.Settings.PopWindow;
-
-    public double PwReuseDistance
-    {
-        get => Pw.ReuseDistance;
-        set { if (Pw.ReuseDistance != value) { Pw.ReuseDistance = value; _settingsService.Save(); OnPropertyChanged(); } }
-    }
-
     /// <summary>
     /// ショートカットキーの表示を更新する
     /// </summary>

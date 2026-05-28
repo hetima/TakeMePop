@@ -292,18 +292,6 @@ namespace Listhing {
             }
         }
 
-        public static string PwReuseDistanceLabel {
-            get {
-                return ResourceManager.GetString("PwReuseDistanceLabel", resourceCulture);
-            }
-        }
-
-        public static string PwReuseDistanceTooltip {
-            get {
-                return ResourceManager.GetString("PwReuseDistanceTooltip", resourceCulture);
-            }
-        }
-
         public static string PwSectionTitle {
             get {
                 return ResourceManager.GetString("PwSectionTitle", resourceCulture);

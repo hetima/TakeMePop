@@ -58,9 +58,6 @@ public class PopWindowSettings
     [JsonPropertyName("height")]
     public double Height { get; set; } = 120;
 
-    [JsonPropertyName("reuseDistance")]
-    public double ReuseDistance { get; set; } = 100;
-
 }
 
 public class TransparentGuardSettings
