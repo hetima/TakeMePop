@@ -14,10 +14,20 @@ public static class ShortcutKeyHookExtensions
     /// </summary>
     public static bool MatchesHook(this ShortcutKey shortcut, KeyboardHookEventArgs e)
     {
-        if (shortcut.IsEmpty) return false;
+        if (shortcut.IsEmpty || shortcut.IsMouseButton) return false;
         var keyCode = ToKeyCode(shortcut.Key);
         if (keyCode == KeyCode.VcUndefined) return false;
         if (e.Data.KeyCode != keyCode) return false;
+        return MatchesMask(shortcut.Modifiers, e.RawEvent.Mask);
+    }
+
+    /// <summary>
+    /// SharpHook のマウスボタンイベントと一致するか判定する
+    /// </summary>
+    public static bool MatchesHook(this ShortcutKey shortcut, MouseHookEventArgs e)
+    {
+        if (shortcut.IsEmpty || !shortcut.IsMouseButton) return false;
+        if ((int)e.Data.Button != (int)shortcut.MouseButton) return false;
         return MatchesMask(shortcut.Modifiers, e.RawEvent.Mask);
     }
 

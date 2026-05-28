@@ -3,12 +3,25 @@ using System.Windows.Input;
 namespace Listhing.Helpers;
 
 /// <summary>
+/// ショートカットに使用するマウスボタン（SharpHook.Data.MouseButton と値を一致させる）
+/// </summary>
+public enum ShortcutMouseButton
+{
+    None    = 0,
+    Button1 = 1,  // 左
+    Button2 = 2,  // 右
+    Button3 = 3,  // 中（ホイールクリック）
+    Button4 = 4,
+    Button5 = 5,
+}
+
+/// <summary>
 /// ショートカットキーを表すクラス
 /// </summary>
 public class ShortcutKey : IEquatable<ShortcutKey>
 {
     /// <summary>
-    /// メインキー
+    /// メインキー（マウスボタンショートカットの場合は Key.None）
     /// </summary>
     public Key Key { get; }
 
@@ -18,6 +31,16 @@ public class ShortcutKey : IEquatable<ShortcutKey>
     public ModifierKeys Modifiers { get; }
 
     /// <summary>
+    /// マウスボタン（キーボードショートカットの場合は None）
+    /// </summary>
+    public ShortcutMouseButton MouseButton { get; }
+
+    /// <summary>
+    /// マウスボタンショートカットかどうか
+    /// </summary>
+    public bool IsMouseButton => MouseButton != ShortcutMouseButton.None;
+
+    /// <summary>
     /// 修飾キーを持っているかどうか
     /// </summary>
     public bool HasModifiers => Modifiers != ModifierKeys.None;
@@ -25,7 +48,7 @@ public class ShortcutKey : IEquatable<ShortcutKey>
     /// <summary>
     /// 空のショートカットかどうか
     /// </summary>
-    public bool IsEmpty => Key == Key.None;
+    public bool IsEmpty => Key == Key.None && MouseButton == ShortcutMouseButton.None;
 
     /// <summary>
     /// コンストラクタ
@@ -35,6 +58,19 @@ public class ShortcutKey : IEquatable<ShortcutKey>
     public ShortcutKey(Key key, ModifierKeys modifiers = ModifierKeys.None)
     {
         Key = key;
+        Modifiers = modifiers;
+        MouseButton = ShortcutMouseButton.None;
+    }
+
+    /// <summary>
+    /// マウスボタンショートカット用コンストラクタ
+    /// </summary>
+    /// <param name="mouseButton">マウスボタン</param>
+    /// <param name="modifiers">修飾キー（デフォルト: ModifierKeys.None）</param>
+    public ShortcutKey(ShortcutMouseButton mouseButton, ModifierKeys modifiers = ModifierKeys.None)
+    {
+        Key = Key.None;
+        MouseButton = mouseButton;
         Modifiers = modifiers;
     }
 
@@ -48,12 +84,13 @@ public class ShortcutKey : IEquatable<ShortcutKey>
         // Altキーを押した状態で文字キーを押すとKey.Systemになることがある
         Key = e.Key == Key.System ? e.SystemKey : e.Key;
         Modifiers = Keyboard.Modifiers;
+        MouseButton = ShortcutMouseButton.None;
     }
 
     /// <summary>
     /// 文字列からショートカットキーを作成するコンストラクタ
     /// </summary>
-    /// <param name="shortcutString">ショートカット文字列（例: "Ctrl+A", "Enter", ""）</param>
+    /// <param name="shortcutString">ショートカット文字列（例: "Ctrl+A", "Enter", "Button1", "Ctrl+Button2"）</param>
     /// <exception cref="ArgumentException">無効なショートカット文字列の場合</exception>
     public ShortcutKey(string shortcutString)
     {
@@ -61,12 +98,14 @@ public class ShortcutKey : IEquatable<ShortcutKey>
         {
             Key = Key.None;
             Modifiers = ModifierKeys.None;
+            MouseButton = ShortcutMouseButton.None;
             return;
         }
 
         var parts = shortcutString.Split('+', StringSplitOptions.RemoveEmptyEntries);
         ModifierKeys modifiers = ModifierKeys.None;
         Key key = Key.None;
+        ShortcutMouseButton mouseButton = ShortcutMouseButton.None;
 
         foreach (var part in parts)
         {
@@ -76,27 +115,33 @@ public class ShortcutKey : IEquatable<ShortcutKey>
             {
                 modifiers |= modifier;
             }
+            else if (TryParseMouseButton(trimmedPart, out var parsedButton))
+            {
+                if (mouseButton != ShortcutMouseButton.None)
+                    throw new ArgumentException($"Invalid shortcut string: {shortcutString} - Multiple mouse buttons specified");
+                mouseButton = parsedButton;
+            }
             else if (TryParseKey(trimmedPart, out var parsedKey))
             {
-            if (key != Key.None)
-            {
-                throw new ArgumentException($"Invalid shortcut string: {shortcutString} - Multiple main keys specified");
+                if (key != Key.None)
+                    throw new ArgumentException($"Invalid shortcut string: {shortcutString} - Multiple main keys specified");
+                key = parsedKey;
             }
-            key = parsedKey;
+            else
+            {
+                throw new ArgumentException($"Invalid shortcut string: {shortcutString} - '{trimmedPart}' is not a valid key");
+            }
         }
-        else
-        {
-            throw new ArgumentException($"Invalid shortcut string: {shortcutString} - '{trimmedPart}' is not a valid key");
-        }
-    }
 
-    if (key == Key.None)
-    {
-        throw new ArgumentException($"Invalid shortcut string: {shortcutString} - No main key specified");
-    }
+        if (key == Key.None && mouseButton == ShortcutMouseButton.None)
+            throw new ArgumentException($"Invalid shortcut string: {shortcutString} - No main key specified");
+
+        if (key != Key.None && mouseButton != ShortcutMouseButton.None)
+            throw new ArgumentException($"Invalid shortcut string: {shortcutString} - Cannot mix keyboard key and mouse button");
 
         Key = key;
         Modifiers = modifiers;
+        MouseButton = mouseButton;
     }
 
     /// <summary>
@@ -114,37 +159,22 @@ public class ShortcutKey : IEquatable<ShortcutKey>
     /// <summary>
     /// 文字列表現を返す（JSON保存・画面表示用）
     /// </summary>
-    /// <returns>ショートカット文字列（例: "Ctrl+Shift+A", "Enter", ""）</returns>
+    /// <returns>ショートカット文字列（例: "Ctrl+Shift+A", "Enter", "Button1", "Ctrl+Button2"）</returns>
     public override string ToString()
     {
-        if (IsEmpty)
-        {
-            return string.Empty;
-        }
+        if (IsEmpty) return string.Empty;
 
         var parts = new List<string>();
 
-        if (Modifiers.HasFlag(ModifierKeys.Control))
-        {
-            parts.Add("Ctrl");
-        }
+        if (Modifiers.HasFlag(ModifierKeys.Control)) parts.Add("Ctrl");
+        if (Modifiers.HasFlag(ModifierKeys.Alt))     parts.Add("Alt");
+        if (Modifiers.HasFlag(ModifierKeys.Shift))   parts.Add("Shift");
+        if (Modifiers.HasFlag(ModifierKeys.Windows)) parts.Add("Win");
 
-        if (Modifiers.HasFlag(ModifierKeys.Alt))
-        {
-            parts.Add("Alt");
-        }
-
-        if (Modifiers.HasFlag(ModifierKeys.Shift))
-        {
-            parts.Add("Shift");
-        }
-
-        if (Modifiers.HasFlag(ModifierKeys.Windows))
-        {
-            parts.Add("Win");
-        }
-
-        parts.Add(GetKeyDisplayName(Key));
+        if (IsMouseButton)
+            parts.Add(MouseButton.ToString());
+        else
+            parts.Add(GetKeyDisplayName(Key));
 
         return string.Join("+", parts);
     }
@@ -178,6 +208,23 @@ public class ShortcutKey : IEquatable<ShortcutKey>
             shortcut = new ShortcutKey(Key.None);
             return false;
         }
+    }
+
+    /// <summary>
+    /// マウスボタン文字列をパースする
+    /// </summary>
+    private static bool TryParseMouseButton(string s, out ShortcutMouseButton button)
+    {
+        button = s.ToLowerInvariant() switch
+        {
+            "button1" or "leftbutton"   => ShortcutMouseButton.Button1,
+            "button2" or "rightbutton"  => ShortcutMouseButton.Button2,
+            "button3" or "middlebutton" => ShortcutMouseButton.Button3,
+            "button4" or "xbutton1"     => ShortcutMouseButton.Button4,
+            "button5" or "xbutton2"     => ShortcutMouseButton.Button5,
+            _ => ShortcutMouseButton.None
+        };
+        return button != ShortcutMouseButton.None;
     }
 
     /// <summary>
@@ -298,7 +345,7 @@ public class ShortcutKey : IEquatable<ShortcutKey>
     {
         if (other is null) return false;
         if (ReferenceEquals(this, other)) return true;
-        return Key == other.Key && Modifiers == other.Modifiers;
+        return Key == other.Key && Modifiers == other.Modifiers && MouseButton == other.MouseButton;
     }
 
     /// <summary>
@@ -314,7 +361,7 @@ public class ShortcutKey : IEquatable<ShortcutKey>
     /// </summary>
     public override int GetHashCode()
     {
-        return HashCode.Combine(Key, Modifiers);
+        return HashCode.Combine(Key, Modifiers, MouseButton);
     }
 
     /// <summary>

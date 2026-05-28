@@ -27,6 +27,7 @@ public class KeyboardHookService
         _clipboard = clipboard;
         globalHook.KeyPressed += OnKeyPressed;
         globalHook.KeyReleased += OnKeyReleased;
+        globalHook.MousePressed += OnMousePressed;
     }
 
     /// <summary>
@@ -114,5 +115,18 @@ public class KeyboardHookService
     {
         if (e.Data.KeyCode == KeyCode.VcC)
             _cKeyReleased = true;
+    }
+
+    private void OnMousePressed(object? sender, MouseHookEventArgs e)
+    {
+        foreach (var (key, callback) in _hotkeySnapshot)
+        {
+            if (key.MatchesHook(e))
+            {
+                var cb = callback;
+                _dispatcher.BeginInvoke(cb);
+                break;
+            }
+        }
     }
 }
