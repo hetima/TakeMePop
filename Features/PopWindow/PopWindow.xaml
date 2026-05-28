@@ -57,6 +57,16 @@
                   x:Name="TitleBar"
                   Background="Transparent"
                   MouseDown="TitleBar_MouseDown">
+                <Button FontFamily="{StaticResource SymbolThemeFontFamily}"
+                        Style="{StaticResource CloseButtonStyle}"
+                        Foreground="{DynamicResource TextControlForeground}"
+                        Content="{Binding CloseOnSuccessIconText}"
+                        Width="24" Height="24"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="4,0,0,0"
+                        FontSize="14"
+                        Click="CloseOnSuccessButton_Click"/>
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
@@ -113,8 +123,7 @@
                     </ScrollViewer>
 
                     <!-- ファイルアイテム表示 -->
-                    <StackPanel HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
+                    <StackPanel VerticalAlignment="Center"
                                 Visibility="{Binding IsFile, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <!-- 単一ファイル: シェルアイコン -->
                         <Image Source="{Binding FileIcon}"
@@ -128,11 +137,10 @@
                                    HorizontalAlignment="Center"
                                    Visibility="{Binding IconText, Converter={StaticResource StringToVisibilityConverter}}"/>
                         <TextBlock Text="{Binding FileLabel}"
-                                   HorizontalAlignment="Center"
+                                   TextAlignment="Center"
                                    TextWrapping="Wrap"
-                                   MaxWidth="100"
                                    TextTrimming="CharacterEllipsis"
-                                   Margin="0,4,0,0"/>
+                                   Margin="4,4,4,0"/>
                     </StackPanel>
                 </Grid>
             </Border>

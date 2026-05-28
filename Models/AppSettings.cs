@@ -63,6 +63,9 @@ public class PopWindowSettings
 
     [JsonPropertyName("allowMultipleWindows")]
     public bool AllowMultipleWindows { get; set; } = false;
+
+    [JsonPropertyName("dontCloseAtSuccess")]
+    public bool DontCloseAtSuccess { get; set; } = false;
 }
 
 public class TransparentGuardSettings

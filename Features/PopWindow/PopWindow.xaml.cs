@@ -55,6 +55,11 @@ public partial class PopWindow : Window
         }
     }
 
+    private void CloseOnSuccessButton_Click(object sender, RoutedEventArgs e)
+    {
+        _viewModel.DontCloseAtSuccess = !_viewModel.DontCloseAtSuccess;
+    }
+
     private void ContentArea_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         if (_viewModel.Item == null) return;
@@ -63,8 +68,11 @@ public partial class PopWindow : Window
         if (data == null) return;
 
         _isDraggingOut = true;
-        DragDrop.DoDragDrop(ContentArea, data, DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link);
+        var effect = DragDrop.DoDragDrop(ContentArea, data, DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link);
         _isDraggingOut = false;
+
+        if (effect != DragDropEffects.None && !_viewModel.DontCloseAtSuccess)
+            Close();
     }
 
     private void ContentArea_DragEnter(object sender, DragEventArgs e)

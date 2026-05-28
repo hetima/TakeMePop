@@ -74,4 +74,19 @@ public class PopWindowViewModel : ObservableObject
         get => _isDropTarget;
         set { _isDropTarget = value; OnPropertyChanged(); }
     }
+
+    public bool DontCloseAtSuccess
+    {
+        get => App.SettingsService.Settings.PopWindow.DontCloseAtSuccess;
+        set
+        {
+            App.SettingsService.Settings.PopWindow.DontCloseAtSuccess = value;
+            App.SettingsService.Save();
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(CloseOnSuccessIconText));
+        }
+    }
+
+    /// <summary>ドラッグ成功時クローズ状態を示すアイコン文字</summary>
+    public string CloseOnSuccessIconText => DontCloseAtSuccess ? "" : "";
 }

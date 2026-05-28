@@ -31,7 +31,7 @@ public static class ShellIconHelper
     private static extern bool DestroyIcon(IntPtr hIcon);
 
     private const uint SHGFI_ICON = 0x000000100;
-    private const uint SHGFI_SMALLICON = 0x000000001;
+    private const uint SHGFI_LARGEICON = 0x000000000;
     private const uint SHGFI_USEFILEATTRIBUTES = 0x000000010;
     private const uint FILE_ATTRIBUTE_NORMAL = 0x80;
 
@@ -42,7 +42,7 @@ public static class ShellIconHelper
     {
         var shfi = new SHFILEINFO();
         var result = SHGetFileInfo(filePath, FILE_ATTRIBUTE_NORMAL, ref shfi,
-            (uint)Marshal.SizeOf(shfi), SHGFI_ICON | SHGFI_SMALLICON);
+            (uint)Marshal.SizeOf(shfi), SHGFI_ICON | SHGFI_LARGEICON);
 
         if (result == IntPtr.Zero || shfi.hIcon == IntPtr.Zero)
             return null;
