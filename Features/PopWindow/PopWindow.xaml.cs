@@ -9,6 +9,9 @@ public partial class PopWindow : Window
 {
     private PopWindowViewModel _viewModel;
     private bool _isDraggingOut;
+    private bool _isDragPending;
+    private bool _droppedOnSelf;
+    private Point _dragStartPoint;
 
     public PopWindow()
     {
@@ -66,16 +69,39 @@ public partial class PopWindow : Window
     private void ContentArea_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         if (_viewModel.Item == null) return;
+        _dragStartPoint = e.GetPosition(ContentArea);
+        _isDragPending = true;
+        ContentArea.CaptureMouse();
+    }
 
-        var data = BuildDataObject(_viewModel.Item);
+    private void ContentArea_MouseMove(object sender, MouseEventArgs e)
+    {
+        if (!_isDragPending || e.LeftButton != MouseButtonState.Pressed) return;
+
+        var pos = e.GetPosition(ContentArea);
+        if (Math.Abs(pos.X - _dragStartPoint.X) < SystemParameters.MinimumHorizontalDragDistance &&
+            Math.Abs(pos.Y - _dragStartPoint.Y) < SystemParameters.MinimumVerticalDragDistance)
+            return;
+
+        _isDragPending = false;
+        ContentArea.ReleaseMouseCapture();
+
+        var data = BuildDataObject(_viewModel.Item!);
         if (data == null) return;
 
         _isDraggingOut = true;
+        _droppedOnSelf = false;
         var effect = DragDrop.DoDragDrop(ContentArea, data, DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link);
         _isDraggingOut = false;
 
-        if (effect != DragDropEffects.None && !_viewModel.DontCloseAtSuccess)
+        if (effect != DragDropEffects.None && !_droppedOnSelf && !_viewModel.DontCloseAtSuccess)
             Close();
+    }
+
+    private void ContentArea_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    {
+        _isDragPending = false;
+        ContentArea.ReleaseMouseCapture();
     }
 
     private void ContentArea_DragEnter(object sender, DragEventArgs e)
@@ -107,6 +133,8 @@ public partial class PopWindow : Window
     private void ContentArea_Drop(object sender, DragEventArgs e)
     {
         _viewModel.IsDropTarget = false;
+        if (_isDraggingOut)
+            _droppedOnSelf = true;
         var item = ClipboardItem.TryCreateFromDragData(e.Data);
         if (item != null)
             _viewModel.Item = item;

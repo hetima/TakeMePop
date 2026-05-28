@@ -102,6 +102,8 @@
                     AllowDrop="True"
                     Cursor="Hand"
                     MouseLeftButtonDown="ContentArea_MouseLeftButtonDown"
+                    MouseMove="ContentArea_MouseMove"
+                    MouseLeftButtonUp="ContentArea_MouseLeftButtonUp"
                     DragEnter="ContentArea_DragEnter"
                     DragLeave="ContentArea_DragLeave"
                     DragOver="ContentArea_DragOver"
