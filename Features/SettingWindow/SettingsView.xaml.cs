@@ -14,9 +14,9 @@ namespace Listhing.Views;
 public enum SettingsSection
 {
     /// <summary>
-    /// 外観セクション
+    /// 全般セクション
     /// </summary>
-    Appearance = 0,
+    General = 0,
 
     /// <summary>
     /// アクションセクション
@@ -24,9 +24,9 @@ public enum SettingsSection
     Action = 1,
 
     /// <summary>
-    /// その他セクション
+    /// Pop Window セクション
     /// </summary>
-    Other = 2,
+    PopWindow = 2,
 
     /// <summary>
     /// Transparent Guard セクション
@@ -34,9 +34,9 @@ public enum SettingsSection
     TransparentGuard = 3,
 
     /// <summary>
-    /// Pop Window セクション
+    /// その他セクション
     /// </summary>
-    PopWindow = 4
+    Other = 4
 }
 
 /// <summary>
@@ -95,13 +95,13 @@ public partial class SettingsView : UserControl
     private void SectionListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         // コントロール初期化前はnullの場合がある
-        if (AppearanceSection == null || ActionSection == null || OtherSection == null || TransparentGuardSection == null || PopWindowSection == null)
+        if (GeneralSection == null || ActionSection == null || OtherSection == null || TransparentGuardSection == null || PopWindowSection == null)
             return;
 
         var selectedSection = (SettingsSection)SectionListBox.SelectedIndex;
 
         // 全てのセクションを非表示にする
-        AppearanceSection.Visibility = Visibility.Collapsed;
+        GeneralSection.Visibility = Visibility.Collapsed;
         ActionSection.Visibility = Visibility.Collapsed;
         OtherSection.Visibility = Visibility.Collapsed;
         TransparentGuardSection.Visibility = Visibility.Collapsed;
@@ -110,8 +110,8 @@ public partial class SettingsView : UserControl
         // 選択されたセクションのみを表示する
         switch (selectedSection)
         {
-            case SettingsSection.Appearance:
-                AppearanceSection.Visibility = Visibility.Visible;
+            case SettingsSection.General:
+                GeneralSection.Visibility = Visibility.Visible;
                 break;
             case SettingsSection.Action:
                 ActionSection.Visibility = Visibility.Visible;
@@ -127,7 +127,7 @@ public partial class SettingsView : UserControl
                 break;
             default:
                 // 未知のセクションの場合は最初のセクションを表示
-                AppearanceSection.Visibility = Visibility.Visible;
+                GeneralSection.Visibility = Visibility.Visible;
                 break;
         }
     }

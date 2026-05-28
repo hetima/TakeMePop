@@ -30,11 +30,11 @@
                      SelectedIndex="0"
                      SelectionMode="Single"
                      SelectionChanged="SectionListBox_SelectionChanged">
-                <ListBoxItem Content="{x:Static res:Strings.SettingsSectionAppearance}"/>
+                <ListBoxItem Content="{x:Static res:Strings.SettingsSectionGeneral}"/>
                 <ListBoxItem Content="{x:Static res:Strings.SettingsSectionAction}"/>
-                <ListBoxItem Content="{x:Static res:Strings.SettingsSectionOther}"/>
-                <ListBoxItem Content="{x:Static res:Strings.TgSectionTitle}"/>
                 <ListBoxItem Content="{x:Static res:Strings.PwSectionTitle}"/>
+                <ListBoxItem Content="{x:Static res:Strings.TgSectionTitle}"/>
+                <ListBoxItem Content="{x:Static res:Strings.SettingsSectionOther}"/>
             </ListBox>
 
             <!-- セクションコンテンツ（ScrollViewer内） -->
@@ -42,8 +42,8 @@
                           VerticalScrollBarVisibility="Auto"
                           HorizontalScrollBarVisibility="Disabled">
                 <Grid>
-                    <!-- Appearance Section -->
-                    <StackPanel x:Name="AppearanceSection"
+                    <!-- General Section -->
+                    <StackPanel x:Name="GeneralSection"
                                 Margin="42,8"
                                 MaxWidth="600"
                                 Visibility="Visible">

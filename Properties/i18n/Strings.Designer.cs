@@ -340,9 +340,9 @@ namespace Listhing {
             }
         }
 
-        public static string SettingsSectionAppearance {
+        public static string SettingsSectionGeneral {
             get {
-                return ResourceManager.GetString("SettingsSectionAppearance", resourceCulture);
+                return ResourceManager.GetString("SettingsSectionGeneral", resourceCulture);
             }
         }
 

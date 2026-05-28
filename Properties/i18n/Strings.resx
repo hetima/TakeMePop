@@ -144,8 +144,8 @@
     <value>Move group</value>
   </data>
 
-  <data name="SettingsSectionAppearance" xml:space="preserve">
-    <value>Appearance</value>
+  <data name="SettingsSectionGeneral" xml:space="preserve">
+    <value>General</value>
   </data>
 
   <data name="SettingsSectionOther" xml:space="preserve">
@@ -153,11 +153,11 @@
   </data>
 
   <data name="SettingsSectionAction" xml:space="preserve">
-    <value>Action</value>
+    <value>Shortcut</value>
   </data>
 
   <data name="DefaultOpenActionLabel" xml:space="preserve">
-    <value>Default Action</value>
+    <value>Default Shortcut</value>
   </data>
 
   <data name="RevealActionLabel" xml:space="preserve">

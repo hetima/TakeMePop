@@ -144,8 +144,8 @@
     <value>グループの移動</value>
   </data>
 
-  <data name="SettingsSectionAppearance" xml:space="preserve">
-    <value>外観</value>
+  <data name="SettingsSectionGeneral" xml:space="preserve">
+    <value>全般</value>
   </data>
 
   <data name="SettingsSectionOther" xml:space="preserve">
@@ -153,7 +153,7 @@
   </data>
 
   <data name="SettingsSectionAction" xml:space="preserve">
-    <value>アクション</value>
+    <value>ショートカット</value>
   </data>
 
   <data name="DefaultOpenActionLabel" xml:space="preserve">
