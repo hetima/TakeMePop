@@ -160,6 +160,7 @@ public static class AppConstants
         public const string Pin = "\uECCA";
         public const string Pinned = "\uECCB";
         public const string Stack = "\uF156";
+        public const string ClipBoard = "\uE77F";
 
     }
 

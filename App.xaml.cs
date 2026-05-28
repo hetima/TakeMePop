@@ -290,11 +290,10 @@ public partial class App : Application
         var prev = ClipboardService.PopLatestAndRestorePrevious();
         if (prev == null) return;
 
-        var label = prev.HasText && prev.Text != null
+        var message = prev.HasText && prev.Text != null
             ? prev.Text
             : prev.Files?[0] is string f ? System.IO.Path.GetFileName(f) : "?";
-        var message = $"Clipboard: {label}";
-        ShowToast(message, fontSize: 20, durationMs: 3500, position: Features.ToastWindow.ToastPosition.ScreenBottom);
+        ShowToast(message, fontSize: 20, durationMs: 3500, position: Features.ToastWindow.ToastPosition.ScreenBottom, AppConstants.IconTexts.ClipBoard);
     }
 
     /// <summary>
@@ -367,9 +366,9 @@ public partial class App : Application
     /// <param name="fontSize">フォントサイズ（省略時 13）</param>
     /// <param name="durationMs">表示時間ミリ秒（省略時 3000）</param>
     /// <param name="position">表示位置（省略時 ScreenBottom）</param>
-    public static void ShowToast(string text, double fontSize = 13, int durationMs = 3000, ToastPosition position = ToastPosition.ScreenBottom)
+    public static void ShowToast(string text, double fontSize = 13, int durationMs = 3000, ToastPosition position = ToastPosition.ScreenBottom, string? iconText = null)
     {
-        ToastWindow.Show(text, fontSize, durationMs, position);
+        ToastWindow.Show(text, fontSize, durationMs, position, iconText);
     }
 
     /// <summary>

@@ -1,8 +1,9 @@
-using System.Globalization;
 using System.Windows;
-using System.Windows.Media;
+using System.Windows.Controls;
 using System.Windows.Media.Animation;
-
+using System.Windows.Documents; // Run クラスに必要
+using System.Windows.Media;
+using System.Drawing;     // FontFamily クラスに必要
 
 namespace Listhing.Features.ToastWindow;
 
@@ -28,19 +29,34 @@ public partial class ToastWindow : Window
     private readonly int _durationMs;
     private readonly ToastPosition _position;
 
-    private ToastWindow(string text, double fontSize, int durationMs, ToastPosition position)
+    private ToastWindow(string text, double fontSize, int durationMs, ToastPosition position, string? icon=null)
     {
         InitializeComponent();
         _durationMs = durationMs;
         _position = position;
 
-        MessageText.Text = text;
-        MessageText.FontSize = fontSize;
+        if (icon == null)
+        {
+            MessageText.Text = text;
+            MessageText.FontSize = fontSize;
+        }
+        else
+        {
+            MessageText.Inlines.Add(new Run(icon)
+            {
+                FontFamily = new System.Windows.Media.FontFamily("Segoe Fluent Icons"),
+                FontSize = fontSize,
+            });
+            MessageText.Inlines.Add(new Run(": " + text)
+            {
+                FontSize = fontSize,
+            });
+        }
 
-        // FormattedText でテキストサイズを正確に計測してウィンドウサイズを確定する
-        var (textWidth, textHeight) = MeasureText(text, fontSize);
-        Width  = textWidth  + 8 * 2 + 8 * 2; // Padding左右 + Grid Margin左右
-        Height = textHeight + 6 * 2 + 4 + 10; // Padding上下 + Grid Margin上下
+        // 表示内容と同じ構造で計測してウィンドウサイズを確定する
+        var (textWidth, textHeight) = MeasureContent(text, fontSize, icon);
+        Width  = textWidth  + 8 * 3 + 8 * 2; // Padding左右 + Grid Margin左右
+        Height = textHeight + 6 * 2 + 6 + 12; // Padding上下 + Grid Margin上下
 
         Loaded += OnLoaded;
         Closed += OnClosed;
@@ -53,9 +69,15 @@ public partial class ToastWindow : Window
     /// <param name="fontSize">フォントサイズ</param>
     /// <param name="durationMs">表示時間（ミリ秒）</param>
     /// <param name="position">表示位置</param>
-    public static void Show(string text, double fontSize = 13, int durationMs = 3000, ToastPosition position = ToastPosition.ScreenBottom)
+    public static void Show(string text, double fontSize = 13, int durationMs = 3000, ToastPosition position = ToastPosition.ScreenBottom, string? iconText = null)
     {
-        var toast = new ToastWindow(text, fontSize, durationMs, position);
+        // 先頭の空白・改行をスキップし、最初の行を取り出す（最大100文字）
+        text = text.TrimStart();
+        var newline = text.IndexOfAny(['\r', '\n']);
+        if (newline >= 0) text = text[..newline] + "…";
+        if (text.Length > 100) text = text[..100] + "…";
+
+        var toast = new ToastWindow(text, fontSize, durationMs, position, iconText);
         toast.Show();
     }
 
@@ -160,24 +182,34 @@ public partial class ToastWindow : Window
     }
 
     /// <summary>
-    /// FormattedText でテキストの描画サイズを計測する。
+    /// 表示内容と同じ TextBlock 構造で描画サイズを計測する。
     /// </summary>
-    private (double width, double height) MeasureText(string text, double fontSize)
+    private (double width, double height) MeasureContent(string text, double fontSize, string? icon)
     {
-        var typeface = new Typeface(
-            MessageText.FontFamily ?? SystemFonts.MessageFontFamily,
-            MessageText.FontStyle,
-            MessageText.FontWeight,
-            MessageText.FontStretch);
-        var ft = new FormattedText(
-            text,
-            CultureInfo.CurrentUICulture,
-            FlowDirection.LeftToRight,
-            typeface,
-            fontSize,
-            Brushes.Black,
-            96.0);
-        return (ft.Width, ft.Height);
+        var tb = new TextBlock
+        {
+            FontFamily = MessageText.FontFamily ?? System.Windows.SystemFonts.MessageFontFamily,
+            FontStyle = MessageText.FontStyle,
+            FontWeight = MessageText.FontWeight,
+            FontStretch = MessageText.FontStretch,
+            TextWrapping = TextWrapping.NoWrap,
+        };
+        if (icon == null)
+        {
+            tb.Text = text;
+            tb.FontSize = fontSize;
+        }
+        else
+        {
+            tb.Inlines.Add(new Run(icon)
+            {
+                FontFamily = new System.Windows.Media.FontFamily("Segoe Fluent Icons"),
+                FontSize = fontSize,
+            });
+            tb.Inlines.Add(new Run(": " + text) { FontSize = fontSize });
+        }
+        tb.Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
+        return (tb.DesiredSize.Width, tb.DesiredSize.Height);
     }
 
     [System.Runtime.InteropServices.DllImport("user32.dll")]
