@@ -244,10 +244,17 @@ public partial class App : Application
 
     private static void OnDefaultOpenHotkey()
     {
-        // Pinned=false の PopWindow が1つも開いていなければマウス位置に新規作成
-        if (!_popWindows.Any(w => !w.Pinned))
+        GetCursorPos(out var pos);
+        var existing = _popWindows.FirstOrDefault();
+        if (existing != null)
         {
-            GetCursorPos(out var pos);
+            var pw = SettingsService.Settings.PopWindow;
+            existing.Left = pos.X - pw.Width / 2;
+            existing.Top  = pos.Y - pw.Height / 2;
+            existing.Activate();
+        }
+        else
+        {
             CreatePopWindow(pos);
         }
     }
