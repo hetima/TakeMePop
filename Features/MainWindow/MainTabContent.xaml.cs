@@ -15,20 +15,6 @@ public partial class MainTabContent : UserControl
         InitializeComponent();
     }
 
-    /// <summary>
-    /// カスタムリサイズグリップのドラッグイベントハンドラ
-    /// MainWindowのResizeGrip_DragDeltaを呼び出す
-    /// </summary>
-    private void ResizeGrip_DragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
-    {
-        // MainWindowのインスタンスを取得
-        var mainWindow = Window.GetWindow(this) as MainWindow;
-        if (mainWindow != null)
-        {
-            // MainWindowのResizeGrip_DragDeltaを呼び出す
-            mainWindow.ResizeGrip_DragDelta(sender, e);
-        }
-    }
 
     /// <summary>
     /// 視覚ツリーから指定された型の子要素を探す

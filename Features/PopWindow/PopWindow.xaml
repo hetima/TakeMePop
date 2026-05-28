@@ -53,6 +53,21 @@
                 <RowDefinition Height="28"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
+            <Thumb Width="16" Height="16"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Bottom"
+                   Grid.RowSpan="2"
+                   Panel.ZIndex="100"
+                   Cursor="SizeNWSE"
+                   DragDelta="ResizeGrip_DragDelta"
+                   Padding="0"
+                   Margin="0">
+                <Thumb.Template>
+                    <ControlTemplate>
+                        <Border Background="Transparent"/>
+                    </ControlTemplate>
+                </Thumb.Template>
+            </Thumb>
 
             <!-- タイトルバー（ドラッグ移動用） -->
             <Grid Grid.Row="0"

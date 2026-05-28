@@ -44,7 +44,7 @@ public partial class MainWindow : Window
         _viewModel.RestoreWindowSettings(this);
 
 
-        WindowTitleTextBlock.Text = title;
+        // WindowTitleTextBlock.Text = title;
     }
 
     /// <summary>
@@ -202,23 +202,6 @@ public partial class MainWindow : Window
     }
 
 
-
-    /// <summary>
-    /// カスタムリサイズグリップのドラッグイベントハンドラ
-    /// </summary>
-    public void ResizeGrip_DragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
-    {
-        // ウィンドウのサイズを変更
-        double newWidth = Width + e.HorizontalChange;
-        double newHeight = Height + e.VerticalChange;
-
-        // 最小サイズを制限
-        newWidth = Math.Max(newWidth, MinWidth);
-        newHeight = Math.Max(newHeight, MinHeight);
-
-        Width = newWidth;
-        Height = newHeight;
-    }
 
     /// <summary>
     /// ウィンドウのコンテンツがレンダリングされた後のイベントハンドラ

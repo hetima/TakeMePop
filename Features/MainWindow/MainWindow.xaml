@@ -103,10 +103,9 @@
                    Height="24"
                    HorizontalAlignment="Right"
                    VerticalAlignment="Bottom"
-                   Cursor="SizeNWSE"
+                   WindowChrome.ResizeGripDirection="BottomRight"
                    Margin="0"
-                   Padding="0"
-                   DragDelta="ResizeGrip_DragDelta">
+                   Padding="0">
                 <Thumb.Template>
                     <ControlTemplate>
                         <Border Background="Transparent"/>
