@@ -55,13 +55,16 @@ public class ClipboardService : IDisposable
         var item = ClipboardItem.TryCapture();
         if (item == null) return IntPtr.Zero;
 
-        // 直前の履歴と内容が同じテキストなら追加しない
+        // 直前の履歴と内容が同じなら追加しない
         var last = History.Count > 0 ? History[^1] : null;
-        if (last == null || last.Text != item.Text || last.HasFiles != item.HasFiles)
+        bool isDuplicate = last != null &&
+            last.Text == item.Text &&
+            Enumerable.SequenceEqual(last.Files ?? [], item.Files ?? []);
+        if (!isDuplicate)
             History.Add(item);
 
-        // スナップショット時刻より新しければ変化あり
-        if (item.Timestamp > _snapshotTime)
+        // スナップショット時刻より新しく、かつ内容が変化していれば変化あり
+        if (!isDuplicate && item.Timestamp > _snapshotTime)
             IsContentChanged = true;
 
         return IntPtr.Zero;

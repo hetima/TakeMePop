@@ -365,7 +365,7 @@
   </data>
 
   <data name="PwReuseDistanceLabel" xml:space="preserve">
-    <value>最利用距離</value>
+    <value>再利用距離</value>
   </data>
 
   <data name="PwReuseDistanceTooltip" xml:space="preserve">

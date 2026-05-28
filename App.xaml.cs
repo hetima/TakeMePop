@@ -257,6 +257,7 @@ public partial class App : Application
         var existing = FindNearbyPopWindow(nearPoint);
         if (existing != null)
         {
+            if (item != null) existing.SetItem(item);
             existing.Activate();
             return;
         }
@@ -268,6 +269,7 @@ public partial class App : Application
         win.Left = nearPoint.X - pw.Width / 2;
         win.Top = nearPoint.Y - pw.Height / 2;
         _popWindows.Add(win);
+        win.FontSize = SettingsService.Settings.FontSize;
         win.Show();
         if (item != null) win.SetItem(item);
         ApplyTheme(SettingsService.Settings.Theme, win);
@@ -387,9 +389,9 @@ public partial class App : Application
             fontSize = 14;
         }
 
-        foreach (var mainWindow in Application.Current.Windows.OfType<MainWindow>())
+        foreach (var window in _popWindows)
         {
-            mainWindow.FontSize = fontSize;
+            window.FontSize = fontSize;
         }
     }
 

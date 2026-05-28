@@ -21,6 +21,7 @@ public class PopWindowViewModel : ObservableObject
             OnPropertyChanged(nameof(DisplayText));
             OnPropertyChanged(nameof(IconText));
             OnPropertyChanged(nameof(FileIcon));
+            OnPropertyChanged(nameof(FileLabel));
             OnPropertyChanged(nameof(IsText));
             OnPropertyChanged(nameof(IsFile));
             OnPropertyChanged(nameof(HasContent));
@@ -66,4 +67,11 @@ public class PopWindowViewModel : ObservableObject
     public bool IsText => _item?.HasText == true && !(_item?.HasFiles == true);
     public bool IsFile => _item?.HasFiles == true;
     public bool HasContent => _item != null;
+
+    private bool _isDropTarget;
+    public bool IsDropTarget
+    {
+        get => _isDropTarget;
+        set { _isDropTarget = value; OnPropertyChanged(); }
+    }
 }

@@ -8,6 +8,7 @@ namespace Listhing.Features.PopWindow;
 public partial class PopWindow : Window
 {
     private PopWindowViewModel _viewModel;
+    private bool _isDraggingOut;
 
     public PopWindow()
     {
@@ -20,6 +21,12 @@ public partial class PopWindow : Window
 
     public void SetItem(ClipboardItem item) => _viewModel.Item = item;
 
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        if (e.Key == Key.Escape) Close();
+        base.OnKeyDown(e);
+    }
+
     private void TitleBar_MouseDown(object sender, MouseButtonEventArgs e)
     {
         if (e.ChangedButton == MouseButton.Left)
@@ -31,6 +38,23 @@ public partial class PopWindow : Window
         Close();
     }
 
+    private void CopyButton_Click(object sender, RoutedEventArgs e)
+    {
+        var item = _viewModel.Item;
+        if (item == null) return;
+
+        if (item.HasFiles && item.Files != null)
+        {
+            var coll = new System.Collections.Specialized.StringCollection();
+            coll.AddRange(item.Files.ToArray());
+            Clipboard.SetFileDropList(coll);
+        }
+        else if (item.HasText && item.Text != null)
+        {
+            Clipboard.SetText(item.Text);
+        }
+    }
+
     private void ContentArea_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         if (_viewModel.Item == null) return;
@@ -38,7 +62,20 @@ public partial class PopWindow : Window
         var data = BuildDataObject(_viewModel.Item);
         if (data == null) return;
 
+        _isDraggingOut = true;
         DragDrop.DoDragDrop(ContentArea, data, DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link);
+        _isDraggingOut = false;
+    }
+
+    private void ContentArea_DragEnter(object sender, DragEventArgs e)
+    {
+        if (_isDraggingOut) return;
+        _viewModel.IsDropTarget = true;
+    }
+
+    private void ContentArea_DragLeave(object sender, DragEventArgs e)
+    {
+        _viewModel.IsDropTarget = false;
     }
 
     private void ContentArea_DragOver(object sender, DragEventArgs e)
@@ -58,6 +95,7 @@ public partial class PopWindow : Window
 
     private void ContentArea_Drop(object sender, DragEventArgs e)
     {
+        _viewModel.IsDropTarget = false;
         var item = ClipboardItem.TryCreateFromDragData(e.Data);
         if (item != null)
             _viewModel.Item = item;

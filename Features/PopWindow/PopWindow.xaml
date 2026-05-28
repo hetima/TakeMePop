@@ -3,17 +3,47 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d"
         Width="120" Height="120"
         WindowStyle="None"
-        AllowsTransparency="True"
-        Background="Transparent"
+        AllowsTransparency="False"
         Topmost="True"
         ShowInTaskbar="False"
-        ResizeMode="CanResizeWithGrip"
-        MinWidth="64" MinHeight="64">
-    <Border Background="#CC222222"
-            BorderBrush="#88FFFFFF"
+        MinWidth="120" MinHeight="120">
+    <Window.Resources>
+        <Style x:Key="ContentAreaStyle" TargetType="Border">
+            <Setter Property="Background" Value="Transparent"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsDropTarget}" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource AccentFillColorSelectedTextBackgroundBrush}"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource AccentFillColorDefaultBrush}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="CloseButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Ellipse x:Name="Bg" Fill="Transparent"/>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bg" Property="Fill" Value="{DynamicResource ButtonBorderBrushPressed}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bg" Property="Fill" Value="{DynamicResource ControlStrokeColorSecondaryBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Border
             BorderThickness="1"
             CornerRadius="6">
         <Grid>
@@ -27,39 +57,48 @@
                   x:Name="TitleBar"
                   Background="Transparent"
                   MouseDown="TitleBar_MouseDown">
-                <TextBlock Text="Pop" Foreground="#AAFFFFFF"
-                           VerticalAlignment="Center" Margin="8,0,0,0"
-                           FontSize="11"/>
-                <Button x:Name="CloseButton"
-                        Content="✕"
-                        Width="20" Height="20"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
-                        Margin="0,0,4,0"
-                        Background="Transparent"
-                        Foreground="#AAFFFFFF"
-                        BorderThickness="0"
-                        FontSize="10"
-                        Cursor="Hand"
-                        Click="CloseButton_Click"/>
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Margin="0,0,4,0">
+                    <Button x:Name="CopyButton"
+                            FontFamily="{StaticResource SymbolThemeFontFamily}"
+                            Style="{StaticResource CloseButtonStyle}"
+                            Foreground="{DynamicResource TextControlForeground}"
+                            Content="&#xE8C8;"
+                            Width="26" Height="26"
+                            FontSize="16"
+                            Visibility="{Binding HasContent, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            Click="CopyButton_Click"/>
+                    <Button x:Name="CloseButton"
+                            FontFamily="{StaticResource SymbolThemeFontFamily}"
+                            Style="{StaticResource CloseButtonStyle}"
+                            Foreground="{DynamicResource TextControlForeground}"
+                            Content="&#xE106;"
+                            Width="26" Height="26"
+                            FontSize="16"
+                            Click="CloseButton_Click"/>
+                </StackPanel>
             </Grid>
 
             <!-- コンテンツ領域（ドラッグ開始・ドロップ受付） -->
             <Border Grid.Row="1"
                     x:Name="ContentArea"
+                    Style="{StaticResource ContentAreaStyle}"
                     Margin="4,0,4,4"
-                    Background="#22FFFFFF"
-                    CornerRadius="4"
+                    CornerRadius="6"
+                    BorderThickness="2"
+                    BorderBrush="{DynamicResource SurfaceStrokeColorDefaultBrush}"
                     AllowDrop="True"
                     Cursor="Hand"
                     MouseLeftButtonDown="ContentArea_MouseLeftButtonDown"
+                    DragEnter="ContentArea_DragEnter"
+                    DragLeave="ContentArea_DragLeave"
                     DragOver="ContentArea_DragOver"
                     Drop="ContentArea_Drop">
                 <Grid>
                     <!-- 中身なし: ドロップ誘導テキスト -->
                     <TextBlock Text="Drop here"
-                               Foreground="#55FFFFFF"
-                               FontSize="10"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Visibility="{Binding HasContent, Converter={StaticResource InverseBooleanToVisibilityConverter}}"/>
@@ -70,8 +109,6 @@
                                   Padding="4"
                                   Visibility="{Binding IsText, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <TextBlock Text="{Binding DisplayText}"
-                                   Foreground="#DDFFFFFF"
-                                   FontSize="11"
                                    TextWrapping="Wrap"/>
                     </ScrollViewer>
 
@@ -86,14 +123,11 @@
                                Visibility="{Binding FileIcon, Converter={StaticResource NullToCollapsedConverter}}"/>
                         <!-- 複数ファイル: Stack絵文字 -->
                         <TextBlock Text="{Binding IconText}"
-                                   FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
-                                   FontSize="28"
-                                   Foreground="#DDFFFFFF"
+                                   FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                   FontSize="48"
                                    HorizontalAlignment="Center"
                                    Visibility="{Binding IconText, Converter={StaticResource StringToVisibilityConverter}}"/>
                         <TextBlock Text="{Binding FileLabel}"
-                                   Foreground="#DDFFFFFF"
-                                   FontSize="10"
                                    HorizontalAlignment="Center"
                                    TextWrapping="Wrap"
                                    MaxWidth="100"
