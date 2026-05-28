@@ -1,3 +1,4 @@
+using Listhing.Helpers;
 using SharpHook;
 using SharpHook.Data;
 using System.Windows.Threading;
@@ -14,6 +15,10 @@ public class KeyboardHookService
     private DateTime _lastCtrlCTime = DateTime.MinValue;
     private bool _cKeyReleased = true;
 
+    // グローバルホットキー登録リスト（スナップショット方式でスレッドセーフに読み取る）
+    private readonly List<(ShortcutKey key, Action callback)> _hotkeys = new();
+    private volatile (ShortcutKey key, Action callback)[] _hotkeySnapshot = [];
+
     public event EventHandler? CtrlCDoubleTapped;
 
     public KeyboardHookService(GlobalHookService globalHook, Dispatcher dispatcher, ClipboardService clipboard)
@@ -24,8 +29,39 @@ public class KeyboardHookService
         globalHook.KeyReleased += OnKeyReleased;
     }
 
+    /// <summary>
+    /// グローバルホットキーを登録する。同一キーが既に登録済みの場合は上書きする。
+    /// </summary>
+    public void RegisterHotkey(ShortcutKey shortcut, Action callback)
+    {
+        if (shortcut.IsEmpty) return;
+        _hotkeys.RemoveAll(h => h.key.Equals(shortcut));
+        _hotkeys.Add((shortcut, callback));
+        _hotkeySnapshot = _hotkeys.ToArray();
+    }
+
+    /// <summary>
+    /// グローバルホットキーの登録を解除する。
+    /// </summary>
+    public void UnregisterHotkey(ShortcutKey shortcut)
+    {
+        _hotkeys.RemoveAll(h => h.key.Equals(shortcut));
+        _hotkeySnapshot = _hotkeys.ToArray();
+    }
+
     private void OnKeyPressed(object? sender, KeyboardHookEventArgs e)
     {
+        // グローバルホットキー照合（スナップショットを使ってスレッドセーフに読み取る）
+        foreach (var (key, callback) in _hotkeySnapshot)
+        {
+            if (key.MatchesHook(e))
+            {
+                var cb = callback;
+                _dispatcher.BeginInvoke(cb);
+                break;
+            }
+        }
+
         if (e.Data.KeyCode != KeyCode.VcC) return;
         if (!e.RawEvent.Mask.HasFlag(EventMask.LeftCtrl) &&
             !e.RawEvent.Mask.HasFlag(EventMask.RightCtrl)) return;
