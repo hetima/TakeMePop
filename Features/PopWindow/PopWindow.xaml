@@ -10,7 +10,8 @@
         Background="Transparent"
         Topmost="True"
         ShowInTaskbar="False"
-        ResizeMode="CanResizeWithGrip">
+        ResizeMode="CanResizeWithGrip"
+        MinWidth="64" MinHeight="64">
     <Border Background="#CC222222"
             BorderBrush="#88FFFFFF"
             BorderThickness="1"
@@ -43,9 +44,64 @@
                         Click="CloseButton_Click"/>
             </Grid>
 
-            <!-- コンテンツ領域 -->
-            <Grid Grid.Row="1" Margin="4,0,4,4">
-            </Grid>
+            <!-- コンテンツ領域（ドラッグ開始・ドロップ受付） -->
+            <Border Grid.Row="1"
+                    x:Name="ContentArea"
+                    Margin="4,0,4,4"
+                    Background="#22FFFFFF"
+                    CornerRadius="4"
+                    AllowDrop="True"
+                    Cursor="Hand"
+                    MouseLeftButtonDown="ContentArea_MouseLeftButtonDown"
+                    DragOver="ContentArea_DragOver"
+                    Drop="ContentArea_Drop">
+                <Grid>
+                    <!-- 中身なし: ドロップ誘導テキスト -->
+                    <TextBlock Text="Drop here"
+                               Foreground="#55FFFFFF"
+                               FontSize="10"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Visibility="{Binding HasContent, Converter={StaticResource InverseBooleanToVisibilityConverter}}"/>
+
+                    <!-- テキストアイテム表示 -->
+                    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Disabled"
+                                  Padding="4"
+                                  Visibility="{Binding IsText, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <TextBlock Text="{Binding DisplayText}"
+                                   Foreground="#DDFFFFFF"
+                                   FontSize="11"
+                                   TextWrapping="Wrap"/>
+                    </ScrollViewer>
+
+                    <!-- ファイルアイテム表示 -->
+                    <StackPanel HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Visibility="{Binding IsFile, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <!-- 単一ファイル: シェルアイコン -->
+                        <Image Source="{Binding FileIcon}"
+                               Width="32" Height="32"
+                               HorizontalAlignment="Center"
+                               Visibility="{Binding FileIcon, Converter={StaticResource NullToCollapsedConverter}}"/>
+                        <!-- 複数ファイル: Stack絵文字 -->
+                        <TextBlock Text="{Binding IconText}"
+                                   FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                                   FontSize="28"
+                                   Foreground="#DDFFFFFF"
+                                   HorizontalAlignment="Center"
+                                   Visibility="{Binding IconText, Converter={StaticResource StringToVisibilityConverter}}"/>
+                        <TextBlock Text="{Binding FileLabel}"
+                                   Foreground="#DDFFFFFF"
+                                   FontSize="10"
+                                   HorizontalAlignment="Center"
+                                   TextWrapping="Wrap"
+                                   MaxWidth="100"
+                                   TextTrimming="CharacterEllipsis"
+                                   Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
         </Grid>
     </Border>
 </Window>

@@ -228,7 +228,8 @@ public partial class App : Application
     private static void OnCtrlCDoubleTapped(object? sender, EventArgs e)
     {
         GetCursorPos(out var pos);
-        CreatePopWindow(pos);
+        var item = ClipboardService.History.Count > 0 ? ClipboardService.History[^1] : null;
+        CreatePopWindow(pos, item);
     }
 
     private static void OnTransparentGuardChanged(object? sender, EventArgs e)
@@ -251,7 +252,7 @@ public partial class App : Application
         _transparentWindow?.Hide();
     }
 
-    public static void CreatePopWindow(System.Drawing.Point nearPoint)
+    public static void CreatePopWindow(System.Drawing.Point nearPoint, ClipboardItem? item = null)
     {
         var existing = FindNearbyPopWindow(nearPoint);
         if (existing != null)
@@ -268,6 +269,7 @@ public partial class App : Application
         win.Top = nearPoint.Y - pw.Height / 2;
         _popWindows.Add(win);
         win.Show();
+        if (item != null) win.SetItem(item);
         ApplyTheme(SettingsService.Settings.Theme, win);
     }
 

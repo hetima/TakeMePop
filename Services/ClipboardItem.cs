@@ -23,6 +23,35 @@ public class ClipboardItem
         HasImage = hasImage;
     }
 
+    /// <summary>DragEventArgsのDataからClipboardItemを作成する。対応データがなければ null を返す</summary>
+    public static ClipboardItem? TryCreateFromDragData(System.Windows.IDataObject data)
+    {
+        try
+        {
+            var now = DateTime.UtcNow;
+            string? text = null;
+            IReadOnlyList<string>? files = null;
+
+            if (data.GetDataPresent(System.Windows.DataFormats.FileDrop))
+            {
+                var dropped = data.GetData(System.Windows.DataFormats.FileDrop) as string[];
+                if (dropped is { Length: > 0 })
+                    files = dropped;
+            }
+            if (data.GetDataPresent(System.Windows.DataFormats.UnicodeText))
+                text = data.GetData(System.Windows.DataFormats.UnicodeText) as string;
+            else if (data.GetDataPresent(System.Windows.DataFormats.Text))
+                text = data.GetData(System.Windows.DataFormats.Text) as string;
+
+            if (text == null && files == null) return null;
+            return new ClipboardItem(now, text, files, false);
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
     /// <summary>現在のクリップボードからスナップショットを作成する。取得失敗時は null を返す</summary>
     public static ClipboardItem? TryCapture()
     {
