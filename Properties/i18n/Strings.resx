@@ -41,7 +41,7 @@
   </resheader>
 
   <data name="ApplicationTitle" xml:space="preserve">
-    <value>Listhing</value>
+    <value>TakeMePop</value>
   </data>
 
   <data name="ThemeLabel" xml:space="preserve">
@@ -320,6 +320,10 @@
     <value>Setting</value>
   </data>
 
+  <data name="MenuItemOpenMainWindow" xml:space="preserve">
+    <value>Open Main Window</value>
+  </data>
+
   <data name="TgSectionTitle" xml:space="preserve">
     <value>Transparent Guard</value>
   </data>
@@ -375,7 +379,6 @@
   <data name="PwSectionTitle" xml:space="preserve">
     <value>Pop Panel</value>
   </data>
-
 
   <data name="PwAllowMultipleWindowsLabel" xml:space="preserve">
     <value>Allow Multiple Windows</value>

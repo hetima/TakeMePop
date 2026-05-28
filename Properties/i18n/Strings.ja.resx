@@ -41,7 +41,7 @@
   </resheader>
 
   <data name="ApplicationTitle" xml:space="preserve">
-    <value>Listhing</value>
+    <value>TakeMePop</value>
   </data>
 
   <data name="ThemeLabel" xml:space="preserve">
@@ -316,6 +316,10 @@
     <value>環境設定</value>
   </data>
 
+  <data name="MenuItemOpenMainWindow" xml:space="preserve">
+    <value>メインウィンドウを開く</value>
+  </data>
+
   <data name="MenuItemQuit" xml:space="preserve">
     <value>終了</value>
   </data>
@@ -375,7 +379,6 @@
   <data name="PwSectionTitle" xml:space="preserve">
     <value>ポップパネル</value>
   </data>
-
 
   <data name="PwAllowMultipleWindowsLabel" xml:space="preserve">
     <value>複数のウィンドウを使用</value>

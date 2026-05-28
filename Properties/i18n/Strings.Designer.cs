@@ -250,6 +250,12 @@ namespace Listhing {
             }
         }
 
+        public static string MenuItemOpenMainWindow {
+            get {
+                return ResourceManager.GetString("MenuItemOpenMainWindow", resourceCulture);
+            }
+        }
+
         public static string MenuItemQuit {
             get {
                 return ResourceManager.GetString("MenuItemQuit", resourceCulture);

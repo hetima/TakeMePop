@@ -112,6 +112,8 @@
                     Drop="ContentArea_Drop">
                 <Border.ContextMenu>
                     <ContextMenu>
+                        <MenuItem Header="{x:Static res:Strings.MenuItemOpenMainWindow}" Click="OpenMainWindow_Click"/>
+                        <Separator/>
                         <MenuItem Header="{x:Static res:Strings.MenuItemSetting}" Click="Setting_Click"/>
                         <MenuItem Header="{x:Static res:Strings.MenuItemQuit}" Click="Quit_Click"/>
                     </ContextMenu>

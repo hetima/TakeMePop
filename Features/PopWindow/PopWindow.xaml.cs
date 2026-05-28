@@ -69,6 +69,11 @@ public partial class PopWindow : Window
         _viewModel.Pinned = !_viewModel.Pinned;
     }
 
+    private void OpenMainWindow_Click(object sender, RoutedEventArgs e)
+    {
+        App.ShowMainWindow();
+    }
+
     private void Setting_Click(object sender, RoutedEventArgs e)
     {
         App.ShowSettingsWindow();

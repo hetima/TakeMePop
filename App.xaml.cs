@@ -413,22 +413,22 @@ public partial class App : Application
         Shutdown();
     }
     
-    public static bool CreateMainWindow(string title)
+    /// <summary>
+    /// MainWindowを表示する。既に開いていれば前面に出す。
+    /// </summary>
+    public static void ShowMainWindow()
     {
-
-        MainWindow? mainWindow = null;
-        if (mainWindow != null)
+        foreach (var win in Application.Current.Windows.OfType<MainWindow>())
         {
-            mainWindow.Activate();
-            return true;
+            win.Activate();
+            return;
         }
 
-        mainWindow = new MainWindow(title);
+        var mainWindow = new MainWindow();
         mainWindow.FontSize = SettingsService.Settings.FontSize;
         mainWindow.Show();
         // Show()した後に呼ぶ
         ApplyTheme(SettingsService.Settings.Theme, mainWindow);
-        return true;
     }
 
     /// <summary>

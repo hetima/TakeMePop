@@ -41,6 +41,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="32"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="28"/>
         </Grid.RowDefinitions>
         
         <!-- Title Bar with Menu Button -->
@@ -82,14 +83,36 @@
          <!-- メインコンテンツ領域 -->
          <Grid Grid.Row="1">
              <!-- メイン画面 -->
-             <!-- <views:MainTabContent x:Name="MainContent"/> -->
              
-             <!-- モーダルオーバーレイ -->
+             <!-- <views:MainTabContent x:Name="MainContent"/> -->
+
+
+            <!-- モーダルオーバーレイ -->
              <controls:ModalOverlay x:Name="ModalOverlay"
                                          Visibility="{Binding DataContext.IsModalVisible, RelativeSource={RelativeSource AncestorType=Window},  Converter={StaticResource BooleanToVisibilityConverter}}"
                                          ModalContent="{Binding CurrentModalContent}"
                                          CloseCommand="{Binding DataContext.ModalService.CloseModalCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                          Panel.ZIndex="100"/>
          </Grid>
+        <!-- StatusBar -->
+        <Grid Grid.Row="2">
+            <Border BorderBrush="{DynamicResource DividerStrokeColorDefaultBrush}"
+                    BorderThickness="0,1,0,0"
+                    Background="Transparent"/>
+            <Thumb Width="24"
+                   Height="24"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Bottom"
+                   Cursor="SizeNWSE"
+                   Margin="0"
+                   Padding="0"
+                   DragDelta="ResizeGrip_DragDelta">
+                <Thumb.Template>
+                    <ControlTemplate>
+                        <Border Background="Transparent"/>
+                    </ControlTemplate>
+                </Thumb.Template>
+            </Thumb>
+        </Grid>
     </Grid>
 </Window>
