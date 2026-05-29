@@ -39,18 +39,30 @@ public static class MenuHelper
 
         if (!string.IsNullOrWhiteSpace(iconText))
         {
-            TextBlock tb = new TextBlock
-            {
-                Text = iconText,
-                FontFamily = IconFont
-            };
-            result.Icon = tb;
+            result.SetIconText(iconText);
         }
 
         return result;
         
     }
-
+    /// <summary>
+    /// MenuItemにIconを付ける
+    /// </summary>
+    /// <param name="itm">MenuItem</param>
+    /// <param name="iconText">表示するアイコン</param>
+    public static void SetIconText(this MenuItem itm, string iconText)
+    {
+        if (!string.IsNullOrWhiteSpace(iconText))
+        {
+            TextBlock tb = new TextBlock
+            {
+                Text = iconText,
+                FontFamily = IconFont
+            };
+            itm.Icon = tb;
+        }
+    }
+    
     /// <summary>
     /// MenuItemにIconを付ける
     /// </summary>

@@ -161,7 +161,8 @@ public static class AppConstants
         public const string Pinned = "\uECCB";
         public const string Stack = "\uF156";
         public const string ClipBoard = "\uE77F";
-
+        public const string File = "\uE8A5";
+        
     }
 
     /// <summary>

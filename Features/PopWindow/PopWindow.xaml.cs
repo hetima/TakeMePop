@@ -1,6 +1,7 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
+using Listhing.Helpers;
 using Listhing.Services;
 
 namespace Listhing.Features.PopWindow;
@@ -67,6 +68,44 @@ public partial class PopWindow : Window
     private void CloseOnSuccessButton_Click(object sender, RoutedEventArgs e)
     {
         _viewModel.Pinned = !_viewModel.Pinned;
+    }
+
+    private void ContextMenu_Opened(object sender, RoutedEventArgs e)
+    {
+        if (sender is not System.Windows.Controls.ContextMenu contextMenu) return;
+        var historyItem = contextMenu.Items
+            .OfType<System.Windows.Controls.MenuItem>()
+            .FirstOrDefault(m => m.Name == "ClipboardHistoryMenuItem");
+        if (historyItem == null) return;
+
+        historyItem.Items.Clear();
+
+        var history = App.ClipboardService.History
+            .AsEnumerable()
+            .Reverse()
+            .Take(10);
+
+        foreach (var item in history)
+        {
+            var menuItem = MenuHelper.CreateMenuItem(item.GetHeadline(30));
+            menuItem.Tag = item;
+
+            if (item.HasFiles)
+            {
+                menuItem.SetIconText(AppConstants.IconTexts.File);
+            }
+
+            menuItem.Click += ClipboardHistoryItem_Click;
+            historyItem.Items.Add(menuItem);
+        }
+
+        historyItem.IsEnabled = historyItem.Items.Count > 0;
+    }
+
+    private void ClipboardHistoryItem_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is System.Windows.Controls.MenuItem { Tag: ClipboardItem item })
+            SetItem(item);
     }
 
     private void OpenMainWindow_Click(object sender, RoutedEventArgs e)

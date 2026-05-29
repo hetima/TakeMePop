@@ -126,7 +126,9 @@
                     DragOver="ContentArea_DragOver"
                     Drop="ContentArea_Drop">
                 <Border.ContextMenu>
-                    <ContextMenu>
+                    <ContextMenu Opened="ContextMenu_Opened">
+                        <MenuItem x:Name="ClipboardHistoryMenuItem" Header="クリップボード履歴"/>
+                        <Separator/>
                         <MenuItem Header="{x:Static res:Strings.MenuItemOpenMainWindow}" Click="OpenMainWindow_Click"/>
                         <Separator/>
                         <MenuItem Header="{x:Static res:Strings.MenuItemSetting}" Click="Setting_Click"/>
