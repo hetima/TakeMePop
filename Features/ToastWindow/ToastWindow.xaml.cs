@@ -31,7 +31,7 @@ public partial class ToastWindow : Window
     private string? _text;
     private string? _icon;
 
-    public ToastWindow(string text, double fontSize, int durationMs, ToastPosition position, string? icon=null)
+    public ToastWindow(string text, double fontSize, int durationMs, ToastPosition position, string? icon = null)
     {
         InitializeComponent();
         _durationMs = durationMs;
@@ -63,6 +63,16 @@ public partial class ToastWindow : Window
 
         Loaded += OnLoaded;
         Closed += OnClosed;
+    }
+
+    /// <summary>
+    /// 表示後にテキスト変更
+    /// </summary>
+    public void SetText(string text)
+    {
+        _text = text;
+        MessageText.Text = _text;
+        MeasureContent();
     }
 
     /// <summary>
@@ -208,8 +218,8 @@ public partial class ToastWindow : Window
         }
         tb.Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
 
-        Width = tb.DesiredSize.Width + 8 * 3 + 8 * 2, // Padding左右 + Grid Margin左右
-        Height = tb.DesiredSize.Height + 6 * 2 + 6 + 12 // Padding上下 + Grid Margin上下
+        Width = tb.DesiredSize.Width + 8 * 3 + 8 * 2; // Padding左右 + Grid Margin左右
+        Height = tb.DesiredSize.Height + 6 * 2 + 6 + 12; // Padding上下 + Grid Margin上下
     }
 
     [System.Runtime.InteropServices.DllImport("user32.dll")]
