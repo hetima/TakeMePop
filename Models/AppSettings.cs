@@ -64,6 +64,16 @@ public class PopWindowSettings
     [JsonPropertyName("height")]
     public double Height { get; set; } = 120;
 
+    [JsonPropertyName("linkDropFormat")]
+    public LinkDropFormat LinkDropFormat { get; set; } = LinkDropFormat.TitleAndUrl;
+}
+
+/// <summary>URLドロップ時のテキスト形式</summary>
+public enum LinkDropFormat
+{
+    TitleAndUrl,
+    Markdown,
+    UrlOnly,
 }
 
 public class TransparentGuardSettings

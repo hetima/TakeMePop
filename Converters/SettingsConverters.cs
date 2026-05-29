@@ -87,6 +87,18 @@ public class LanguageToIndexConverter : IValueConverter
 }
 
 /// <summary>
+/// LinkDropFormat enum to ComboBox index converter
+/// </summary>
+public class LinkDropFormatToIndexConverter : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        => value is LinkDropFormat fmt ? (int)fmt : 0;
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        => value is int index ? (LinkDropFormat)index : LinkDropFormat.TitleAndUrl;
+}
+
+/// <summary>
 /// Boolean to Visibility converter
 /// </summary>
 public class BooleanToVisibilityConverter : IValueConverter

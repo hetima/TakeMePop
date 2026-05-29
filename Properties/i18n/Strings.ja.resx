@@ -384,4 +384,20 @@
     <value>複数のウィンドウを使用</value>
   </data>
 
+  <data name="PwLinkDropFormatLabel" xml:space="preserve">
+    <value>リンクのドロップ形式</value>
+  </data>
+
+  <data name="PwLinkDropFormatTitleAndUrl" xml:space="preserve">
+    <value>タイトル + URL</value>
+  </data>
+
+  <data name="PwLinkDropFormatMarkdown" xml:space="preserve">
+    <value>Markdown</value>
+  </data>
+
+  <data name="PwLinkDropFormatUrlOnly" xml:space="preserve">
+    <value>URL のみ</value>
+  </data>
+
 </root>

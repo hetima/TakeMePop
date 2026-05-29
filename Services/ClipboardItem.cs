@@ -121,9 +121,7 @@ public class ClipboardItem : IDisposable
                     if (fgdTitle != null)
                         title = Path.GetFileNameWithoutExtension(fgdTitle);
                 }
-                text = string.IsNullOrEmpty(title) || title == url
-                    ? url
-                    : $"{title}\n{url}";
+                text = FormatUrlText(url, title, App.SettingsService.Settings.PopWindow.LinkDropFormat);
             }
             else if (data.GetDataPresent(System.Windows.DataFormats.UnicodeText))
                 text = data.GetData(System.Windows.DataFormats.UnicodeText) as string;
@@ -191,6 +189,18 @@ public class ClipboardItem : IDisposable
         }
 
         return result.Count > 0 ? result : null;
+    }
+
+    /// <summary>URLとタイトルを設定に従ってテキスト形式に変換する</summary>
+    private static string FormatUrlText(string url, string title, Models.LinkDropFormat format)
+    {
+        var hasTitle = !string.IsNullOrEmpty(title) && title != url;
+        return format switch
+        {
+            Models.LinkDropFormat.Markdown => hasTitle ? $"[{title}]({url})" : url,
+            Models.LinkDropFormat.UrlOnly  => url,
+            _                              => hasTitle ? $"{title}\n{url}" : url,
+        };
     }
 
     /// <summary>FileGroupDescriptorW から最初のファイル名を取得する（拡張子あり）</summary>

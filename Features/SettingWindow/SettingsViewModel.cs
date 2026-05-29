@@ -163,6 +163,14 @@ public class SettingsViewModel : INotifyPropertyChanged
     public ShortcutKey RevealKey => _settingsService.Settings.ShortcutSettings.RevealKey;
 
 
+    private PopWindowSettings Pw => _settingsService.Settings.PopWindow;
+
+    public Models.LinkDropFormat PwLinkDropFormat
+    {
+        get => Pw.LinkDropFormat;
+        set { if (Pw.LinkDropFormat != value) { Pw.LinkDropFormat = value; _settingsService.Save(); OnPropertyChanged(); } }
+    }
+
     private TransparentGuardSettings Tg => _settingsService.Settings.TransparentGuard;
 
     public bool TgIsEnabled

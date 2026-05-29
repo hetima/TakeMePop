@@ -316,6 +316,30 @@ namespace Listhing {
             }
         }
 
+        public static string PwLinkDropFormatLabel {
+            get {
+                return ResourceManager.GetString("PwLinkDropFormatLabel", resourceCulture);
+            }
+        }
+
+        public static string PwLinkDropFormatMarkdown {
+            get {
+                return ResourceManager.GetString("PwLinkDropFormatMarkdown", resourceCulture);
+            }
+        }
+
+        public static string PwLinkDropFormatTitleAndUrl {
+            get {
+                return ResourceManager.GetString("PwLinkDropFormatTitleAndUrl", resourceCulture);
+            }
+        }
+
+        public static string PwLinkDropFormatUrlOnly {
+            get {
+                return ResourceManager.GetString("PwLinkDropFormatUrlOnly", resourceCulture);
+            }
+        }
+
         public static string PwSectionTitle {
             get {
                 return ResourceManager.GetString("PwSectionTitle", resourceCulture);

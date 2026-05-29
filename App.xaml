@@ -45,6 +45,7 @@
             <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
             <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
             <converters:NullToCollapsedConverter x:Key="NullToCollapsedConverter"/>
+            <converters:LinkDropFormatToIndexConverter x:Key="LinkDropFormatToIndexConverter"/>
 
             <!-- TrayIcon -->
             <tb:TaskbarIcon x:Key="TrayIcon"

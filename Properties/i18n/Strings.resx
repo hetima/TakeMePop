@@ -384,4 +384,20 @@
     <value>Allow Multiple Windows</value>
   </data>
 
+  <data name="PwLinkDropFormatLabel" xml:space="preserve">
+    <value>Link Drop Format</value>
+  </data>
+
+  <data name="PwLinkDropFormatTitleAndUrl" xml:space="preserve">
+    <value>Title + URL</value>
+  </data>
+
+  <data name="PwLinkDropFormatMarkdown" xml:space="preserve">
+    <value>Markdown</value>
+  </data>
+
+  <data name="PwLinkDropFormatUrlOnly" xml:space="preserve">
+    <value>URL Only</value>
+  </data>
+
 </root>
