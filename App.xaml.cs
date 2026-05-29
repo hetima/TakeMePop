@@ -290,10 +290,7 @@ public partial class App : Application
         var prev = ClipboardService.PopLatestAndRestorePrevious();
         if (prev == null) return;
 
-        var message = prev.HasText && prev.Text != null
-            ? prev.Text
-            : prev.Files?[0] is string f ? System.IO.Path.GetFileName(f) : "?";
-        ShowToast(message, fontSize: 20, durationMs: 3500, position: Features.ToastWindow.ToastPosition.ScreenBottom, AppConstants.IconTexts.ClipBoard);
+        ShowToast(prev.GetHeadline(100), fontSize: 20, durationMs: 3500, position: ToastPosition.ScreenBottom, AppConstants.IconTexts.ClipBoard);
     }
 
     /// <summary>

@@ -15,6 +15,30 @@ public class ClipboardItem
     public bool HasText => Text != null;
     public bool HasFiles => Files is { Count: > 0 };
 
+    /// <summary>
+    /// トースト等の短い表示用に先頭1行を取り出す。テキストがなければファイル名、それもなければ "?"
+    /// </summary>
+    public string GetHeadline(int maxLength = 100)
+    {
+        string text;
+        if (HasText && Text != null)
+        {
+            text = Text.TrimStart();
+            var newline = text.IndexOfAny(['\r', '\n']);
+            if (newline >= 0) text = text[..newline] + "…";
+        }
+        else if (Files?[0] is string f)
+        {
+            text = System.IO.Path.GetFileName(f);
+        }
+        else
+        {
+            return "?";
+        }
+        if (text.Length > maxLength) text = text[..maxLength] + "…";
+        return text;
+    }
+
     private ClipboardItem(DateTime timestamp, string? text, IReadOnlyList<string>? files, bool hasImage)
     {
         Timestamp = timestamp;

@@ -71,12 +71,6 @@ public partial class ToastWindow : Window
     /// <param name="position">表示位置</param>
     public static void Show(string text, double fontSize = 13, int durationMs = 3000, ToastPosition position = ToastPosition.ScreenBottom, string? iconText = null)
     {
-        // 先頭の空白・改行をスキップし、最初の行を取り出す（最大100文字）
-        text = text.TrimStart();
-        var newline = text.IndexOfAny(['\r', '\n']);
-        if (newline >= 0) text = text[..newline] + "…";
-        if (text.Length > 100) text = text[..100] + "…";
-
         var toast = new ToastWindow(text, fontSize, durationMs, position, iconText);
         toast.Show();
     }
