@@ -79,6 +79,13 @@ public class ClipboardItem : IDisposable
         HasImage = hasImage;
     }
 
+    /// <summary>デバッグ用：利用可能なフォーマット一覧をDebug出力する</summary>
+    public static void DebugDumpFormats(System.Windows.IDataObject data)
+    {
+        foreach (var fmt in data.GetFormats())
+            System.Diagnostics.Debug.WriteLine($"[DragDrop] format: {fmt}");
+    }
+
     /// <summary>DragEventArgsのDataからClipboardItemを作成する。対応データがなければ null を返す</summary>
     public static ClipboardItem? TryCreateFromDragData(System.Windows.IDataObject data)
     {
@@ -94,14 +101,39 @@ public class ClipboardItem : IDisposable
                 if (dropped is { Length: > 0 })
                     files = dropped;
             }
-            if (data.GetDataPresent(System.Windows.DataFormats.UnicodeText))
+            // ファイルがない場合のみURL検出。
+            // FileGroupDescriptorW があり拡張子が .url でない場合は仮想ファイルなのでURLとみなさない
+            bool isUrlDrop = files == null;
+            if (isUrlDrop && data.GetDataPresent("FileGroupDescriptorW"))
+            {
+                var firstName = GetFirstFileDescriptorName(data);
+                isUrlDrop = firstName != null &&
+                    Path.GetExtension(firstName).Equals(".url", StringComparison.OrdinalIgnoreCase);
+            }
+            var urlInfo = isUrlDrop ? Helpers.DragDropHelper.GetUrlFromDropData(data) : null;
+            if (urlInfo != null)
+            {
+                var (url, title) = urlInfo.Value;
+                // タイトルがURLと同じ（Chrome/Edge の text/uri-list）なら FileGroupDescriptorW のファイル名で補完
+                if (title == url && data.GetDataPresent("FileGroupDescriptorW"))
+                {
+                    var fgdTitle = GetFirstFileDescriptorName(data);
+                    if (fgdTitle != null)
+                        title = Path.GetFileNameWithoutExtension(fgdTitle);
+                }
+                text = string.IsNullOrEmpty(title) || title == url
+                    ? url
+                    : $"{title}\n{url}";
+            }
+            else if (data.GetDataPresent(System.Windows.DataFormats.UnicodeText))
                 text = data.GetData(System.Windows.DataFormats.UnicodeText) as string;
             else if (data.GetDataPresent(System.Windows.DataFormats.Text))
                 text = data.GetData(System.Windows.DataFormats.Text) as string;
 
             // CF_HDROP がなく仮想ファイル（ブラウザからの画像等）の場合は一時ファイルに書き出す
+            // URL の場合は .url ファイルを一時展開しない
             IReadOnlyList<string>? tempFiles = null;
-            if (files == null && data.GetDataPresent("FileGroupDescriptorW"))
+            if (files == null && urlInfo == null && data.GetDataPresent("FileGroupDescriptorW"))
                 tempFiles = ExtractVirtualFiles(data);
 
             if (text == null && files == null && tempFiles == null) return null;
@@ -159,6 +191,30 @@ public class ClipboardItem : IDisposable
         }
 
         return result.Count > 0 ? result : null;
+    }
+
+    /// <summary>FileGroupDescriptorW から最初のファイル名を取得する（拡張子あり）</summary>
+    private static string? GetFirstFileDescriptorName(System.Windows.IDataObject wpfData)
+    {
+        if (wpfData is not System.Runtime.InteropServices.ComTypes.IDataObject comData) return null;
+        var fmt = new FORMATETC
+        {
+            cfFormat = (short)RegisterClipboardFormat("FileGroupDescriptorW"),
+            dwAspect = DVASPECT.DVASPECT_CONTENT,
+            lindex = -1,
+            tymed = TYMED.TYMED_HGLOBAL,
+        };
+        comData.GetData(ref fmt, out var medium);
+        if (medium.unionmember == IntPtr.Zero) return null;
+        try
+        {
+            var names = ReadFileGroupDescriptor(medium.unionmember);
+            return names.Count == 0 ? null : names[0];
+        }
+        finally
+        {
+            ReleaseStgMedium(ref medium);
+        }
     }
 
     /// <summary>FileContents を取得して指定パスに書き出す</summary>

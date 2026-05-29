@@ -200,6 +200,7 @@ public partial class PopWindow : Window
         _viewModel.IsDropTarget = false;
         if (_isDraggingOut)
             _droppedOnSelf = true;
+        ClipboardItem.DebugDumpFormats(e.Data);
         var item = ClipboardItem.TryCreateFromDragData(e.Data);
         if (item != null)
             _viewModel.Item = item;
