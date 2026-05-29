@@ -13,6 +13,7 @@ using System.Windows.Controls;
 using Listhing.Features.TransparentWindow;
 using Listhing.Features.PopWindow;
 using Listhing.Features.ToastWindow;
+using Listhing.Features.QuickHistoryWindow;
 using Listhing.Services;
 using Listhing.ViewModels;
 using Hardcodet.Wpf.TaskbarNotification;
@@ -79,6 +80,7 @@ public partial class App : Application
 
     private static TransparentWindow? _transparentWindow;
     private static readonly List<PopWindow> _popWindows = new();
+    private static QuickHistoryWindow? _quickHistoryWindow;
 
     public static TaskbarIcon? TrayIcon { get; set; }
 
@@ -232,12 +234,43 @@ public partial class App : Application
 
         KeyboardHookService.UnregisterHotkey(shortcuts.DefaultOpenKey);
         KeyboardHookService.UnregisterHotkey(shortcuts.RevealKey);
+        KeyboardHookService.UnregisterHotkey(shortcuts.QuickHistoryKey);
 
         if (!shortcuts.DefaultOpenKey.IsEmpty)
             KeyboardHookService.RegisterHotkey(shortcuts.DefaultOpenKey, OnDefaultOpenHotkey);
 
         if (!shortcuts.RevealKey.IsEmpty)
             KeyboardHookService.RegisterHotkey(shortcuts.RevealKey, OnRevealHotkey);
+
+        if (!shortcuts.QuickHistoryKey.IsEmpty)
+            KeyboardHookService.RegisterHotkey(shortcuts.QuickHistoryKey, ToggleQuickHistoryWindow);
+    }
+
+    /// <summary>
+    /// Quick History ウィンドウの表示・非表示を切り替える。
+    /// </summary>
+    public static void ToggleQuickHistoryWindow()
+    {
+        if (_quickHistoryWindow == null)
+        {
+            _quickHistoryWindow = new QuickHistoryWindow
+            {
+                FontSize = SettingsService.Settings.FontSize
+            };
+            ApplyTheme(SettingsService.Settings.Theme, _quickHistoryWindow);
+        }
+
+        if (_quickHistoryWindow.IsVisible)
+        {
+            _quickHistoryWindow.Hide();
+        }
+        else
+        {
+            GetCursorPos(out var pos);
+            _quickHistoryWindow.Left = pos.X - _quickHistoryWindow.Width / 2;
+            _quickHistoryWindow.Top = pos.Y - _quickHistoryWindow.Height / 2;
+            _quickHistoryWindow.Show();
+        }
     }
 
     /// <summary>
@@ -554,6 +587,7 @@ public partial class App : Application
         GlobalHookService?.Dispose();
         ClipboardService?.Dispose();
         _transparentWindow?.Close();
+        _quickHistoryWindow?.ForceClose();
         TrayIcon?.Dispose();
         // COMライブラリを解放
         CoUninitialize();

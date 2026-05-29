@@ -400,4 +400,16 @@
     <value>URL のみ</value>
   </data>
 
+  <data name="QuickHistoryActionLabel" xml:space="preserve">
+    <value>クイック履歴</value>
+  </data>
+
+  <data name="QuickHistoryWindowTitle" xml:space="preserve">
+    <value>Quick History</value>
+  </data>
+
+  <data name="QuickHistoryStatusBarText" xml:space="preserve">
+    <value>数字: ペースト  Ctrl+数字: 削除  Shift+数字: ペースト&amp;削除</value>
+  </data>
+
 </root>

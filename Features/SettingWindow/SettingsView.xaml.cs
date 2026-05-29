@@ -201,6 +201,25 @@ public partial class SettingsView : UserControl
     }
 
     /// <summary>
+    /// Quick History ショートカットキー編集ボタンクリックイベント
+    /// </summary>
+    private void EditQuickHistoryKey_Click(object sender, RoutedEventArgs e)
+    {
+        ShowEditShortcutKeyModal(Listhing.Strings.QuickHistoryActionLabel, App.SettingsService.Settings.ShortcutSettings.QuickHistoryKey, (shortcut) =>
+        {
+            if (shortcut != null)
+            {
+                App.SettingsService.Settings.ShortcutSettings.QuickHistoryKey = shortcut;
+                App.SettingsService.Save();
+                App.ApplyHotkeySettings();
+
+                var viewModel = DataContext as ViewModels.SettingsViewModel;
+                viewModel?.RefreshShortcutKeys();
+            }
+        });
+    }
+
+    /// <summary>
     /// ショートカットキー編集モーダルを表示する
     /// </summary>
     /// <param name="actionName">アクション名</param>

@@ -1,0 +1,105 @@
+<Window x:Class="Listhing.Features.QuickHistoryWindow.QuickHistoryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:res="clr-namespace:Listhing"
+        Width="360" Height="360"
+        WindowStyle="None"
+        AllowsTransparency="False"
+        Topmost="True"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        PreviewKeyDown="Window_PreviewKeyDown">
+    <Window.Resources>
+        <Style x:Key="CloseButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Ellipse x:Name="Bg" Fill="Transparent"/>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bg" Property="Fill" Value="{DynamicResource ButtonBorderBrushPressed}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bg" Property="Fill" Value="{DynamicResource ControlStrokeColorSecondaryBrush}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="HistoryListBoxItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Padding" Value="8,5,8,5"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        </Style>
+    </Window.Resources>
+    <Border BorderThickness="1"
+            CornerRadius="6">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="28"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- タイトルバー -->
+            <Grid Grid.Row="0"
+                  x:Name="TitleBar"
+                  Background="Transparent"
+                  MouseDown="TitleBar_MouseDown">
+                <TextBlock Text="{x:Static res:Strings.QuickHistoryWindowTitle}"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           FontWeight="SemiBold"
+                           FontSize="12"/>
+                <Button x:Name="CloseButton"
+                        FontFamily="{StaticResource SymbolThemeFontFamily}"
+                        Style="{StaticResource CloseButtonStyle}"
+                        Foreground="{DynamicResource TextControlForeground}"
+                        Content="&#xE106;"
+                        Width="24" Height="24"
+                        FontSize="14"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Margin="0,0,4,0"
+                        Click="CloseButton_Click"/>
+            </Grid>
+
+            <!-- 履歴リスト -->
+            <ListBox Grid.Row="1"
+                     x:Name="HistoryListBox"
+                     ItemsSource="{Binding Items}"
+                     BorderThickness="0"
+                     Background="Transparent"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ItemContainerStyle="{StaticResource HistoryListBoxItemStyle}"
+                     Margin="4,0,4,0">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Label}"
+                                   TextTrimming="CharacterEllipsis"
+                                   TextWrapping="NoWrap"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <!-- ステータスバー -->
+            <Border Grid.Row="2"
+                    BorderThickness="0,1,0,0"
+                    BorderBrush="{DynamicResource SurfaceStrokeColorDefaultBrush}"
+                    Padding="8,5">
+                <TextBlock Text="{x:Static res:Strings.QuickHistoryStatusBarText}"
+                           FontSize="12"
+                           Opacity="0.7"
+                           TextWrapping="Wrap"/>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

@@ -24,6 +24,12 @@ public class ClipboardService : IDisposable
     /// <summary>NotifyFirstCtrlC() 以降にクリップボードが更新されたか</summary>
     public bool IsContentChanged { get; private set; }
 
+    /// <summary>履歴が追加・削除されたときに発火する</summary>
+    public event Action? HistoryChanged;
+
+    /// <summary>外部から履歴変更を通知する（手動削除後などに呼ぶ）</summary>
+    public void NotifyHistoryChanged() => HistoryChanged?.Invoke();
+
     public List<ClipboardItem> History { get; } = [];
 
     public ClipboardService()
@@ -64,6 +70,7 @@ public class ClipboardService : IDisposable
         {
             History.Add(item);
             TrimHistoryIfNeeded();
+            HistoryChanged?.Invoke();
         }
 
         // スナップショット時刻より新しく、かつ内容が変化していれば変化あり
@@ -83,6 +90,7 @@ public class ClipboardService : IDisposable
 
         History.RemoveAt(History.Count - 1);
         var prev = History[^1];
+        HistoryChanged?.Invoke();
 
         // クリップボード更新による履歴追加を抑制するためスナップショット時刻を更新
         _snapshotTime = DateTime.UtcNow;

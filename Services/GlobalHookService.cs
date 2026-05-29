@@ -9,6 +9,7 @@ namespace Listhing.Services;
 public class GlobalHookService : IDisposable
 {
     private readonly SimpleGlobalHook _hook;
+    private readonly EventSimulator _simulator = new();
 
     public event EventHandler<MouseHookEventArgs>? MousePressed;
     public event EventHandler<MouseHookEventArgs>? MouseReleased;
@@ -27,6 +28,10 @@ public class GlobalHookService : IDisposable
     }
 
     public void Start() => _hook.RunAsync();
+
+    /// <summary>Ctrl+V キーストロークをシミュレートする</summary>
+    public void PostCtrlV() =>
+        _simulator.SimulateKeyStroke(KeyCode.VcLeftControl, KeyCode.VcV);
 
     public void Dispose() => _hook.Dispose();
 }

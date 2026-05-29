@@ -162,6 +162,11 @@ public class SettingsViewModel : INotifyPropertyChanged
     /// </summary>
     public ShortcutKey RevealKey => _settingsService.Settings.ShortcutSettings.RevealKey;
 
+    /// <summary>
+    /// Quick History ウィンドウを表示するショートカットキー
+    /// </summary>
+    public ShortcutKey QuickHistoryKey => _settingsService.Settings.ShortcutSettings.QuickHistoryKey;
+
 
     private PopWindowSettings Pw => _settingsService.Settings.PopWindow;
 
@@ -204,6 +209,7 @@ public class SettingsViewModel : INotifyPropertyChanged
     {
         OnPropertyChanged(nameof(DefaultOpenKey));
         OnPropertyChanged(nameof(RevealKey));
+        OnPropertyChanged(nameof(QuickHistoryKey));
     }
 
     /// <summary>

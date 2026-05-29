@@ -208,6 +208,11 @@ public class ShortcutSetting
     [JsonPropertyName("revealKey")]
     public ShortcutKey RevealKey { get; set; } = new ShortcutKey(System.Windows.Input.Key.None);
 
+    /// <summary>
+    /// クイック履歴ウィンドウを表示するショートカットキー
+    /// </summary>
+    [JsonPropertyName("quickHistoryKey")]
+    public ShortcutKey QuickHistoryKey { get; set; } = new ShortcutKey(System.Windows.Input.Key.None);
 
 }
 

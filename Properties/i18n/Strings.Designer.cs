@@ -346,6 +346,24 @@ namespace Listhing {
             }
         }
 
+        public static string QuickHistoryActionLabel {
+            get {
+                return ResourceManager.GetString("QuickHistoryActionLabel", resourceCulture);
+            }
+        }
+
+        public static string QuickHistoryStatusBarText {
+            get {
+                return ResourceManager.GetString("QuickHistoryStatusBarText", resourceCulture);
+            }
+        }
+
+        public static string QuickHistoryWindowTitle {
+            get {
+                return ResourceManager.GetString("QuickHistoryWindowTitle", resourceCulture);
+            }
+        }
+
         public static string RemoveConflictingShortcutButton {
             get {
                 return ResourceManager.GetString("RemoveConflictingShortcutButton", resourceCulture);

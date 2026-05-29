@@ -400,4 +400,16 @@
     <value>URL Only</value>
   </data>
 
+  <data name="QuickHistoryActionLabel" xml:space="preserve">
+    <value>Quick History</value>
+  </data>
+
+  <data name="QuickHistoryWindowTitle" xml:space="preserve">
+    <value>Quick History</value>
+  </data>
+
+  <data name="QuickHistoryStatusBarText" xml:space="preserve">
+    <value>Num: Paste  Ctrl+Num: Delete  Shift+Num: Paste&amp;Delete</value>
+  </data>
+
 </root>
