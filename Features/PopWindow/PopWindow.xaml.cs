@@ -19,7 +19,7 @@ public partial class PopWindow : Window
         InitializeComponent();
         _viewModel = new PopWindowViewModel();
         DataContext = _viewModel;
-        Closed += (_, _) => App.RemovePopWindow(this);
+        Closed += (_, _) => { _viewModel.Item?.Dispose(); App.RemovePopWindow(this); };
         SizeChanged += (_, _) => App.SavePopWindowSize(Width, Height);
     }
 
@@ -151,6 +151,13 @@ public partial class PopWindow : Window
         var effect = DragDrop.DoDragDrop(ContentArea, data, DragDropEffects.Copy | DragDropEffects.Move | DragDropEffects.Link);
         _isDraggingOut = false;
 
+        // Move された場合は一時ファイルが消えている可能性があるのでアイテムをクリア
+        if (effect == DragDropEffects.Move && _viewModel.Item?.TempFiles != null)
+        {
+            _viewModel.Item.Dispose();
+            _viewModel.Item = null;
+        }
+
         if (effect != DragDropEffects.None && !_droppedOnSelf && !_viewModel.Pinned)
             Close();
     }
@@ -175,6 +182,7 @@ public partial class PopWindow : Window
     private void ContentArea_DragOver(object sender, DragEventArgs e)
     {
         if (e.Data.GetDataPresent(DataFormats.FileDrop) ||
+            e.Data.GetDataPresent("FileGroupDescriptorW") ||
             e.Data.GetDataPresent(DataFormats.UnicodeText) ||
             e.Data.GetDataPresent(DataFormats.Text))
         {
@@ -201,10 +209,10 @@ public partial class PopWindow : Window
     /// <summary>ClipboardItemからDragDrop用DataObjectを生成する</summary>
     private static DataObject? BuildDataObject(ClipboardItem item)
     {
-        if (item.HasFiles && item.Files != null)
+        if (item.HasFiles)
         {
             var coll = new System.Collections.Specialized.StringCollection();
-            coll.AddRange(item.Files.ToArray());
+            coll.AddRange(item.AllFiles.ToArray());
             var data = new DataObject();
             data.SetFileDropList(coll);
             return data;

@@ -16,6 +16,7 @@ public class PopWindowViewModel : ObservableObject
         get => _item;
         set
         {
+            _item?.Dispose();
             _item = value;
             OnPropertyChanged();
             OnPropertyChanged(nameof(DisplayText));
@@ -38,7 +39,7 @@ public class PopWindowViewModel : ObservableObject
     {
         get
         {
-            if (_item?.Files is { Count: > 1 })
+            if (_item?.AllFiles is { Count: > 1 })
                 return AppConstants.IconTexts.Stack;
             return string.Empty;
         }
@@ -49,8 +50,8 @@ public class PopWindowViewModel : ObservableObject
     {
         get
         {
-            if (_item?.Files is not { Count: 1 }) return null;
-            return ShellIconHelper.GetIcon(_item.Files[0]);
+            if (_item?.AllFiles is not { Count: 1 }) return null;
+            return ShellIconHelper.GetIcon(_item.AllFiles[0]);
         }
     }
 
@@ -59,10 +60,11 @@ public class PopWindowViewModel : ObservableObject
     {
         get
         {
-            if (_item?.Files is null) return string.Empty;
-            if (_item.Files.Count == 1)
-                return Path.GetFileName(_item.Files[0]) ?? _item.Files[0];
-            return $"{_item.Files.Count} files";
+            var files = _item?.AllFiles;
+            if (files is null or { Count: 0 }) return string.Empty;
+            if (files.Count == 1)
+                return Path.GetFileName(files[0]) ?? files[0];
+            return $"{files.Count} files";
         }
     }
 
@@ -78,8 +80,8 @@ public class PopWindowViewModel : ObservableObject
     {
         get
         {
-            if (_item?.Files is not { Count: 1 }) return false;
-            var ext = Path.GetExtension(_item.Files[0]).ToLowerInvariant();
+            if (_item?.AllFiles is not { Count: 1 }) return false;
+            var ext = Path.GetExtension(_item.AllFiles[0]).ToLowerInvariant();
             return ImageExtensions.Contains(ext);
         }
     }
@@ -89,12 +91,12 @@ public class PopWindowViewModel : ObservableObject
     {
         get
         {
-            if (!IsImageFile || _item?.Files is null) return null;
+            if (!IsImageFile || _item?.AllFiles is null) return null;
             try
             {
                 var bmp = new BitmapImage();
                 bmp.BeginInit();
-                bmp.UriSource = new Uri(_item.Files[0]);
+                bmp.UriSource = new Uri(_item.AllFiles[0]);
                 bmp.DecodePixelWidth = 256;
                 bmp.CacheOption = BitmapCacheOption.OnLoad;
                 bmp.EndInit();
