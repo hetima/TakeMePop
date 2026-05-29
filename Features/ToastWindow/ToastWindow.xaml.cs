@@ -28,35 +28,38 @@ public partial class ToastWindow : Window
 
     private readonly int _durationMs;
     private readonly ToastPosition _position;
+    private string? _text;
+    private string? _icon;
 
-    private ToastWindow(string text, double fontSize, int durationMs, ToastPosition position, string? icon=null)
+    public ToastWindow(string text, double fontSize, int durationMs, ToastPosition position, string? icon=null)
     {
         InitializeComponent();
         _durationMs = durationMs;
         _position = position;
+        _text = text;
+        _icon = icon;
+        FontSize = fontSize;
 
-        if (icon == null)
+        if (_icon == null)
         {
-            MessageText.Text = text;
+            MessageText.Text = _text;
             MessageText.FontSize = fontSize;
         }
         else
         {
-            MessageText.Inlines.Add(new Run(icon)
+            MessageText.Inlines.Add(new Run(_icon)
             {
                 FontFamily = new System.Windows.Media.FontFamily("Segoe Fluent Icons"),
                 FontSize = fontSize,
             });
-            MessageText.Inlines.Add(new Run(": " + text)
+            MessageText.Inlines.Add(new Run(": " + _text)
             {
                 FontSize = fontSize,
             });
         }
 
         // 表示内容と同じ構造で計測してウィンドウサイズを確定する
-        var (textWidth, textHeight) = MeasureContent(text, fontSize, icon);
-        Width  = textWidth  + 8 * 3 + 8 * 2; // Padding左右 + Grid Margin左右
-        Height = textHeight + 6 * 2 + 6 + 12; // Padding上下 + Grid Margin上下
+        MeasureContent();
 
         Loaded += OnLoaded;
         Closed += OnClosed;
@@ -178,8 +181,9 @@ public partial class ToastWindow : Window
     /// <summary>
     /// 表示内容と同じ TextBlock 構造で描画サイズを計測する。
     /// </summary>
-    private (double width, double height) MeasureContent(string text, double fontSize, string? icon)
+    private void MeasureContent()
     {
+
         var tb = new TextBlock
         {
             FontFamily = MessageText.FontFamily ?? System.Windows.SystemFonts.MessageFontFamily,
@@ -188,22 +192,24 @@ public partial class ToastWindow : Window
             FontStretch = MessageText.FontStretch,
             TextWrapping = TextWrapping.NoWrap,
         };
-        if (icon == null)
+        if (_icon == null)
         {
-            tb.Text = text;
-            tb.FontSize = fontSize;
+            tb.Text = _text;
+            tb.FontSize = FontSize;
         }
         else
         {
-            tb.Inlines.Add(new Run(icon)
+            tb.Inlines.Add(new Run(_icon)
             {
                 FontFamily = new System.Windows.Media.FontFamily("Segoe Fluent Icons"),
-                FontSize = fontSize,
+                FontSize = FontSize,
             });
-            tb.Inlines.Add(new Run(": " + text) { FontSize = fontSize });
+            tb.Inlines.Add(new Run(": " + _text) { FontSize = FontSize });
         }
         tb.Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
-        return (tb.DesiredSize.Width, tb.DesiredSize.Height);
+
+        Width = tb.DesiredSize.Width + 8 * 3 + 8 * 2, // Padding左右 + Grid Margin左右
+        Height = tb.DesiredSize.Height + 6 * 2 + 6 + 12 // Padding上下 + Grid Margin上下
     }
 
     [System.Runtime.InteropServices.DllImport("user32.dll")]
