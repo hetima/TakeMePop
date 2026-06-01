@@ -409,7 +409,7 @@
   </data>
 
   <data name="QuickHistoryStatusBarText" xml:space="preserve">
-    <value>数字: ペースト  Ctrl+数字: 削除  Shift+数字: ペースト&amp;削除</value>
+    <value>数字またはクリック: コピー</value>
   </data>
 
 </root>

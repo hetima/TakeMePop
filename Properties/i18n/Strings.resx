@@ -409,7 +409,7 @@
   </data>
 
   <data name="QuickHistoryStatusBarText" xml:space="preserve">
-    <value>Num: Paste  Ctrl+Num: Delete  Shift+Num: Paste&amp;Delete</value>
+    <value>Num or Click: Copy</value>
   </data>
 
 </root>

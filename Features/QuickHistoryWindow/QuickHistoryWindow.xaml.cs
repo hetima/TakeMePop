@@ -69,6 +69,8 @@ public partial class QuickHistoryWindow : Window
             return;
         }
 
+        if (ctrl || shift) return;
+
         int index = KeyToIndex(e.Key);
         if (index < 0) return;
 
@@ -78,18 +80,9 @@ public partial class QuickHistoryWindow : Window
         if (index >= items.Count) return;
         var displayItem = items[index];
 
-        if (ctrl)
+        if (noMod)
         {
-            DeleteItem(displayItem);
-        }
-        else if (shift)
-        {
-            PasteItem(displayItem);
-            DeleteItem(displayItem);
-        }
-        else if (noMod)
-        {
-            PasteItem(displayItem);
+            CopyItem(displayItem);
         }
     }
 
@@ -115,36 +108,24 @@ public partial class QuickHistoryWindow : Window
         };
     }
 
+    private void HistoryListBox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    {
+        if (HistoryListBox.SelectedItem is HistoryDisplayItem displayItem)
+        {
+            HistoryListBox.SelectedItem = null;
+            CopyItem(displayItem);
+        }
+    }
+
     /// <summary>
-    /// アイテムのテキストをクリップボードにセットしてウィンドウを隠し、前面ウィンドウへ Ctrl+V を送る
+    /// アイテムのテキストをクリップボードにコピーしてウィンドウを隠す
     /// </summary>
-    private void PasteItem(HistoryDisplayItem displayItem)
+    private void CopyItem(HistoryDisplayItem displayItem)
     {
         var item = displayItem.Item;
         if (!item.HasText || item.Text == null) return;
 
         Clipboard.SetText(item.Text);
         Hide();
-
-        // フォーカスが前のウィンドウに戻るのを待ってからペースト
-        System.Windows.Threading.DispatcherTimer timer = new()
-        {
-            Interval = TimeSpan.FromMilliseconds(100)
-        };
-        timer.Tick += (_, _) =>
-        {
-            timer.Stop();
-            App.GlobalHookService.PostCtrlV();
-        };
-        timer.Start();
-    }
-
-    /// <summary>
-    /// 対応するアイテムを ClipboardService.History から削除する
-    /// </summary>
-    private static void DeleteItem(HistoryDisplayItem displayItem)
-    {
-        App.ClipboardService.History.Remove(displayItem.Item);
-        App.ClipboardService.NotifyHistoryChanged();
     }
 }
