@@ -14,6 +14,7 @@ using Listhing.Features.TransparentWindow;
 using Listhing.Features.PopWindow;
 using Listhing.Features.ToastWindow;
 using Listhing.Features.QuickHistoryWindow;
+using Listhing.Features.QuickTextWindow;
 using Listhing.Services;
 using Listhing.ViewModels;
 using Hardcodet.Wpf.TaskbarNotification;
@@ -81,6 +82,7 @@ public partial class App : Application
     private static TransparentWindow? _transparentWindow;
     private static readonly List<PopWindow> _popWindows = new();
     private static QuickHistoryWindow? _quickHistoryWindow;
+    private static QuickTextWindow? _quickTextWindow;
 
     public static TaskbarIcon? TrayIcon { get; set; }
 
@@ -219,7 +221,7 @@ public partial class App : Application
         GlobalHookService.Start();
 
         KeyboardHookService.CtrlCDoubleTapped += OnCtrlCDoubleTapped;
-        KeyboardHookService.CtrlVXTriggered += OnCtrlVXTriggered;
+        KeyboardHookService.CtrlXDoubleTapped += OnCtrlXDoubleTapped;
 
         ApplyHotkeySettings();
     }
@@ -249,6 +251,26 @@ public partial class App : Application
     /// <summary>
     /// Quick History ウィンドウの表示・非表示を切り替える。
     /// </summary>
+    /// <summary>
+    /// QuickText ウィンドウをマウスカーソル付近に表示する。
+    /// </summary>
+    public static void ShowQuickTextWindow()
+    {
+        if (_quickTextWindow == null)
+        {
+            _quickTextWindow = new QuickTextWindow
+            {
+                FontSize = SettingsService.Settings.FontSize
+            };
+            ApplyTheme(SettingsService.Settings.Theme, _quickTextWindow);
+        }
+
+        GetCursorPos(out var pos);
+        _quickTextWindow.Left = pos.X - _quickTextWindow.Width / 2;
+        _quickTextWindow.Top  = pos.Y - _quickTextWindow.Height / 2;
+        _quickTextWindow.Show();
+    }
+
     public static void ToggleQuickHistoryWindow()
     {
         if (_quickHistoryWindow == null)
@@ -315,15 +337,10 @@ public partial class App : Application
     [DllImport("user32.dll")]
     private static extern bool GetCursorPos(out System.Drawing.Point lpPoint);
 
-    /// <summary>
-    /// Ctrl+V → Ctrl+X シーケンス検出時にクリップボード履歴を1つ戻す。
-    /// </summary>
-    private static void OnCtrlVXTriggered(object? sender, EventArgs e)
-    {
-        var prev = ClipboardService.PopLatestAndRestorePrevious();
-        if (prev == null) return;
 
-        ShowToast(prev.GetHeadline(100), fontSize: 20, durationMs: 3500, position: ToastPosition.ScreenBottom, AppConstants.IconTexts.ClipBoard);
+    private static void OnCtrlXDoubleTapped(object? sender, EventArgs e)
+    {
+        ShowQuickTextWindow();
     }
 
     /// <summary>
@@ -331,8 +348,13 @@ public partial class App : Application
     /// </summary>
     private static void OnCtrlCDoubleTapped(object? sender, EventArgs e)
     {
-        GetCursorPos(out var pos);
         var item = ClipboardService.History.Count > 0 ? ClipboardService.History[^1] : null;
+        if (item != null && item.HasText && !item.HasFiles)
+        {
+            ShowQuickTextWindow();
+            return;
+        }
+        GetCursorPos(out var pos);
         CreatePopWindow(pos, item);
     }
 
@@ -588,6 +610,7 @@ public partial class App : Application
         ClipboardService?.Dispose();
         _transparentWindow?.Close();
         _quickHistoryWindow?.ForceClose();
+        _quickTextWindow?.ForceClose();
         TrayIcon?.Dispose();
         // COMライブラリを解放
         CoUninitialize();

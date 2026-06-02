@@ -15,17 +15,16 @@ public class KeyboardHookService
     private DateTime _lastCtrlCTime = DateTime.MinValue;
     private bool _cKeyReleased = true;
 
-    // Ctrl+V → Ctrl+X シーケンスの状態
-    private readonly TimeSpan _ctrlVXInterval = TimeSpan.FromMilliseconds(750);
-    private bool _ctrlVPending = false;
-    private System.Windows.Threading.DispatcherTimer? _ctrlVXTimer;
+    // Ctrl+X ダブルタップの状態
+    private DateTime _lastCtrlXTime = DateTime.MinValue;
+    private bool _xKeyReleased = true;
 
     // グローバルホットキー登録リスト（スナップショット方式でスレッドセーフに読み取る）
     private readonly List<(ShortcutKey key, Action callback)> _hotkeys = new();
     private volatile (ShortcutKey key, Action callback)[] _hotkeySnapshot = [];
 
     public event EventHandler? CtrlCDoubleTapped;
-    public event EventHandler? CtrlVXTriggered;
+    public event EventHandler? CtrlXDoubleTapped;
 
     public KeyboardHookService(GlobalHookService globalHook, Dispatcher dispatcher, ClipboardService clipboard)
     {
@@ -70,21 +69,20 @@ public class KeyboardHookService
             }
         }
 
-        // Ctrl+V / Ctrl+X シーケンス検出
+        // Ctrl+X ダブルタップ検出
         bool isCtrl = e.RawEvent.Mask.HasFlag(EventMask.LeftCtrl) || e.RawEvent.Mask.HasFlag(EventMask.RightCtrl);
-        if (isCtrl)
+        if (isCtrl && e.Data.KeyCode == KeyCode.VcX && _xKeyReleased)
         {
-            if (e.Data.KeyCode == KeyCode.VcV)
+            _xKeyReleased = false;
+            var nowX = DateTime.UtcNow;
+            if (nowX - _lastCtrlXTime <= _doublePressInterval)
             {
-                _ctrlVPending = true;
-                _dispatcher.BeginInvoke(StartCtrlVXTimer);
+                _lastCtrlXTime = DateTime.MinValue;
+                _dispatcher.BeginInvoke(() => CtrlXDoubleTapped?.Invoke(this, EventArgs.Empty));
             }
-            else if (e.Data.KeyCode == KeyCode.VcX && _ctrlVPending)
+            else
             {
-                e.SuppressEvent = true;
-                _ctrlVPending = false;
-                _dispatcher.BeginInvoke(CancelCtrlVXTimer);
-                _dispatcher.BeginInvoke(() => CtrlVXTriggered?.Invoke(this, EventArgs.Empty));
+                _lastCtrlXTime = nowX;
             }
         }
 
@@ -141,42 +139,9 @@ public class KeyboardHookService
         if (e.Data.KeyCode == KeyCode.VcC)
             _cKeyReleased = true;
 
-        if (e.Data.KeyCode == KeyCode.VcLeftControl || e.Data.KeyCode == KeyCode.VcRightControl)
-        {
-            if (_ctrlVPending)
-            {
-                _ctrlVPending = false;
-                _dispatcher.BeginInvoke(CancelCtrlVXTimer);
-            }
-        }
-    }
+        if (e.Data.KeyCode == KeyCode.VcX)
+            _xKeyReleased = true;
 
-    /// <summary>
-    /// Ctrl+V 検出後の待機タイマーを開始する。750ms 経過で _ctrlVPending をリセット。
-    /// </summary>
-    private void StartCtrlVXTimer()
-    {
-        CancelCtrlVXTimer();
-        _ctrlVXTimer = new System.Windows.Threading.DispatcherTimer
-        {
-            Interval = _ctrlVXInterval
-        };
-        _ctrlVXTimer.Tick += (_, _) =>
-        {
-            _ctrlVXTimer.Stop();
-            _ctrlVXTimer = null;
-            _ctrlVPending = false;
-        };
-        _ctrlVXTimer.Start();
-    }
-
-    /// <summary>
-    /// Ctrl+V 待機タイマーをキャンセルする。
-    /// </summary>
-    private void CancelCtrlVXTimer()
-    {
-        _ctrlVXTimer?.Stop();
-        _ctrlVXTimer = null;
     }
 
     private void OnMousePressed(object? sender, MouseHookEventArgs e)
