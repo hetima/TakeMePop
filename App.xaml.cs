@@ -273,20 +273,19 @@ public partial class App : Application
 
     public static void ToggleQuickHistoryWindow()
     {
-        if (_quickHistoryWindow?.IsVisible == true)
+        if (_quickHistoryWindow == null)
         {
-            _quickHistoryWindow.ForceClose();
-            _quickHistoryWindow = null;
-            return;
+            _quickHistoryWindow = new QuickHistoryWindow
+            {
+                FontSize = SettingsService.Settings.FontSize
+            };
+            ApplyTheme(SettingsService.Settings.Theme, _quickHistoryWindow);
         }
 
-        _quickHistoryWindow?.ForceClose();
-        _quickHistoryWindow = new QuickHistoryWindow
-        {
-            FontSize = SettingsService.Settings.FontSize
-        };
-        ApplyTheme(SettingsService.Settings.Theme, _quickHistoryWindow);
-        _quickHistoryWindow.Show();
+        if (_quickHistoryWindow.IsVisible)
+            _quickHistoryWindow.Hide();
+        else
+            _quickHistoryWindow.Show();
     }
 
     /// <summary>

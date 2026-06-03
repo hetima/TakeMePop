@@ -1,5 +1,7 @@
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Threading;
 
 namespace Listhing.Features.QuickHistoryWindow;
@@ -11,16 +13,40 @@ namespace Listhing.Features.QuickHistoryWindow;
 public partial class QuickHistoryWindow : Window
 {
     private readonly QuickHistoryWindowViewModel _viewModel;
+    private bool _forceClose;
+
+    [DllImport("user32.dll")]
+    private static extern bool SetForegroundWindow(IntPtr hWnd);
+
+    [DllImport("user32.dll")]
+    private static extern IntPtr SetFocus(IntPtr hWnd);
+
+    [DllImport("user32.dll")]
+    private static extern IntPtr GetForegroundWindow();
+
+    [DllImport("user32.dll")]
+    private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
+
+    [DllImport("kernel32.dll")]
+    private static extern uint GetCurrentThreadId();
+
+    [DllImport("user32.dll")]
+    private static extern bool AttachThreadInput(uint idAttach, uint idAttachTo, bool fAttach);
 
     public QuickHistoryWindow()
     {
         InitializeComponent();
         _viewModel = new QuickHistoryWindowViewModel();
         DataContext = _viewModel;
-        Closing += (_, _) => _viewModel.Dispose();
+        Closing += (_, e) =>
+        {
+            if (_forceClose) { _viewModel.Dispose(); return; }
+            e.Cancel = true;
+            Hide();
+        };
         Deactivated += (_, _) =>
         {
-            if (IsVisible) Close();
+            if (IsVisible) Hide();
         };
     }
 
@@ -28,12 +54,33 @@ public partial class QuickHistoryWindow : Window
     {
         _viewModel.RefreshItems();
         base.Show();
-        if (_viewModel.Items.Count > 0)
-            HistoryListBox.SelectedIndex = 0;
-        HistoryListBox.Focus();
+        Dispatcher.BeginInvoke(() =>
+        {
+            var handle = new WindowInteropHelper(this).Handle;
+            var foregroundHandle = GetForegroundWindow();
+            uint currentThreadId = GetCurrentThreadId();
+            uint foregroundThreadId = foregroundHandle == IntPtr.Zero
+                ? 0
+                : GetWindowThreadProcessId(foregroundHandle, out _);
+            bool attached = foregroundThreadId != 0 &&
+                foregroundThreadId != currentThreadId &&
+                AttachThreadInput(currentThreadId, foregroundThreadId, true);
+            SetForegroundWindow(handle);
+            Activate();
+            SetFocus(handle);
+            if (attached)
+                AttachThreadInput(currentThreadId, foregroundThreadId, false);
+            if (_viewModel.Items.Count > 0)
+                HistoryListBox.SelectedIndex = 0;
+            HistoryListBox.Focus();
+        });
     }
 
-    public void ForceClose() => Close();
+    public void ForceClose()
+    {
+        _forceClose = true;
+        Close();
+    }
 
     private void TitleBar_MouseDown(object sender, MouseButtonEventArgs e)
     {
