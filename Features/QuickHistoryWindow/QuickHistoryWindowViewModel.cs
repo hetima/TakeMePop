@@ -63,6 +63,15 @@ public class QuickHistoryWindowViewModel : ObservableObject
         }
     }
 
+    /// <summary>指定アイテムを削除し、削除後に選択すべきインデックスを返す</summary>
+    public int DeleteItem(HistoryDisplayItem displayItem)
+    {
+        int index = Items.IndexOf(displayItem);
+        int nextCount = Math.Min(Math.Max(App.ClipboardService.History.Count - 1, 0), 10);
+        App.ClipboardService.RemoveFromHistory(displayItem.Item);
+        return Math.Min(index, nextCount - 1);
+    }
+
     public void Dispose()
     {
         App.ClipboardService.HistoryChanged -= OnHistoryChanged;

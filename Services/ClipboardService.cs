@@ -111,6 +111,15 @@ public class ClipboardService : IDisposable
     }
 
     /// <summary>
+    /// 指定アイテムを履歴から削除して HistoryChanged を発火する。
+    /// </summary>
+    public void RemoveFromHistory(ClipboardItem item)
+    {
+        History.Remove(item);
+        HistoryChanged?.Invoke();
+    }
+
+    /// <summary>
     /// 履歴件数が上限に達したら古い方から半分削除する。
     /// </summary>
     private void TrimHistoryIfNeeded()

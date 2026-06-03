@@ -273,26 +273,20 @@ public partial class App : Application
 
     public static void ToggleQuickHistoryWindow()
     {
-        if (_quickHistoryWindow == null)
+        if (_quickHistoryWindow?.IsVisible == true)
         {
-            _quickHistoryWindow = new QuickHistoryWindow
-            {
-                FontSize = SettingsService.Settings.FontSize
-            };
-            ApplyTheme(SettingsService.Settings.Theme, _quickHistoryWindow);
+            _quickHistoryWindow.ForceClose();
+            _quickHistoryWindow = null;
+            return;
         }
 
-        if (_quickHistoryWindow.IsVisible)
+        _quickHistoryWindow?.ForceClose();
+        _quickHistoryWindow = new QuickHistoryWindow
         {
-            _quickHistoryWindow.Hide();
-        }
-        else
-        {
-            GetCursorPos(out var pos);
-            _quickHistoryWindow.Left = pos.X - _quickHistoryWindow.Width / 2;
-            _quickHistoryWindow.Top = pos.Y - _quickHistoryWindow.Height / 2;
-            _quickHistoryWindow.Show();
-        }
+            FontSize = SettingsService.Settings.FontSize
+        };
+        ApplyTheme(SettingsService.Settings.Theme, _quickHistoryWindow);
+        _quickHistoryWindow.Show();
     }
 
     /// <summary>

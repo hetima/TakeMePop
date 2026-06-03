@@ -8,6 +8,8 @@
         WindowStyle="None"
         AllowsTransparency="False"
         Topmost="True"
+        ShowActivated="True"
+        WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         ShowInTaskbar="False"
         PreviewKeyDown="Window_PreviewKeyDown">

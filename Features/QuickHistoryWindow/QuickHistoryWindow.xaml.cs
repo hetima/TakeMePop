@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace Listhing.Features.QuickHistoryWindow;
 
@@ -16,34 +17,23 @@ public partial class QuickHistoryWindow : Window
         InitializeComponent();
         _viewModel = new QuickHistoryWindowViewModel();
         DataContext = _viewModel;
-
-        // 閉じるではなく非表示にする（シングルトン再利用）
-        Closing += (_, e) =>
+        Closing += (_, _) => _viewModel.Dispose();
+        Deactivated += (_, _) =>
         {
-            e.Cancel = true;
-            Hide();
+            if (IsVisible) Close();
         };
     }
 
-    /// <summary>
-    /// ウィンドウを表示する直前に履歴リストを最新化する
-    /// </summary>
     public new void Show()
     {
         _viewModel.RefreshItems();
         base.Show();
-        Activate();
+        if (_viewModel.Items.Count > 0)
+            HistoryListBox.SelectedIndex = 0;
+        HistoryListBox.Focus();
     }
 
-    /// <summary>
-    /// シングルトン破棄時に呼ぶ
-    /// </summary>
-    public void ForceClose()
-    {
-        Closing -= null;
-        _viewModel.Dispose();
-        Close();
-    }
+    public void ForceClose() => Close();
 
     private void TitleBar_MouseDown(object sender, MouseButtonEventArgs e)
     {
@@ -53,7 +43,7 @@ public partial class QuickHistoryWindow : Window
 
     private void CloseButton_Click(object sender, RoutedEventArgs e)
     {
-        Hide();
+        Close();
     }
 
     private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -64,7 +54,39 @@ public partial class QuickHistoryWindow : Window
 
         if (e.Key == Key.Escape)
         {
-            Hide();
+            Close();
+            e.Handled = true;
+            return;
+        }
+
+        if (e.Key == Key.Up || e.Key == Key.Down)
+        {
+            int count = _viewModel.Items.Count;
+            if (count == 0) return;
+            int current = HistoryListBox.SelectedIndex;
+            HistoryListBox.SelectedIndex = e.Key == Key.Up
+                ? Math.Max(0, current - 1)
+                : Math.Min(count - 1, current + 1);
+            HistoryListBox.ScrollIntoView(HistoryListBox.SelectedItem);
+            e.Handled = true;
+            return;
+        }
+
+        if (e.Key == Key.Enter && !ctrl && !shift)
+        {
+            if (HistoryListBox.SelectedItem is HistoryDisplayItem selected)
+                CopyItem(selected);
+            e.Handled = true;
+            return;
+        }
+
+        if ((e.Key == Key.Delete || e.Key == Key.Back) && !ctrl && !shift)
+        {
+            if (HistoryListBox.SelectedItem is HistoryDisplayItem toDelete)
+            {
+                int nextIndex = _viewModel.DeleteItem(toDelete);
+                SelectItemAfterRefresh(nextIndex);
+            }
             e.Handled = true;
             return;
         }
@@ -84,6 +106,23 @@ public partial class QuickHistoryWindow : Window
         {
             CopyItem(displayItem);
         }
+    }
+
+    /// <summary>
+    /// 履歴更新通知による再描画後に指定インデックスを選択する。
+    /// </summary>
+    private void SelectItemAfterRefresh(int index)
+    {
+        if (index < 0) return;
+
+        Dispatcher.BeginInvoke(() =>
+        {
+            if (index >= HistoryListBox.Items.Count) return;
+
+            HistoryListBox.SelectedIndex = index;
+            HistoryListBox.ScrollIntoView(HistoryListBox.SelectedItem);
+            HistoryListBox.Focus();
+        }, DispatcherPriority.Background);
     }
 
     /// <summary>
@@ -118,14 +157,15 @@ public partial class QuickHistoryWindow : Window
     }
 
     /// <summary>
-    /// アイテムのテキストをクリップボードにコピーしてウィンドウを隠す
+    /// アイテムのテキストをクリップボードにコピーして履歴から削除し、ウィンドウを隠す
     /// </summary>
     private void CopyItem(HistoryDisplayItem displayItem)
     {
         var item = displayItem.Item;
         if (!item.HasText || item.Text == null) return;
 
+        _viewModel.DeleteItem(displayItem);
         Clipboard.SetText(item.Text);
-        Hide();
+        Close();
     }
 }
