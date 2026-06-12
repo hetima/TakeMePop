@@ -60,7 +60,7 @@ public partial class App : Application
     /// <summary>
     /// 多重起動防止
     /// </summary>
-    private static readonly string MutexName = "hetima-Listhing-Mutex-Name";
+    private static readonly string MutexName = "hetima-TakeMePop-Mutex-Name";
     private static Mutex? _mutex;
 
 

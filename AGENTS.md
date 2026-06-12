@@ -11,7 +11,7 @@
 
 ### 名前空間について（重要）
 
-- アプリ名は TakeMePop だが、**全ソースの namespace は前身プロジェクト由来の `Listhing`** で統一されている（`Listhing.Services` など）
+- アプリ名は TakeMePop だが、**全ソースの namespace は `Listhing`** で統一されている（`Listhing.Services` など）
 - 新規ファイルも既存に合わせて `Listhing.*` を使うこと。勝手に `TakeMePop.*` へリネームしない
 - i18n リソースクラスも `Listhing.Strings`
 
@@ -130,6 +130,5 @@ App.xaml.cs で生成し、`App.XXX` 静的プロパティ経由で参照する:
 
 動作には影響しないが紛らわしいもの。削除は明示的に依頼された場合のみ:
 
-- Mutex 名が `"hetima-Listhing-Mutex-Name"`（App.xaml.cs）
 - 未使用: `App.WorkspaceNames` / `UpdateJumpList` / `SaveOpenedWorkspaces`、`AppSettings.OpenedWorkspaceNames` / `WindowSettings`、`AppConstants.Database` / `Ui` / `GetVSCodeExePath`、`SettingsService.MatchesShortcut`、`ShortcutMatchResult`
 - `MouseHookService.DragStarted` イベントはどこからも購読されていない
