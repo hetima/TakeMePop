@@ -325,7 +325,7 @@
   </data>
 
   <data name="TgSectionTitle" xml:space="preserve">
-    <value>Transparent Guard</value>
+    <value>Drop Guard</value>
   </data>
 
   <data name="TgIsEnabledLabel" xml:space="preserve">
@@ -333,7 +333,7 @@
   </data>
 
   <data name="TgIsEnabledTooltip" xml:space="preserve">
-    <value>Enable or disable the Transparent Guard window</value>
+    <value>Enable or disable the Drop Guard window</value>
   </data>
 
   <data name="TgSizeLabel" xml:space="preserve">
@@ -341,7 +341,7 @@
   </data>
 
   <data name="TgSizeTooltip" xml:space="preserve">
-    <value>Size of the Transparent Guard window (20–200 px)</value>
+    <value>Size of the Drop Guard window (20–200 px)</value>
   </data>
 
   <data name="TgActivationPixelsLabel" xml:space="preserve">
@@ -401,15 +401,15 @@
   </data>
 
   <data name="QuickHistoryActionLabel" xml:space="preserve">
-    <value>Quick History</value>
+    <value>ClipBoard History</value>
   </data>
 
   <data name="QuickHistoryWindowTitle" xml:space="preserve">
-    <value>Quick History</value>
+    <value>ClipBoard History</value>
   </data>
 
   <data name="QuickHistoryStatusBarText" xml:space="preserve">
-    <value>Num or Click: Copy / Del: delete</value>
+    <value>Press the shortcut key to select</value>
   </data>
 
 </root>

@@ -325,7 +325,7 @@
   </data>
 
   <data name="TgSectionTitle" xml:space="preserve">
-    <value>透明ガード</value>
+    <value>ドロップガード</value>
   </data>
 
   <data name="TgIsEnabledLabel" xml:space="preserve">
@@ -333,7 +333,7 @@
   </data>
 
   <data name="TgIsEnabledTooltip" xml:space="preserve">
-    <value>透明ガードウィンドウの有効/無効を切り替えます</value>
+    <value>ドロップガードウィンドウの有効/無効を切り替えます</value>
   </data>
 
   <data name="TgSizeLabel" xml:space="preserve">
@@ -341,7 +341,7 @@
   </data>
 
   <data name="TgSizeTooltip" xml:space="preserve">
-    <value>透明ガードウィンドウのサイズ（20〜200 px）</value>
+    <value>ドロップガードウィンドウのサイズ（20〜200 px）</value>
   </data>
 
   <data name="TgActivationPixelsLabel" xml:space="preserve">
@@ -401,15 +401,15 @@
   </data>
 
   <data name="QuickHistoryActionLabel" xml:space="preserve">
-    <value>クイック履歴</value>
+    <value>クリップボード履歴</value>
   </data>
 
   <data name="QuickHistoryWindowTitle" xml:space="preserve">
-    <value>Quick History</value>
+    <value>クリップボード履歴</value>
   </data>
 
   <data name="QuickHistoryStatusBarText" xml:space="preserve">
-    <value>数字またはクリック: コピー / Del: 削除</value>
+    <value>ショートカットを押して選択</value>
   </data>
 
 </root>
