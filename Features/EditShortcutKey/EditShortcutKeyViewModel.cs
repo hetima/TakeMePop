@@ -121,7 +121,7 @@ public class EditShortcutKeyViewModel : ModalContentViewModel
         _onShortcutRemoved = onShortcutRemoved;
         _actionName = actionName ?? throw new ArgumentNullException(nameof(actionName));
         _currentShortcut = currentShortcut ?? throw new ArgumentNullException(nameof(currentShortcut));
-        _displayString = _currentShortcut.IsEmpty ? Strings.NonePlaceholder : _currentShortcut.ToString();
+        _displayString = _currentShortcut.IsEmpty ? Strings.NonePlaceholder : _currentShortcut.ToDisplayString();
         _warningMessage = string.Empty;
         _shortcutConflicted = false;
 
@@ -178,7 +178,7 @@ public class EditShortcutKeyViewModel : ModalContentViewModel
     /// </summary>
     private void UpdateDisplay()
     {
-        DisplayString = _currentShortcut.IsEmpty ? Strings.NonePlaceholder : _currentShortcut.ToString();
+        DisplayString = _currentShortcut.IsEmpty ? Strings.NonePlaceholder : _currentShortcut.ToDisplayString();
     }
 
     /// <summary>

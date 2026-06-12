@@ -157,10 +157,29 @@ public class ShortcutKey : IEquatable<ShortcutKey>
     }
 
     /// <summary>
-    /// 文字列表現を返す（JSON保存・画面表示用）
+    /// 文字列表現を返す（JSON保存・照合・重複チェック用）。
+    /// Oem 系キーは enum 名（例: "OemQuotes"）のまま出力し、配列差による文字衝突を避けてラウンドトリップを一意に保つ。
+    /// 画面表示には <see cref="ToDisplayString"/> を使う。
     /// </summary>
     /// <returns>ショートカット文字列（例: "Ctrl+Shift+A", "Enter", "Button1", "Ctrl+Button2"）</returns>
     public override string ToString()
+    {
+        return BuildString(GetKeyName(Key));
+    }
+
+    /// <summary>
+    /// 画面表示用の文字列を返す。Oem 系キーは現在のキーボード配列の刻印（ベストエフォート）で表示する。
+    /// 配列により実際の刻印とズレることがあるが、保存・動作には影響しない。
+    /// </summary>
+    public string ToDisplayString()
+    {
+        return BuildString(GetKeyDisplayName(Key));
+    }
+
+    /// <summary>
+    /// 修飾キー + キー名を "+" 連結した文字列を組み立てる。
+    /// </summary>
+    private string BuildString(string keyName)
     {
         if (IsEmpty) return string.Empty;
 
@@ -174,7 +193,7 @@ public class ShortcutKey : IEquatable<ShortcutKey>
         if (IsMouseButton)
             parts.Add(MouseButton.ToString());
         else
-            parts.Add(GetKeyDisplayName(Key));
+            parts.Add(keyName);
 
         return string.Join("+", parts);
     }
@@ -289,7 +308,8 @@ public class ShortcutKey : IEquatable<ShortcutKey>
             "minus" or "-" => Key.OemMinus,
             "," => Key.OemComma,
             "." => Key.OemPeriod,
-            "_" => Key.OemBackslash,
+            // Oem 系（OemQuestion 等）は enum 名で保存されるため冒頭の Enum.TryParse が拾う。
+            // 記号文字（"/" 等）でのパースは配列差で衝突しうるため、あえて追加しない。
             _ => Key.None
         };
 
@@ -297,11 +317,12 @@ public class ShortcutKey : IEquatable<ShortcutKey>
     }
 
     /// <summary>
-    /// キーの表示名を取得する
+    /// 保存・照合用のキー名を取得する。
+    /// Oem 系キーは enum 名（key.ToString()）のまま返し、配列差による文字衝突を避けてラウンドトリップを一意に保つ。
     /// </summary>
-    private static string GetKeyDisplayName(Key key)
+    private static string GetKeyName(Key key)
     {
-        // 特殊なキー名のマッピング
+        // 特殊なキー名のマッピング（いずれも単一の Key にのみ対応するため衝突しない）
         return key switch
         {
             Key.Escape => "Esc",
@@ -321,6 +342,8 @@ public class ShortcutKey : IEquatable<ShortcutKey>
             Key.Right => "Right",
             Key.OemPlus => "+",
             Key.OemMinus => "-",
+            Key.OemComma => ",",
+            Key.OemPeriod => ".",
             Key.D0 => "0",
             Key.D1 => "1",
             Key.D2 => "2",
@@ -331,10 +354,29 @@ public class ShortcutKey : IEquatable<ShortcutKey>
             Key.D7 => "7",
             Key.D8 => "8",
             Key.D9 => "9",
-            Key.OemComma => ",",
-            Key.OemPeriod => ".",
-            Key.OemBackslash => "_",
             _ => key.ToString()
+        };
+    }
+
+    /// <summary>
+    /// 画面表示用のキー名を取得する。
+    /// Oem 系キーは現在のキーボード配列の刻印（ベストエフォート、US 配列基準）で表示する。
+    /// 配列により実際の刻印とズレることがあるが、表示専用なので保存・動作には影響しない。
+    /// </summary>
+    private static string GetKeyDisplayName(Key key)
+    {
+        return key switch
+        {
+            // US 配列の刻印（JIS では刻印が異なるが、内部の Key は共通）
+            Key.OemQuestion      => "/",
+            Key.OemTilde         => "`",
+            Key.OemSemicolon     => ";",
+            Key.OemQuotes        => "'",
+            Key.OemOpenBrackets  => "[",
+            Key.OemCloseBrackets => "]",
+            Key.OemPipe          => "\\(|)",
+            Key.OemBackslash     => "\\(_)",
+            _ => GetKeyName(key)
         };
     }
 

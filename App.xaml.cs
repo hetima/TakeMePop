@@ -234,9 +234,8 @@ public partial class App : Application
     {
         var shortcuts = SettingsService.Settings.ShortcutSettings;
 
-        KeyboardHookService.UnregisterHotkey(shortcuts.DefaultOpenKey);
-        KeyboardHookService.UnregisterHotkey(shortcuts.RevealKey);
-        KeyboardHookService.UnregisterHotkey(shortcuts.QuickHistoryKey);
+        // 変更前の古いキーが残らないよう、一度すべて解除してから登録し直す
+        KeyboardHookService.ClearHotkeys();
 
         if (!shortcuts.DefaultOpenKey.IsEmpty)
             KeyboardHookService.RegisterHotkey(shortcuts.DefaultOpenKey, OnDefaultOpenHotkey);

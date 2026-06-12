@@ -91,6 +91,17 @@ public static class ShortcutKeyHookExtensions
         Key.OemPlus   => KeyCode.VcEquals,
         Key.OemComma  => KeyCode.VcComma,
         Key.OemPeriod => KeyCode.VcPeriod,
+        // 記号キー（WPF Key 名は US 配列由来の論理名。VK が同じなら配列に依らず同じ KeyCode）
+        // 右辺の KeyCode は JIS 環境での実測値で確定（US 環境でも VK が同じなので一致する）
+        Key.OemQuestion      => KeyCode.VcSlash,         // VK191  / ?
+        Key.OemTilde         => KeyCode.VcBackQuote,     // VK192  @ `（JIS）/ ` ~（US）
+        Key.OemSemicolon     => KeyCode.VcSemicolon,     // VK186  ; :
+        Key.OemQuotes        => KeyCode.VcQuote,         // VK222  ^ ~（JIS）/ ' "（US）
+        Key.OemOpenBrackets  => KeyCode.VcOpenBracket,   // VK219  [ {
+        Key.OemCloseBrackets => KeyCode.VcCloseBracket,  // VK221  ] }
+        Key.OemPipe          => KeyCode.VcBackslash,     // VK220  \ |（JIS の ￥/Oem5）
+        // JIS 固有キー（US キーボードには物理的に存在しないため US 環境で誤作動しない）
+        Key.OemBackslash     => KeyCode.Vc102,           // VK226  \ _（JIS の「ろ」）
         _ => KeyCode.VcUndefined
     };
 }

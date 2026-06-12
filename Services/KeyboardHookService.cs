@@ -79,8 +79,23 @@ public class KeyboardHookService
         _hotkeySnapshot = _hotkeys.ToArray();
     }
 
+    /// <summary>
+    /// 登録済みのグローバルホットキーをすべて解除する。設定の再適用前に呼ぶ。
+    /// </summary>
+    public void ClearHotkeys()
+    {
+        _hotkeys.Clear();
+        _hotkeySnapshot = [];
+        _quickHistoryKey = null;
+    }
+
     private void OnKeyPressed(object? sender, KeyboardHookEventArgs e)
     {
+#if false
+        // JIS キー診断用の一時ログ。必要なときが来たら有効にする
+        System.Diagnostics.Debug.WriteLine($"[KeyHook] KeyCode={e.Data.KeyCode} RawCode={e.Data.RawCode} Mask={e.RawEvent.Mask}");
+#endif
+
         // 修飾キー押下状態を追跡
         TrackModifierPressed(e.Data.KeyCode);
 

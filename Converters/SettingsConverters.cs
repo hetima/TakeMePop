@@ -189,7 +189,7 @@ public class ShortcutKeyToStringConverter : IValueConverter
     {
         if (value is ShortcutKey shortcutKey)
         {
-            return shortcutKey.ToString();
+            return shortcutKey.ToDisplayString();
         }
         return string.Empty;
     }
