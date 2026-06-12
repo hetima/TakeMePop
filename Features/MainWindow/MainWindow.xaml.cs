@@ -196,7 +196,6 @@ public partial class MainWindow : Window
     /// </summary>
     protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
     {
-        App.SaveOpenedWorkspaces();
         _viewModel.SaveWindowSettings(this);
         base.OnClosing(e);
     }

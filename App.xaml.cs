@@ -262,9 +262,12 @@ public partial class App : Application
     {
         if (_quickTextWindow == null)
         {
+            var qt = SettingsService.Settings.QuickTextWindow;
             _quickTextWindow = new QuickTextWindow
             {
-                FontSize = SettingsService.Settings.FontSize
+                FontSize = SettingsService.Settings.FontSize,
+                Width = qt.Width,
+                Height = qt.Height
             };
             ApplyTheme(SettingsService.Settings.Theme, _quickTextWindow);
         }
@@ -473,6 +476,18 @@ public partial class App : Application
         SettingsService.Save();
     }
 
+    /// <summary>
+    /// QuickTextWindow のサイズを設定に保存する。
+    /// </summary>
+    /// <summary>
+    /// QuickTextWindow のサイズをメモリ上の設定に反映する（ファイル保存はアプリ終了時）。
+    /// </summary>
+    public static void UpdateQuickTextWindowSize(double width, double height)
+    {
+        SettingsService.Settings.QuickTextWindow.Width = width;
+        SettingsService.Settings.QuickTextWindow.Height = height;
+    }
+
 
     /// <summary>
     /// トレイアイコンの「設定」メニュークリック時に設定ウィンドウを開く。
@@ -616,27 +631,13 @@ public partial class App : Application
         SettingsService.Save();
     }
 
-    /// <summary>
-    /// SaveOpenedWorkspacesを実行してよいかどうか
-    /// </summary>
-    public static bool SaveOpenedWorkspacesLock { get; set; } = false;
-
-    /// <summary>
-    /// 開いているウィンドウを保存する
-    /// </summary>
-    public static void SaveOpenedWorkspaces()
-    {
-
-
-    }
-
 
     /// <summary>
     /// Application exit handler
     /// </summary>
     protected override void OnExit(ExitEventArgs e)
     {
-        SaveOpenedWorkspaces();
+        SettingsService.Save();
         MouseHookService?.Dispose();
         GlobalHookService?.Dispose();
         ClipboardService?.Dispose();

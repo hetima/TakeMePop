@@ -8,7 +8,9 @@
         Topmost="True"
         ResizeMode="CanResize"
         ShowInTaskbar="False"
-        MinWidth="160" MinHeight="120">
+        MinWidth="160" MinHeight="120"
+        PreviewKeyDown="Window_PreviewKeyDown"
+        SizeChanged="Window_SizeChanged">
     <Border Style="{StaticResource PopupWindowChromeStyle}">
         <Grid>
             <Grid.RowDefinitions>

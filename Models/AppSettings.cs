@@ -54,6 +54,18 @@ public class AppSettings
 
     [JsonPropertyName("popWindow")]
     public PopWindowSettings PopWindow { get; set; } = new PopWindowSettings();
+
+    [JsonPropertyName("quickTextWindow")]
+    public QuickTextWindowSettings QuickTextWindow { get; set; } = new QuickTextWindowSettings();
+}
+
+public class QuickTextWindowSettings
+{
+    [JsonPropertyName("width")]
+    public double Width { get; set; } = 260;
+
+    [JsonPropertyName("height")]
+    public double Height { get; set; } = 200;
 }
 
 public class PopWindowSettings

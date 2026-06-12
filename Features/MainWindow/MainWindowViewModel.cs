@@ -122,8 +122,6 @@ public class MainWindowViewModel : ObservableObject, IModalOwner
     /// </summary>
     private void OnExit()
     {
-        App.SaveOpenedWorkspaces();
-        App.SaveOpenedWorkspacesLock = true;
         Application.Current.Shutdown();
     }
 

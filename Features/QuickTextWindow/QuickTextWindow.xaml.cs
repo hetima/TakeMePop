@@ -25,7 +25,7 @@ public partial class QuickTextWindow : Window
     {
         var text = Clipboard.ContainsText() ? Clipboard.GetText() : "";
         TextEditor.Text = text;
-        TextEditor.SelectAll();
+        TextEditor.CaretIndex = TextEditor.Text.Length;
         base.Show();
         Activate();
         TextEditor.Focus();
@@ -46,6 +46,15 @@ public partial class QuickTextWindow : Window
 
     private void CloseButton_Click(object sender, RoutedEventArgs e) => Hide();
 
+    private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.OemComma && (Keyboard.Modifiers & ModifierKeys.Control) != 0)
+        {
+            App.ShowSettingsWindow();
+            e.Handled = true;
+        }
+    }
+
     private void CopyButton_Click(object sender, RoutedEventArgs e)
     {
         if (!string.IsNullOrEmpty(TextEditor.Text))
@@ -58,5 +67,10 @@ public partial class QuickTextWindow : Window
     {
         Width  = Math.Max(Width  + e.HorizontalChange, MinWidth);
         Height = Math.Max(Height + e.VerticalChange,   MinHeight);
+    }
+
+    private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        App.UpdateQuickTextWindowSize(Width, Height);
     }
 }
