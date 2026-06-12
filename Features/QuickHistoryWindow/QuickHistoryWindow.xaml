@@ -63,18 +63,31 @@
                      MouseLeftButtonUp="HistoryListBox_MouseLeftButtonUp">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Label}"
-                                   TextTrimming="CharacterEllipsis"
-                                   TextWrapping="NoWrap"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{Binding DataContext.IconColumnWidth, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0"
+                                       Text="{Binding Icon}"
+                                       FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                       FontSize="{Binding RelativeSource={RelativeSource AncestorType=ListBox}, Path=FontSize}"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding Label}"
+                                       TextTrimming="CharacterEllipsis"
+                                       TextWrapping="NoWrap"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
 
             <!-- ステータスバー -->
             <Border Grid.Row="2"
-                    BorderThickness="0,1,0,0"
+                    BorderThickness="0,0,0,0"
                     BorderBrush="{DynamicResource SurfaceStrokeColorDefaultBrush}"
-                    CornerRadius="0,0,6,6"
                     Padding="8,5">
                 <TextBlock Text="{x:Static res:Strings.QuickHistoryStatusBarText}"
                            FontSize="12"

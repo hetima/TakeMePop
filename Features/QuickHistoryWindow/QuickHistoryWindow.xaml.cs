@@ -70,6 +70,10 @@ public partial class QuickHistoryWindow : Window
             : new FontFamily(fontFamily);
     }
 
+    /// <summary>フォントサイズに合わせてアイコン列幅を更新する</summary>
+    public void UpdateIconColumnWidth(double fontSize) =>
+        _viewModel.UpdateIconColumnWidth(fontSize);
+
     private void TitleBar_MouseDown(object sender, MouseButtonEventArgs e)
     {
         if (e.LeftButton == MouseButtonState.Pressed)

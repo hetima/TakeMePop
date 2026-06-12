@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Windows;
 using Listhing.Services;
 using Listhing.ViewModels;
 
@@ -12,8 +13,11 @@ public class HistoryDisplayItem
     /// <summary>番号</summary>
     public int Number { get; }
 
-    /// <summary>一覧に表示するラベル（"1 テキスト..."形式）</summary>
+    /// <summary>一覧に表示するラベル</summary>
     public string Label { get; }
+
+    /// <summary>アイコン文字（Segoe Fluent Icons）</summary>
+    public string Icon { get; }
 
     /// <summary>キャンセル項目かどうか</summary>
     public bool IsCancel { get; }
@@ -21,24 +25,27 @@ public class HistoryDisplayItem
     /// <summary>元の ClipboardItem</summary>
     public ClipboardItem? Item { get; }
 
-    private HistoryDisplayItem(int number, string label, ClipboardItem? item, bool isCancel)
+    private HistoryDisplayItem(int number, string label, string icon, ClipboardItem? item, bool isCancel)
     {
         Number = number;
         Label = label;
+        Icon = icon;
         Item = item;
         IsCancel = isCancel;
     }
 
     /// <summary>キャンセル用の表示アイテムを作成する</summary>
     public static HistoryDisplayItem CreateCancel() =>
-        new(0, Listhing.Strings.CancelButton, null, true);
+        new(0, Listhing.Strings.CancelButton, "", null, true);
 
     public HistoryDisplayItem(int number, ClipboardItem item)
     {
         Number = number;
         Item = item;
         IsCancel = false;
-        Label = $"{number} {item.GetHeadline(60)}";
+        Label = item.GetHeadline(60);
+        // ファイルはフォルダアイコン、テキストはアイコンなし
+        Icon = item.HasFiles ? "" : "";
     }
 }
 
@@ -49,6 +56,18 @@ public class QuickHistoryWindowViewModel : ObservableObject
 {
     /// <summary>表示する履歴アイテムリスト（キャンセル + 最大5件、最新が先頭）</summary>
     public ObservableCollection<HistoryDisplayItem> Items { get; } = [];
+
+    private GridLength _iconColumnWidth = new(20);
+    /// <summary>アイコン列の幅。フォントサイズ変更時に更新する。</summary>
+    public GridLength IconColumnWidth
+    {
+        get => _iconColumnWidth;
+        set => SetProperty(ref _iconColumnWidth, value);
+    }
+
+    /// <summary>フォントサイズに合わせてアイコン列幅を更新する</summary>
+    public void UpdateIconColumnWidth(double fontSize) =>
+        IconColumnWidth = new GridLength(Math.Ceiling(fontSize * 1.5));
 
     public QuickHistoryWindowViewModel()
     {

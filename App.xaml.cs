@@ -596,7 +596,10 @@ public partial class App : Application
             _quickTextWindow.FontSize = fontSize;
 
         if (_quickHistoryWindow != null)
+        {
             _quickHistoryWindow.FontSize = fontSize;
+            _quickHistoryWindow.UpdateIconColumnWidth(fontSize);
+        }
     }
 
     /// <summary>

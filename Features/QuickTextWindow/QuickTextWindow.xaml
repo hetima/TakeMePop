@@ -43,7 +43,7 @@
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
                            FontWeight="SemiBold"
-                           FontSize="12"/>
+                           FontSize="14"/>
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
