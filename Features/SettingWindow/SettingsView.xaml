@@ -76,6 +76,17 @@
                                    Visibility="{Binding IsRestartRequired, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
 
+                        <!-- Popup Font Family -->
+                        <TextBlock Text="{x:Static res:Strings.PopupFontFamilyLabel}"
+                                   FontWeight="SemiBold"
+                                   Margin="0,24,0,8"/>
+                        <ComboBox ItemsSource="{Binding FontFamilyItems}"
+                                  SelectedValue="{Binding PopupFontFamily}"
+                                  SelectedValuePath="Value"
+                                  DisplayMemberPath="DisplayName"
+                                  HorizontalAlignment="Stretch"
+                                  Padding="12,8"/>
+
                         <!-- Font Size Selection -->
                         <TextBlock Text="{x:Static res:Strings.FontSizeLabel}"
                                    FontWeight="SemiBold"
@@ -87,7 +98,7 @@
                             </Grid.ColumnDefinitions>
                             <Slider Grid.Column="0"
                                     Minimum="10"
-                                    Maximum="32"
+                                    Maximum="28"
                                     Value="{Binding FontSize}"
                                     TickFrequency="1"
                                     IsSnapToTickEnabled="True"
@@ -113,14 +124,14 @@
                                   HorizontalAlignment="Stretch"
                                   Padding="12,8"
                                   SelectionChanged="ClipboardHistoryLimitCombo_SelectionChanged">
+                            <ComboBoxItem Content="10"
+                                    Tag="10"/>
+                            <ComboBoxItem Content="20"
+                                    Tag="20"/>
                             <ComboBoxItem Content="50"
                                     Tag="50"/>
                             <ComboBoxItem Content="100"
                                     Tag="100"/>
-                            <ComboBoxItem Content="500"
-                                    Tag="500"/>
-                            <ComboBoxItem Content="1000"
-                                    Tag="1000"/>
                         </ComboBox>
 
 
@@ -251,7 +262,7 @@
                             </Grid.ColumnDefinitions>
                             <Slider Grid.Column="0"
                                     Minimum="20"
-                                    Maximum="200"
+                                    Maximum="400"
                                     Value="{Binding TgSize}"
                                     TickFrequency="1"
                                     IsSnapToTickEnabled="True"
@@ -277,7 +288,7 @@
                             </Grid.ColumnDefinitions>
                             <Slider Grid.Column="0"
                                     Minimum="8"
-                                    Maximum="32"
+                                    Maximum="20"
                                     Value="{Binding TgActivationPixels}"
                                     TickFrequency="1"
                                     IsSnapToTickEnabled="True"
@@ -302,8 +313,8 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <Slider Grid.Column="0"
-                                    Minimum="0"
-                                    Maximum="1000"
+                                    Minimum="10"
+                                    Maximum="500"
                                     Value="{Binding TgDismissDelayMs}"
                                     TickFrequency="50"
                                     IsSnapToTickEnabled="True"

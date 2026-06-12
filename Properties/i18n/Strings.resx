@@ -80,6 +80,14 @@
     <value>Open Settings Folder</value>
   </data>
 
+  <data name="DefaultLabel" xml:space="preserve">
+    <value>Default</value>
+  </data>
+
+  <data name="PopupFontFamilyLabel" xml:space="preserve">
+    <value>Font</value>
+  </data>
+
   <data name="FontSizeLabel" xml:space="preserve">
     <value>Font Size</value>
   </data>
@@ -341,7 +349,7 @@
   </data>
 
   <data name="TgSizeTooltip" xml:space="preserve">
-    <value>Size of the Drop Guard window (20–200 px)</value>
+    <value>Size of the Drop Guard window</value>
   </data>
 
   <data name="TgActivationPixelsLabel" xml:space="preserve">
@@ -349,7 +357,7 @@
   </data>
 
   <data name="TgActivationPixelsTooltip" xml:space="preserve">
-    <value>Mouse movement distance required to activate the window (8–32 px)</value>
+    <value>Mouse movement distance required to activate the window</value>
   </data>
 
   <data name="TgActivationDelayLabel" xml:space="preserve">
@@ -357,7 +365,7 @@
   </data>
 
   <data name="TgActivationDelayTooltip" xml:space="preserve">
-    <value>Delay after the window appears before it becomes active (0–1000 ms)</value>
+    <value>Delay after the window appears before it becomes active</value>
   </data>
 
   <data name="TgDismissDelayLabel" xml:space="preserve">
@@ -365,7 +373,7 @@
   </data>
 
   <data name="TgDismissDelayTooltip" xml:space="preserve">
-    <value>Time before the window automatically disappears (0–1000 ms)</value>
+    <value>Time before the window automatically disappears</value>
   </data>
 
   <data name="TgShowPatternLabel" xml:space="preserve">

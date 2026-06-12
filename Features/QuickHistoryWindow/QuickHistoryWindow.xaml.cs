@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace Listhing.Features.QuickHistoryWindow;
@@ -59,6 +60,14 @@ public partial class QuickHistoryWindow : Window
     {
         _forceClose = true;
         Close();
+    }
+
+    /// <summary>リストのフォントを適用する。空文字列はシステムデフォルトへリセット。</summary>
+    public void ApplyPopupFontFamily(string fontFamily)
+    {
+        HistoryListBox.FontFamily = string.IsNullOrEmpty(fontFamily)
+            ? SystemFonts.MessageFontFamily
+            : new FontFamily(fontFamily);
     }
 
     private void TitleBar_MouseDown(object sender, MouseButtonEventArgs e)

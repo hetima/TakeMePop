@@ -270,6 +270,7 @@ public partial class App : Application
                 Height = qt.Height
             };
             ApplyTheme(SettingsService.Settings.Theme, _quickTextWindow);
+            _quickTextWindow.ApplyPopupFontFamily(SettingsService.Settings.PopupFontFamily);
         }
 
         // すでに表示中なら位置を動かさない（新規表示時のみマウス付近に配置）
@@ -291,6 +292,7 @@ public partial class App : Application
                 FontSize = SettingsService.Settings.FontSize
             };
             ApplyTheme(SettingsService.Settings.Theme, _quickHistoryWindow);
+            _quickHistoryWindow.ApplyPopupFontFamily(SettingsService.Settings.PopupFontFamily);
         }
 
         if (_quickHistoryWindow.IsVisible)
@@ -588,9 +590,23 @@ public partial class App : Application
         }
 
         foreach (var window in _popWindows)
-        {
             window.FontSize = fontSize;
-        }
+
+        if (_quickTextWindow != null)
+            _quickTextWindow.FontSize = fontSize;
+
+        if (_quickHistoryWindow != null)
+            _quickHistoryWindow.FontSize = fontSize;
+    }
+
+    /// <summary>
+    /// QuickTextWindow・QuickHistoryWindow にフォントを適用する。
+    /// 空文字列の場合はフォントをリセット（システムデフォルトへ）する。
+    /// </summary>
+    public static void ApplyPopupFontFamily(string fontFamily)
+    {
+        _quickTextWindow?.ApplyPopupFontFamily(fontFamily);
+        _quickHistoryWindow?.ApplyPopupFontFamily(fontFamily);
     }
 
     /// <summary>

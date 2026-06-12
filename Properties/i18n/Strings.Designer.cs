@@ -130,6 +130,12 @@ namespace Listhing {
             }
         }
 
+        public static string DefaultLabel {
+            get {
+                return ResourceManager.GetString("DefaultLabel", resourceCulture);
+            }
+        }
+
         public static string DefaultOpenActionLabel {
             get {
                 return ResourceManager.GetString("DefaultOpenActionLabel", resourceCulture);
@@ -313,6 +319,12 @@ namespace Listhing {
         public static string OpenSettingsFolder {
             get {
                 return ResourceManager.GetString("OpenSettingsFolder", resourceCulture);
+            }
+        }
+
+        public static string PopupFontFamilyLabel {
+            get {
+                return ResourceManager.GetString("PopupFontFamilyLabel", resourceCulture);
             }
         }
 

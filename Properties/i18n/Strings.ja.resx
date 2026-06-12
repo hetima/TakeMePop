@@ -80,6 +80,14 @@
     <value>設定フォルダを開く</value>
   </data>
 
+  <data name="DefaultLabel" xml:space="preserve">
+    <value>デフォルト</value>
+  </data>
+
+  <data name="PopupFontFamilyLabel" xml:space="preserve">
+    <value>フォント</value>
+  </data>
+
   <data name="FontSizeLabel" xml:space="preserve">
     <value>フォントサイズ</value>
   </data>
@@ -337,11 +345,11 @@
   </data>
 
   <data name="TgSizeLabel" xml:space="preserve">
-    <value>大きさ</value>
+    <value>大きさ（直径）</value>
   </data>
 
   <data name="TgSizeTooltip" xml:space="preserve">
-    <value>ドロップガードウィンドウのサイズ（20〜200 px）</value>
+    <value>ドロップガードウィンドウのサイズ</value>
   </data>
 
   <data name="TgActivationPixelsLabel" xml:space="preserve">
@@ -349,7 +357,7 @@
   </data>
 
   <data name="TgActivationPixelsTooltip" xml:space="preserve">
-    <value>ウィンドウを表示するために必要なマウス移動量（8〜32 px）</value>
+    <value>ウィンドウを表示するために必要なマウス移動量</value>
   </data>
 
   <data name="TgActivationDelayLabel" xml:space="preserve">
@@ -357,7 +365,7 @@
   </data>
 
   <data name="TgActivationDelayTooltip" xml:space="preserve">
-    <value>ウィンドウが出現してから機能するまでのタイムラグ（0〜1000 ms）</value>
+    <value>ウィンドウが出現してから機能するまでのタイムラグ</value>
   </data>
 
   <data name="TgDismissDelayLabel" xml:space="preserve">
@@ -365,7 +373,7 @@
   </data>
 
   <data name="TgDismissDelayTooltip" xml:space="preserve">
-    <value>ウィンドウが出現してから自動的に消えるまでの時間（0〜1000 ms）</value>
+    <value>ウィンドウが出現してから自動的に消えるまでの時間</value>
   </data>
 
   <data name="TgShowPatternLabel" xml:space="preserve">

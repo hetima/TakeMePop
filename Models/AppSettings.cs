@@ -35,7 +35,7 @@ public class AppSettings
     /// クリップボード履歴の最大保持件数。この件数に達したら古い方から半分削除する。
     /// </summary>
     [JsonPropertyName("clipboardHistoryLimit")]
-    public int ClipboardHistoryLimit { get; set; } = 100;
+    public int ClipboardHistoryLimit { get; set; } = 10;
 
     /// <summary>
     /// ショートカットキーの設定
@@ -57,6 +57,12 @@ public class AppSettings
 
     [JsonPropertyName("quickTextWindow")]
     public QuickTextWindowSettings QuickTextWindow { get; set; } = new QuickTextWindowSettings();
+
+    /// <summary>
+    /// QuickTextWindow・QuickHistoryWindow で使うフォント名。空文字列はシステムデフォルト。
+    /// </summary>
+    [JsonPropertyName("popupFontFamily")]
+    public string PopupFontFamily { get; set; } = "";
 }
 
 public class QuickTextWindowSettings
@@ -94,13 +100,13 @@ public class TransparentGuardSettings
     public bool IsEnabled { get; set; } = true;
 
     [JsonPropertyName("size")]
-    public double Size { get; set; } = 60;
+    public double Size { get; set; } = 120;
 
     [JsonPropertyName("activationPixels")]
-    public int ActivationPixels { get; set; } = 16;
+    public int ActivationPixels { get; set; } = 10;
 
     [JsonPropertyName("dismissDelayMs")]
-    public int DismissDelayMs { get; set; } = 500;
+    public int DismissDelayMs { get; set; } = 300;
 
 }
 

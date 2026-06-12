@@ -12,6 +12,9 @@ using System.Windows;
 
 namespace Listhing.ViewModels;
 
+/// <summary>フォント選択リストの1項目（表示名と実値のペア）</summary>
+public record FontFamilyItem(string DisplayName, string Value);
+
 /// <summary>
 /// SettingsTab ViewModel
 /// </summary>
@@ -25,7 +28,7 @@ public class SettingsViewModel : INotifyPropertyChanged
     private ThemeMode _selectedTheme;
     private AppLanguage _selectedLanguage;
     private double _fontSize;
-    private ObservableCollection<string>? _allFontNames;
+    private readonly List<FontFamilyItem> _fontFamilyItems;
 
     /// <summary>
     /// PropertyChangedEvent
@@ -35,8 +38,6 @@ public class SettingsViewModel : INotifyPropertyChanged
     /// <summary>
     /// Constructor
     /// </summary>
-    /// <param name="settingsService">Settings service</param>
-    /// <param name="modalService">Modal service</param>
     public SettingsViewModel(SettingsService settingsService, ModalService modalService)
     {
         _settingsService = settingsService;
@@ -47,36 +48,18 @@ public class SettingsViewModel : INotifyPropertyChanged
         _selectedTheme = settingsService.Settings.Theme;
         _selectedLanguage = settingsService.Settings.Language ?? AppLanguage.En;
         _fontSize = settingsService.Settings.FontSize;
-        
-        // ターミナルフォント名リストを初期化
-        var fontNames = new List<string>
-        {
-            "Consolas",
-            "Courier New",
-            "BIZ UDGothic",
-            "HackGen35",
-            "HackGen Console",
-            "IBM Plex Mono",
-            "UDEV Gothic",
-            "UDEV Gothic 35JPDOC",
-        };
-        
-        // システムにインストールされているフォントのみを残す
-        var installedFonts = Fonts.SystemFontFamilies.Select(f => f.Source).ToHashSet(StringComparer.OrdinalIgnoreCase);
-        
-        var availableFonts = fontNames.Where(f => installedFonts.Contains(f)).OrderBy(f => f).ToList();
 
-        // 全フォントリストを初期化（インストールされているフォントのみ）
-        _allFontNames = new ObservableCollection<string>(
-            Fonts.SystemFontFamilies
-                .Select(f => f.Source)
-                .OrderBy(f => f)
-                .ToList());
+        // フォントリスト: 先頭がデフォルト、以降インストール済みフォント昇順
+        var systemFonts = Fonts.SystemFontFamilies
+            .Select(f => f.Source)
+            .OrderBy(f => f)
+            .Select(f => new FontFamilyItem(f, f))
+            .ToList();
+        systemFonts.Insert(0, new FontFamilyItem(Listhing.Strings.DefaultLabel, ""));
+        _fontFamilyItems = systemFonts;
     }
 
-    /// <summary>
-    /// Selected theme
-    /// </summary>
+    /// <summary>Selected theme</summary>
     public ThemeMode SelectedTheme
     {
         get => _selectedTheme;
@@ -93,9 +76,7 @@ public class SettingsViewModel : INotifyPropertyChanged
         }
     }
 
-    /// <summary>
-    /// Selected language
-    /// </summary>
+    /// <summary>Selected language</summary>
     public AppLanguage SelectedLanguage
     {
         get => _selectedLanguage;
@@ -112,9 +93,28 @@ public class SettingsViewModel : INotifyPropertyChanged
         }
     }
 
+    /// <summary>フォント選択リスト（先頭がデフォルト）</summary>
+    public List<FontFamilyItem> FontFamilyItems => _fontFamilyItems;
+
     /// <summary>
-    /// Font size (8-48)
+    /// QuickTextWindow・QuickHistoryWindow のフォント名。空文字列はシステムデフォルト。
     /// </summary>
+    public string PopupFontFamily
+    {
+        get => _settingsService.Settings.PopupFontFamily;
+        set
+        {
+            if (_settingsService.Settings.PopupFontFamily != value)
+            {
+                _settingsService.Settings.PopupFontFamily = value;
+                _settingsService.Save();
+                App.ApplyPopupFontFamily(value);
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    /// <summary>Font size (8-48)</summary>
     public double FontSize
     {
         get => _fontSize;
@@ -130,14 +130,10 @@ public class SettingsViewModel : INotifyPropertyChanged
         }
     }
 
-    /// <summary>
-    /// Whether restart is required (theme or language changed)
-    /// </summary>
+    /// <summary>Whether restart is required (theme or language changed)</summary>
     public bool IsRestartRequired => _selectedTheme != _originalTheme || _selectedLanguage != _originalLanguage;
 
-    /// <summary>
-    /// クリップボード履歴の上限件数
-    /// </summary>
+    /// <summary>クリップボード履歴の上限件数</summary>
     public int ClipboardHistoryLimit
     {
         get => _settingsService.Settings.ClipboardHistoryLimit;
@@ -152,21 +148,14 @@ public class SettingsViewModel : INotifyPropertyChanged
         }
     }
 
-    /// <summary>
-    /// デフォルトのアイテムを開くショートカットキー
-    /// </summary>
+    /// <summary>デフォルトのアイテムを開くショートカットキー</summary>
     public ShortcutKey DefaultOpenKey => _settingsService.Settings.ShortcutSettings.DefaultOpenKey;
 
-    /// <summary>
-    /// アイテムの場所を表示するショートカットキー
-    /// </summary>
+    /// <summary>アイテムの場所を表示するショートカットキー</summary>
     public ShortcutKey RevealKey => _settingsService.Settings.ShortcutSettings.RevealKey;
 
-    /// <summary>
-    /// Quick History ウィンドウを表示するショートカットキー
-    /// </summary>
+    /// <summary>Quick History ウィンドウを表示するショートカットキー</summary>
     public ShortcutKey QuickHistoryKey => _settingsService.Settings.ShortcutSettings.QuickHistoryKey;
-
 
     private PopWindowSettings Pw => _settingsService.Settings.PopWindow;
 
@@ -202,9 +191,7 @@ public class SettingsViewModel : INotifyPropertyChanged
         set { if (Tg.DismissDelayMs != value) { Tg.DismissDelayMs = value; _settingsService.Save(); _settingsService.NotifyTransparentGuardChanged(); OnPropertyChanged(); } }
     }
 
-    /// <summary>
-    /// ショートカットキーの表示を更新する
-    /// </summary>
+    /// <summary>ショートカットキーの表示を更新する</summary>
     public void RefreshShortcutKeys()
     {
         OnPropertyChanged(nameof(DefaultOpenKey));
@@ -212,13 +199,8 @@ public class SettingsViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(QuickHistoryKey));
     }
 
-    /// <summary>
-    /// OnPropertyChanged
-    /// </summary>
-    /// <param name="propertyName">Property name</param>
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
-
 }

@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Listhing.Features.QuickTextWindow;
 
@@ -72,5 +73,13 @@ public partial class QuickTextWindow : Window
     private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
     {
         App.UpdateQuickTextWindowSize(Width, Height);
+    }
+
+    /// <summary>テキストエディタのフォントを適用する。空文字列はシステムデフォルトへリセット。</summary>
+    public void ApplyPopupFontFamily(string fontFamily)
+    {
+        TextEditor.FontFamily = string.IsNullOrEmpty(fontFamily)
+            ? SystemFonts.MessageFontFamily
+            : new FontFamily(fontFamily);
     }
 }
