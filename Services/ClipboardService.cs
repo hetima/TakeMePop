@@ -21,6 +21,9 @@ public class ClipboardService : IDisposable
     // NotifyFirstCtrlC() 呼び出し時点のタイムスタンプ。これより新しいアイテムが来たら変化あり
     private DateTime _snapshotTime = DateTime.MinValue;
 
+    // この時刻までは自分で発生させたクリップボード更新として履歴に追加しない
+    private DateTime _ignoreClipboardUpdatesUntil = DateTime.MinValue;
+
     /// <summary>NotifyFirstCtrlC() 以降にクリップボードが更新されたか</summary>
     public bool IsContentChanged { get; private set; }
 
@@ -29,6 +32,10 @@ public class ClipboardService : IDisposable
 
     /// <summary>外部から履歴変更を通知する（手動削除後などに呼ぶ）</summary>
     public void NotifyHistoryChanged() => HistoryChanged?.Invoke();
+
+    /// <summary>指定時間内のクリップボード更新を履歴に追加しない</summary>
+    public void IgnoreClipboardUpdatesFor(TimeSpan duration) =>
+        _ignoreClipboardUpdatesUntil = DateTime.UtcNow.Add(duration);
 
     public List<ClipboardItem> History { get; } = [];
 
@@ -61,6 +68,10 @@ public class ClipboardService : IDisposable
         var item = ClipboardItem.TryCapture();
         if (item == null) return IntPtr.Zero;
 
+        // QuickHistory などが自分で発生させた更新は短時間スキップ
+        if (DateTime.UtcNow < _ignoreClipboardUpdatesUntil)
+            return IntPtr.Zero;
+
         // 直前の履歴と内容が同じなら追加しない
         var last = History.Count > 0 ? History[^1] : null;
         bool isDuplicate = last != null &&
@@ -92,9 +103,10 @@ public class ClipboardService : IDisposable
         var prev = History[^1];
         HistoryChanged?.Invoke();
 
-        // クリップボード更新による履歴追加を抑制するためスナップショット時刻を更新
+        // クリップボード更新による履歴追加を抑制するため短時間スキップ
         _snapshotTime = DateTime.UtcNow;
         IsContentChanged = false;
+        IgnoreClipboardUpdatesFor(TimeSpan.FromSeconds(1));
 
         if (prev.HasFiles && prev.Files != null)
         {

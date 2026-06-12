@@ -245,7 +245,11 @@ public partial class App : Application
             KeyboardHookService.RegisterHotkey(shortcuts.RevealKey, OnRevealHotkey);
 
         if (!shortcuts.QuickHistoryKey.IsEmpty)
-            KeyboardHookService.RegisterHotkey(shortcuts.QuickHistoryKey, ToggleQuickHistoryWindow);
+        {
+            KeyboardHookService.RegisterQuickHistoryHotkey(shortcuts.QuickHistoryKey, ToggleQuickHistoryWindow);
+            KeyboardHookService.QuickHistorySelectNext = ShowOrSelectNextQuickHistory;
+            KeyboardHookService.QuickHistoryCommit = CommitQuickHistorySelection;
+        }
     }
 
     /// <summary>
@@ -286,6 +290,37 @@ public partial class App : Application
             _quickHistoryWindow.Hide();
         else
             _quickHistoryWindow.Show();
+    }
+
+    /// <summary>
+    /// QuickHistory ウィンドウを表示中なら選択を次のアイテムへ進める。
+    /// </summary>
+    public static void ShowOrSelectNextQuickHistory()
+    {
+        if (_quickHistoryWindow == null)
+        {
+            _quickHistoryWindow = new QuickHistoryWindow
+            {
+                FontSize = SettingsService.Settings.FontSize
+            };
+            ApplyTheme(SettingsService.Settings.Theme, _quickHistoryWindow);
+        }
+
+        if (!_quickHistoryWindow.IsVisible)
+        {
+            _quickHistoryWindow.Show();
+            return;
+        }
+
+        _quickHistoryWindow.SelectNext();
+    }
+
+    /// <summary>
+    /// QuickHistory ウィンドウの選択中アイテムをコピー＆ペーストして閉じる。
+    /// </summary>
+    public static void CommitQuickHistorySelection()
+    {
+        _quickHistoryWindow?.CommitSelection();
     }
 
     /// <summary>

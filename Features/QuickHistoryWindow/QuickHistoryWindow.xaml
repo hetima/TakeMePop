@@ -8,10 +8,10 @@
         WindowStyle="None"
         AllowsTransparency="False"
         Topmost="True"
-        ShowActivated="True"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
         ShowInTaskbar="False"
+        ShowActivated="False"
         PreviewKeyDown="Window_PreviewKeyDown">
     <Window.Resources>
         <Style x:Key="CloseButtonStyle" TargetType="Button">

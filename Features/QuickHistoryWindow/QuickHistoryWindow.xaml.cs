@@ -1,7 +1,5 @@
-using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Threading;
 
 namespace Listhing.Features.QuickHistoryWindow;
@@ -15,24 +13,6 @@ public partial class QuickHistoryWindow : Window
     private readonly QuickHistoryWindowViewModel _viewModel;
     private bool _forceClose;
 
-    [DllImport("user32.dll")]
-    private static extern bool SetForegroundWindow(IntPtr hWnd);
-
-    [DllImport("user32.dll")]
-    private static extern IntPtr SetFocus(IntPtr hWnd);
-
-    [DllImport("user32.dll")]
-    private static extern IntPtr GetForegroundWindow();
-
-    [DllImport("user32.dll")]
-    private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
-
-    [DllImport("kernel32.dll")]
-    private static extern uint GetCurrentThreadId();
-
-    [DllImport("user32.dll")]
-    private static extern bool AttachThreadInput(uint idAttach, uint idAttachTo, bool fAttach);
-
     public QuickHistoryWindow()
     {
         InitializeComponent();
@@ -44,36 +24,29 @@ public partial class QuickHistoryWindow : Window
             e.Cancel = true;
             Hide();
         };
-        Deactivated += (_, _) =>
-        {
-            if (IsVisible) Hide();
-        };
     }
 
     public new void Show()
     {
         _viewModel.RefreshItems();
+        HistoryListBox.SelectedItem = null;
         base.Show();
-        Dispatcher.BeginInvoke(() =>
-        {
-            var handle = new WindowInteropHelper(this).Handle;
-            var foregroundHandle = GetForegroundWindow();
-            uint currentThreadId = GetCurrentThreadId();
-            uint foregroundThreadId = foregroundHandle == IntPtr.Zero
-                ? 0
-                : GetWindowThreadProcessId(foregroundHandle, out _);
-            bool attached = foregroundThreadId != 0 &&
-                foregroundThreadId != currentThreadId &&
-                AttachThreadInput(currentThreadId, foregroundThreadId, true);
-            SetForegroundWindow(handle);
-            Activate();
-            SetFocus(handle);
-            if (attached)
-                AttachThreadInput(currentThreadId, foregroundThreadId, false);
-            if (_viewModel.Items.Count > 0)
-                HistoryListBox.SelectedIndex = 0;
-            HistoryListBox.Focus();
-        });
+    }
+
+    /// <summary>選択を次のアイテムへ進める（末尾なら先頭に戻る）</summary>
+    public void SelectNext()
+    {
+        var items = _viewModel.Items;
+        if (items.Count == 0) return;
+        int next = (HistoryListBox.SelectedIndex + 1) % items.Count;
+        HistoryListBox.SelectedIndex = next;
+    }
+
+    /// <summary>選択中アイテムをコピー＆ペーストしてウィンドウを閉じる</summary>
+    public void CommitSelection()
+    {
+        if (HistoryListBox.SelectedItem is not HistoryDisplayItem displayItem) return;
+        CopyAndPaste(displayItem);
     }
 
     public void ForceClose()
@@ -97,8 +70,6 @@ public partial class QuickHistoryWindow : Window
     {
         bool ctrl = (Keyboard.Modifiers & ModifierKeys.Control) != 0;
         bool shift = (Keyboard.Modifiers & ModifierKeys.Shift) != 0;
-        bool noMod = Keyboard.Modifiers == ModifierKeys.None;
-
         if (e.Key == Key.Escape)
         {
             Close();
@@ -139,20 +110,6 @@ public partial class QuickHistoryWindow : Window
         }
 
         if (ctrl || shift) return;
-
-        int index = KeyToIndex(e.Key);
-        if (index < 0) return;
-
-        e.Handled = true;
-
-        var items = _viewModel.Items;
-        if (index >= items.Count) return;
-        var displayItem = items[index];
-
-        if (noMod)
-        {
-            CopyItem(displayItem);
-        }
     }
 
     /// <summary>
@@ -172,26 +129,19 @@ public partial class QuickHistoryWindow : Window
         }, DispatcherPriority.Background);
     }
 
-    /// <summary>
-    /// キーコードを 0 始まりのインデックスに変換する。
-    /// 1→0, 2→1, ..., 9→8, 0→9。対応しないキーは -1。
-    /// </summary>
-    private static int KeyToIndex(Key key)
+    /// <summary>アイテムをコピーしてペーストし、ウィンドウを閉じる</summary>
+    private void CopyAndPaste(HistoryDisplayItem displayItem)
     {
-        return key switch
-        {
-            Key.D1 or Key.NumPad1 => 0,
-            Key.D2 or Key.NumPad2 => 1,
-            Key.D3 or Key.NumPad3 => 2,
-            Key.D4 or Key.NumPad4 => 3,
-            Key.D5 or Key.NumPad5 => 4,
-            Key.D6 or Key.NumPad6 => 5,
-            Key.D7 or Key.NumPad7 => 6,
-            Key.D8 or Key.NumPad8 => 7,
-            Key.D9 or Key.NumPad9 => 8,
-            Key.D0 or Key.NumPad0 => 9,
-            _ => -1,
-        };
+        var item = displayItem.Item;
+        if (!item.HasText || item.Text == null) return;
+
+        App.ClipboardService.IgnoreClipboardUpdatesFor(TimeSpan.FromSeconds(1));
+        Clipboard.SetText(item.Text);
+        Hide();
+
+        var timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(100) };
+        timer.Tick += (_, _) => { timer.Stop(); App.GlobalHookService.PostCtrlV(); };
+        timer.Start();
     }
 
     private void HistoryListBox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)

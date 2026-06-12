@@ -1,6 +1,7 @@
 using Listhing.Helpers;
 using SharpHook;
 using SharpHook.Data;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace Listhing.Services;
@@ -23,6 +24,21 @@ public class KeyboardHookService
     private readonly List<(ShortcutKey key, Action callback)> _hotkeys = new();
     private volatile (ShortcutKey key, Action callback)[] _hotkeySnapshot = [];
 
+    // QuickHistory モデファイキー監視
+    private bool _quickHistoryModifierMode = false;
+    private ModifierKeys _quickHistoryModifiers = ModifierKeys.None;
+    private ShortcutKey? _quickHistoryKey;
+    private bool _quickHistoryMainKeyReleased = true;
+    private KeyCode _quickHistoryMainKeyCode;
+    // 各修飾キーの押下状態（SharpHookスレッドからのみアクセス）
+    private bool _ctrlPressed;
+    private bool _altPressed;
+    private bool _shiftPressed;
+    private bool _winPressed;
+
+    public Action? QuickHistorySelectNext { get; set; }
+    public Action? QuickHistoryCommit { get; set; }
+
     public event EventHandler? CtrlCDoubleTapped;
     public event EventHandler? CtrlXDoubleTapped;
 
@@ -33,6 +49,15 @@ public class KeyboardHookService
         globalHook.KeyPressed += OnKeyPressed;
         globalHook.KeyReleased += OnKeyReleased;
         globalHook.MousePressed += OnMousePressed;
+    }
+
+    /// <summary>
+    /// QuickHistory 用ホットキーを登録する。修飾キーありの場合は SelectNext/Commit モードで動作する。
+    /// </summary>
+    public void RegisterQuickHistoryHotkey(ShortcutKey shortcut, Action toggleCallback)
+    {
+        _quickHistoryKey = shortcut;
+        RegisterHotkey(shortcut, toggleCallback);
     }
 
     /// <summary>
@@ -57,14 +82,34 @@ public class KeyboardHookService
 
     private void OnKeyPressed(object? sender, KeyboardHookEventArgs e)
     {
+        // 修飾キー押下状態を追跡
+        TrackModifierPressed(e.Data.KeyCode);
+
         // グローバルホットキー照合（スナップショットを使ってスレッドセーフに読み取る）
         foreach (var (key, callback) in _hotkeySnapshot)
         {
             if (key.MatchesHook(e))
             {
                 e.SuppressEvent = true;
-                var cb = callback;
-                _dispatcher.BeginInvoke(cb);
+                if (key.HasModifiers && key.Equals(_quickHistoryKey) && QuickHistorySelectNext != null)
+                {
+                    if (!_quickHistoryMainKeyReleased && e.Data.KeyCode == _quickHistoryMainKeyCode)
+                    {
+                        break;
+                    }
+
+                    // 修飾キーありの QuickHistory ホットキー → SelectNext モード
+                    _quickHistoryModifiers = key.Modifiers;
+                    _quickHistoryModifierMode = true;
+                    _quickHistoryMainKeyReleased = false;
+                    _quickHistoryMainKeyCode = e.Data.KeyCode;
+                    _dispatcher.BeginInvoke(QuickHistorySelectNext);
+                }
+                else
+                {
+                    var cb = callback;
+                    _dispatcher.BeginInvoke(cb);
+                }
                 break;
             }
         }
@@ -142,6 +187,53 @@ public class KeyboardHookService
         if (e.Data.KeyCode == KeyCode.VcX)
             _xKeyReleased = true;
 
+        if (e.Data.KeyCode == _quickHistoryMainKeyCode)
+            _quickHistoryMainKeyReleased = true;
+
+        // 修飾キー押下状態を追跡
+        TrackModifierReleased(e.Data.KeyCode);
+
+        // QuickHistory モデファイキー監視
+        if (_quickHistoryModifierMode && IsModifierKey(e.Data.KeyCode))
+        {
+            if (AreRequiredModifiersReleased(_quickHistoryModifiers))
+            {
+                _quickHistoryModifierMode = false;
+                if (QuickHistoryCommit != null)
+                    _dispatcher.BeginInvoke(QuickHistoryCommit);
+            }
+        }
+    }
+
+    private void TrackModifierPressed(KeyCode code)
+    {
+        if (code is KeyCode.VcLeftControl or KeyCode.VcRightControl) _ctrlPressed = true;
+        else if (code is KeyCode.VcLeftAlt or KeyCode.VcRightAlt) _altPressed = true;
+        else if (code is KeyCode.VcLeftShift or KeyCode.VcRightShift) _shiftPressed = true;
+        else if (code is KeyCode.VcLeftMeta or KeyCode.VcRightMeta) _winPressed = true;
+    }
+
+    private void TrackModifierReleased(KeyCode code)
+    {
+        if (code is KeyCode.VcLeftControl or KeyCode.VcRightControl) _ctrlPressed = false;
+        else if (code is KeyCode.VcLeftAlt or KeyCode.VcRightAlt) _altPressed = false;
+        else if (code is KeyCode.VcLeftShift or KeyCode.VcRightShift) _shiftPressed = false;
+        else if (code is KeyCode.VcLeftMeta or KeyCode.VcRightMeta) _winPressed = false;
+    }
+
+    private static bool IsModifierKey(KeyCode code) =>
+        code is KeyCode.VcLeftControl or KeyCode.VcRightControl
+             or KeyCode.VcLeftAlt or KeyCode.VcRightAlt
+             or KeyCode.VcLeftShift or KeyCode.VcRightShift
+             or KeyCode.VcLeftMeta or KeyCode.VcRightMeta;
+
+    private bool AreRequiredModifiersReleased(ModifierKeys required)
+    {
+        if (required.HasFlag(ModifierKeys.Control) && _ctrlPressed) return false;
+        if (required.HasFlag(ModifierKeys.Alt) && _altPressed) return false;
+        if (required.HasFlag(ModifierKeys.Shift) && _shiftPressed) return false;
+        if (required.HasFlag(ModifierKeys.Windows) && _winPressed) return false;
+        return true;
     }
 
     private void OnMousePressed(object? sender, MouseHookEventArgs e)
