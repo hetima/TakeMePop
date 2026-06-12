@@ -21,33 +21,8 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        <Style x:Key="CloseButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Grid>
-                            <Ellipse x:Name="Bg" Fill="Transparent"/>
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bg" Property="Fill" Value="{DynamicResource ButtonBorderBrushPressed}"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Bg" Property="Fill" Value="{DynamicResource ControlStrokeColorSecondaryBrush}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </Window.Resources>
-    <Border
-            BorderThickness="1"
-            CornerRadius="6">
+    <Border Style="{StaticResource PopupWindowChromeStyle}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="28"/>
@@ -75,7 +50,7 @@
                   Background="Transparent"
                   MouseDown="TitleBar_MouseDown">
                 <Button FontFamily="{StaticResource SymbolThemeFontFamily}"
-                        Style="{StaticResource CloseButtonStyle}"
+                        Style="{StaticResource PopupWindowIconButtonStyle}"
                         Foreground="{DynamicResource TextControlForeground}"
                         Content="{Binding PinnedIconText}"
                         Width="24" Height="24"
@@ -90,7 +65,7 @@
                             Margin="0,0,4,0">
                     <Button x:Name="CopyButton"
                             FontFamily="{StaticResource SymbolThemeFontFamily}"
-                            Style="{StaticResource CloseButtonStyle}"
+                            Style="{StaticResource PopupWindowIconButtonStyle}"
                             Foreground="{DynamicResource TextControlForeground}"
                             Content="&#xE8C8;"
                             Width="24" Height="24"
@@ -99,7 +74,7 @@
                             Click="CopyButton_Click"/>
                     <Button x:Name="CloseButton"
                             FontFamily="{StaticResource SymbolThemeFontFamily}"
-                            Style="{StaticResource CloseButtonStyle}"
+                            Style="{StaticResource PopupWindowIconButtonStyle}"
                             Foreground="{DynamicResource TextControlForeground}"
                             Content="&#xE106;"
                             Width="24" Height="24"
@@ -127,9 +102,7 @@
                     Drop="ContentArea_Drop">
                 <Border.ContextMenu>
                     <ContextMenu Opened="ContextMenu_Opened">
-                        <MenuItem x:Name="ClipboardHistoryMenuItem" Header="クリップボード履歴"/>
-                        <Separator/>
-                        <MenuItem Header="{x:Static res:Strings.MenuItemOpenMainWindow}" Click="OpenMainWindow_Click"/>
+                        <MenuItem x:Name="ClipboardHistoryMenuItem" Header="{x:Static res:Strings.MenuItemClipBoardHistory}"/>
                         <Separator/>
                         <MenuItem Header="{x:Static res:Strings.MenuItemSetting}" Click="Setting_Click"/>
                         <MenuItem Header="{x:Static res:Strings.MenuItemQuit}" Click="Quit_Click"/>

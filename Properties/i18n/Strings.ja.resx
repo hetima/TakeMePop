@@ -408,8 +408,16 @@
     <value>クリップボード履歴</value>
   </data>
 
+  <data name="QuickTextWindowTitle" xml:space="preserve">
+    <value>Quick Text Edit</value>
+  </data>
+
   <data name="QuickHistoryStatusBarText" xml:space="preserve">
     <value>ショートカットを押して選択</value>
+  </data>
+
+  <data name="MenuItemClipBoardHistory" xml:space="preserve">
+    <value>クリップボード履歴 </value>
   </data>
 
 </root>

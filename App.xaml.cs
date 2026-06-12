@@ -269,9 +269,13 @@ public partial class App : Application
             ApplyTheme(SettingsService.Settings.Theme, _quickTextWindow);
         }
 
-        GetCursorPos(out var pos);
-        _quickTextWindow.Left = pos.X - _quickTextWindow.Width / 2;
-        _quickTextWindow.Top  = pos.Y - _quickTextWindow.Height / 2;
+        // すでに表示中なら位置を動かさない（新規表示時のみマウス付近に配置）
+        if (!_quickTextWindow.IsVisible)
+        {
+            GetCursorPos(out var pos);
+            _quickTextWindow.Left = pos.X - _quickTextWindow.Width / 2;
+            _quickTextWindow.Top  = pos.Y - _quickTextWindow.Height / 2;
+        }
         _quickTextWindow.Show();
     }
 

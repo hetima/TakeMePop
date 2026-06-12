@@ -144,14 +144,27 @@ public partial class QuickHistoryWindow : Window
         }, DispatcherPriority.Background);
     }
 
+    /// <summary>
+    /// ペースト/コピー用のテキストを取得する。
+    /// テキストアイテムはそのテキスト、ファイルアイテムはフルパス（複数なら改行区切り）を返す。
+    /// </summary>
+    private static string? GetPasteText(HistoryDisplayItem displayItem)
+    {
+        var item = displayItem.Item;
+        if (item == null) return null;
+        if (item.HasText && item.Text != null) return item.Text;
+        if (item.HasFiles) return string.Join(Environment.NewLine, item.AllFiles);
+        return null;
+    }
+
     /// <summary>アイテムをコピーしてペーストし、ウィンドウを閉じる</summary>
     private void CopyAndPaste(HistoryDisplayItem displayItem)
     {
-        var item = displayItem.Item;
-        if (item == null || !item.HasText || item.Text == null) return;
+        var text = GetPasteText(displayItem);
+        if (text == null) return;
 
         App.ClipboardService.IgnoreClipboardUpdatesFor(TimeSpan.FromSeconds(1));
-        Clipboard.SetText(item.Text);
+        Clipboard.SetText(text);
         Hide();
 
         var timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(100) };
@@ -179,11 +192,11 @@ public partial class QuickHistoryWindow : Window
     /// </summary>
     private void CopyItem(HistoryDisplayItem displayItem)
     {
-        var item = displayItem.Item;
-        if (item == null || !item.HasText || item.Text == null) return;
+        var text = GetPasteText(displayItem);
+        if (text == null) return;
 
         _viewModel.DeleteItem(displayItem);
-        Clipboard.SetText(item.Text);
+        Clipboard.SetText(text);
         Close();
     }
 }

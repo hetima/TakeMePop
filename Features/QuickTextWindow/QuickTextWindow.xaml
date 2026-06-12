@@ -1,6 +1,7 @@
 <Window x:Class="Listhing.Features.QuickTextWindow.QuickTextWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:res="clr-namespace:Listhing"
         Width="260" Height="200"
         WindowStyle="None"
         AllowsTransparency="False"
@@ -8,32 +9,7 @@
         ResizeMode="CanResize"
         ShowInTaskbar="False"
         MinWidth="160" MinHeight="120">
-    <Window.Resources>
-        <Style x:Key="CloseButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Grid>
-                            <Ellipse x:Name="Bg" Fill="Transparent"/>
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bg" Property="Fill" Value="{DynamicResource ButtonBorderBrushPressed}"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Bg" Property="Fill" Value="{DynamicResource ControlStrokeColorSecondaryBrush}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Window.Resources>
-    <Border BorderThickness="1" CornerRadius="6">
+    <Border Style="{StaticResource PopupWindowChromeStyle}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="28"/>
@@ -61,19 +37,24 @@
             <Grid Grid.Row="0"
                   Background="Transparent"
                   MouseDown="TitleBar_MouseDown">
+                <TextBlock Text="{x:Static res:Strings.QuickTextWindowTitle}"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           FontWeight="SemiBold"
+                           FontSize="12"/>
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Center"
                             Margin="0,0,4,0">
                     <Button FontFamily="{StaticResource SymbolThemeFontFamily}"
-                            Style="{StaticResource CloseButtonStyle}"
+                            Style="{StaticResource PopupWindowIconButtonStyle}"
                             Foreground="{DynamicResource TextControlForeground}"
                             Content="&#xE8C8;"
                             Width="24" Height="24"
                             FontSize="14"
                             Click="CopyButton_Click"/>
                     <Button FontFamily="{StaticResource SymbolThemeFontFamily}"
-                            Style="{StaticResource CloseButtonStyle}"
+                            Style="{StaticResource PopupWindowIconButtonStyle}"
                             Foreground="{DynamicResource TextControlForeground}"
                             Content="&#xE106;"
                             Width="24" Height="24"
@@ -92,7 +73,7 @@
                      Background="Transparent"
                      BorderThickness="0"
                      Padding="5"
-                     Margin="0,0,0,0"/>
+                     Margin="5,0,5,5"/>
         </Grid>
     </Border>
 </Window>

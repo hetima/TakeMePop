@@ -35,8 +35,39 @@
                 </Setter.Value>
             </Setter>
             </Style>
-            <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{DynamicResource ControlAltFillColorQuarternary}" />    
-            <SolidColorBrush x:Key="MenuBarItemBackgroundSelected" Color="{DynamicResource ControlStrokeColorDefault}" /> 
+            <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{DynamicResource ControlAltFillColorQuarternary}" />
+            <SolidColorBrush x:Key="MenuBarItemBackgroundSelected" Color="{DynamicResource ControlStrokeColorDefault}" />
+
+            <!-- ポップアップ系ウィンドウ共通: タイトルバーの閉じる/コピー等ボタン -->
+            <Style x:Key="PopupWindowIconButtonStyle" TargetType="Button">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Ellipse x:Name="Bg" Fill="Transparent"/>
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Bg" Property="Fill" Value="{DynamicResource ButtonBorderBrushPressed}"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="Bg" Property="Fill" Value="{DynamicResource ControlStrokeColorSecondaryBrush}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!-- ポップアップ系ウィンドウ共通: 外枠 Border -->
+            <Style x:Key="PopupWindowChromeStyle" TargetType="Border">
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="CornerRadius" Value="6"/>
+            </Style>
 
             <!-- Converters -->
             <converters:ThemeToIndexConverter x:Key="ThemeToIndexConverter"/>

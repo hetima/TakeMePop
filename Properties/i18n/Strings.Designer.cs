@@ -1,6 +1,6 @@
 namespace Listhing {
     using System;
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("hetima.resx-designer", "0.3.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("hetima.resx-designer", "0.3.2")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Strings {
@@ -244,6 +244,12 @@ namespace Listhing {
             }
         }
 
+        public static string MenuItemClipBoardHistory {
+            get {
+                return ResourceManager.GetString("MenuItemClipBoardHistory", resourceCulture);
+            }
+        }
+
         public static string MenuItemGitHub {
             get {
                 return ResourceManager.GetString("MenuItemGitHub", resourceCulture);
@@ -361,6 +367,12 @@ namespace Listhing {
         public static string QuickHistoryWindowTitle {
             get {
                 return ResourceManager.GetString("QuickHistoryWindowTitle", resourceCulture);
+            }
+        }
+
+        public static string QuickTextWindowTitle {
+            get {
+                return ResourceManager.GetString("QuickTextWindowTitle", resourceCulture);
             }
         }
 

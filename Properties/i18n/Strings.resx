@@ -408,8 +408,16 @@
     <value>ClipBoard History</value>
   </data>
 
+  <data name="QuickTextWindowTitle" xml:space="preserve">
+    <value>Quick Text Edit</value>
+  </data>
+
   <data name="QuickHistoryStatusBarText" xml:space="preserve">
     <value>Press the shortcut key to select</value>
+  </data>
+
+  <data name="MenuItemClipBoardHistory" xml:space="preserve">
+    <value>ClipBoard History </value>
   </data>
 
 </root>
