@@ -29,8 +29,8 @@ public partial class QuickHistoryWindow : Window
     public new void Show()
     {
         _viewModel.RefreshItems();
-        HistoryListBox.SelectedItem = null;
         base.Show();
+        HistoryListBox.SelectedIndex = 0;
     }
 
     /// <summary>選択を次のアイテムへ進める（末尾なら先頭に戻る）</summary>
@@ -46,6 +46,12 @@ public partial class QuickHistoryWindow : Window
     public void CommitSelection()
     {
         if (HistoryListBox.SelectedItem is not HistoryDisplayItem displayItem) return;
+        if (displayItem.IsCancel)
+        {
+            Hide();
+            return;
+        }
+
         CopyAndPaste(displayItem);
     }
 
@@ -93,7 +99,16 @@ public partial class QuickHistoryWindow : Window
         if (e.Key == Key.Enter && !ctrl && !shift)
         {
             if (HistoryListBox.SelectedItem is HistoryDisplayItem selected)
+            {
+                if (selected.IsCancel)
+                {
+                    Hide();
+                    e.Handled = true;
+                    return;
+                }
+
                 CopyItem(selected);
+            }
             e.Handled = true;
             return;
         }
@@ -133,7 +148,7 @@ public partial class QuickHistoryWindow : Window
     private void CopyAndPaste(HistoryDisplayItem displayItem)
     {
         var item = displayItem.Item;
-        if (!item.HasText || item.Text == null) return;
+        if (item == null || !item.HasText || item.Text == null) return;
 
         App.ClipboardService.IgnoreClipboardUpdatesFor(TimeSpan.FromSeconds(1));
         Clipboard.SetText(item.Text);
@@ -149,6 +164,12 @@ public partial class QuickHistoryWindow : Window
         if (HistoryListBox.SelectedItem is HistoryDisplayItem displayItem)
         {
             HistoryListBox.SelectedItem = null;
+            if (displayItem.IsCancel)
+            {
+                Hide();
+                return;
+            }
+
             CopyItem(displayItem);
         }
     }
@@ -159,7 +180,7 @@ public partial class QuickHistoryWindow : Window
     private void CopyItem(HistoryDisplayItem displayItem)
     {
         var item = displayItem.Item;
-        if (!item.HasText || item.Text == null) return;
+        if (item == null || !item.HasText || item.Text == null) return;
 
         _viewModel.DeleteItem(displayItem);
         Clipboard.SetText(item.Text);
