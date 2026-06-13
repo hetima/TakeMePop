@@ -280,7 +280,7 @@ public partial class App : Application
             _quickTextWindow.Left = dipPos.X - _quickTextWindow.Width / 2;
             _quickTextWindow.Top  = dipPos.Y - _quickTextWindow.Height / 2;
         }
-        _quickTextWindow.Show();
+        _quickTextWindow.ShowAndActivate();
     }
 
     public static void ToggleQuickHistoryWindow()
@@ -298,7 +298,7 @@ public partial class App : Application
         if (_quickHistoryWindow.IsVisible)
             _quickHistoryWindow.Hide();
         else
-            _quickHistoryWindow.Show();
+            _quickHistoryWindow.ShowAndActivate();
     }
 
     /// <summary>
@@ -317,7 +317,7 @@ public partial class App : Application
 
         if (!_quickHistoryWindow.IsVisible)
         {
-            _quickHistoryWindow.Show();
+            _quickHistoryWindow.ShowAndActivate();
             return;
         }
 
@@ -580,7 +580,7 @@ public partial class App : Application
     /// <summary>
     /// Apply font size to main window
     /// </summary>
-    /// <param name="fontSize">Font size (8-48)</param>
+    /// <param name="fontSize">Font size (8-40)</param>
     public static void ApplyFontSize(double fontSize)
     {
         // 8より小さい、または40より大きい場合は14にする

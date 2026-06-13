@@ -34,8 +34,8 @@ public partial class QuickTextWindow : Window
         Hide();
     }
 
-    /// <summary>クリップボードのテキストをセットして表示する</summary>
-    public new void Show()
+    /// <summary>クリップボードのテキストをセットして表示し、入力欄へフォーカスする</summary>
+    public void ShowAndActivate()
     {
         var text = Clipboard.ContainsText() ? Clipboard.GetText() : "";
         TextEditor.Text = text;

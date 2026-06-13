@@ -112,9 +112,6 @@ App.xaml.cs で生成し、`App.XXX` 静的プロパティ経由で参照する:
 
 3. **QuickHistoryWindow.CopyItem の挙動** — 履歴から削除してから `Clipboard.SetText` するため、WM_CLIPBOARDUPDATE で同じ内容が履歴の最新として再追加される（「先頭に移動」相当）。意図的ならコメントで明示すべき。
 
-4. **`App.ApplyFontSize` のコメントと実装の不一致** — コメント・XMLドキュメントは「8-48」だが判定は `> 40`。
-
-5. **`new` によるメソッド隠蔽** — QuickHistoryWindow / QuickTextWindow の `public new void Show()` は `Window` 型の参照経由だと呼ばれない。動作はしているが壊れやすいので、別名メソッド（`ShowAndActivate` 等）が安全。
 
 ## 前身プロジェクト（Listhing）の残骸
 

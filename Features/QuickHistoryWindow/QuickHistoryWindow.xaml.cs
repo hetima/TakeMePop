@@ -27,10 +27,12 @@ public partial class QuickHistoryWindow : Window
         };
     }
 
-    public new void Show()
+    /// <summary>履歴を更新して表示し、選択できる状態にする</summary>
+    public void ShowAndActivate()
     {
         _viewModel.RefreshItems();
         base.Show();
+        Activate();
         HistoryListBox.SelectedIndex = 0;
     }
 
