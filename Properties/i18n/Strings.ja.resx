@@ -49,7 +49,7 @@
   </data>
 
   <data name="ThemeAuto" xml:space="preserve">
-    <value>自動</value>
+    <value>システム</value>
   </data>
 
   <data name="ThemeLight" xml:space="preserve">
@@ -313,7 +313,7 @@
   </data>
 
   <data name="BasicActionLabel" xml:space="preserve">
-    <value>基本アクション ショートカットキー</value>
+    <value>ショートカットキー</value>
   </data>
 
   <data name="MenuItemGitHub" xml:space="preserve">
@@ -393,7 +393,7 @@
   </data>
 
   <data name="PwLinkDropFormatLabel" xml:space="preserve">
-    <value>リンクのドロップ形式</value>
+    <value>リンクのドロップの受け取り形式</value>
   </data>
 
   <data name="PwLinkDropFormatTitleAndUrl" xml:space="preserve">
@@ -426,6 +426,14 @@
 
   <data name="MenuItemClipBoardHistory" xml:space="preserve">
     <value>クリップボード履歴 </value>
+  </data>
+
+  <data name="ShortcutSectionDescription" xml:space="preserve">
+    <value>Ctrl+C を連続して2回押すことでドロップパレット、または Quick Text Edit を表示します。クリップボードの中身がファイルかテキストかによって切り替わります。</value>
+  </data>
+
+  <data name="TgSectionDescription" xml:space="preserve">
+    <value>これは「クリックしたつもりがドラッグになってしまい隣のフォルダに放り込んでしまった」というようなミスを軽減させる機能です。ドラッグが始まったらごく短い間、マウスポインタのある場所に透明なウィンドウを出します。このウィンドウがドロップを吸い込み、何もなかったことにします。</value>
   </data>
 
 </root>

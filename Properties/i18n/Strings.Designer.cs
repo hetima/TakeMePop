@@ -448,6 +448,12 @@ namespace Listhing {
             }
         }
 
+        public static string ShortcutSectionDescription {
+            get {
+                return ResourceManager.GetString("ShortcutSectionDescription", resourceCulture);
+            }
+        }
+
         public static string ShowAllFontsLabel {
             get {
                 return ResourceManager.GetString("ShowAllFontsLabel", resourceCulture);
@@ -517,6 +523,12 @@ namespace Listhing {
         public static string TgIsEnabledTooltip {
             get {
                 return ResourceManager.GetString("TgIsEnabledTooltip", resourceCulture);
+            }
+        }
+
+        public static string TgSectionDescription {
+            get {
+                return ResourceManager.GetString("TgSectionDescription", resourceCulture);
             }
         }
 

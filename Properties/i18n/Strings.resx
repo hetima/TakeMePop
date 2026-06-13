@@ -49,7 +49,7 @@
   </data>
 
   <data name="ThemeAuto" xml:space="preserve">
-    <value>Auto</value>
+    <value>System</value>
   </data>
 
   <data name="ThemeLight" xml:space="preserve">
@@ -313,7 +313,7 @@
   </data>
 
   <data name="BasicActionLabel" xml:space="preserve">
-    <value>Basic Action Shortcut Key</value>
+    <value>Shortcut Key</value>
   </data>
 
   <data name="MenuItemQuit" xml:space="preserve">
@@ -393,7 +393,7 @@
   </data>
 
   <data name="PwLinkDropFormatLabel" xml:space="preserve">
-    <value>Link Drop Format</value>
+    <value>Link drop receiving format</value>
   </data>
 
   <data name="PwLinkDropFormatTitleAndUrl" xml:space="preserve">
@@ -426,6 +426,14 @@
 
   <data name="MenuItemClipBoardHistory" xml:space="preserve">
     <value>ClipBoard History </value>
+  </data>
+
+  <data name="ShortcutSectionDescription" xml:space="preserve">
+    <value>Press Ctrl+C twice in a row to show the drop palette or Quick Text Edit. It switches depending on whether the clipboard contains files or text.</value>
+  </data>
+
+  <data name="TgSectionDescription" xml:space="preserve">
+    <value>This feature reduces mistakes such as "I meant to click but ended up dragging and dropped it into the wrong folder." When a drag begins, a transparent window briefly appears at the mouse pointer. This window absorbs the drop and makes it as if nothing happened.</value>
   </data>
 
 </root>
