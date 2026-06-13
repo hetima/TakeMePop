@@ -311,6 +311,25 @@ public partial class SettingsView : UserControl
     }
 
     /// <summary>
+    /// Quick Text Edit ショートカットキー編集ボタンクリックイベント
+    /// </summary>
+    private void EditQuickTextKey_Click(object sender, RoutedEventArgs e)
+    {
+        ShowEditShortcutKeyModal(Listhing.Strings.QuickTextActionLabel, App.SettingsService.Settings.ShortcutSettings.QuickTextKey, (shortcut) =>
+        {
+            if (shortcut != null)
+            {
+                App.SettingsService.Settings.ShortcutSettings.QuickTextKey = shortcut;
+                App.SettingsService.Save();
+                App.ApplyHotkeySettings();
+
+                var viewModel = DataContext as ViewModels.SettingsViewModel;
+                viewModel?.RefreshShortcutKeys();
+            }
+        });
+    }
+
+    /// <summary>
     /// Quick History ショートカットキー編集ボタンクリックイベント
     /// </summary>
     private void EditQuickHistoryKey_Click(object sender, RoutedEventArgs e)

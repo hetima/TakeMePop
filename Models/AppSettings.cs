@@ -276,6 +276,12 @@ public class ShortcutSetting
     [JsonPropertyName("quickHistoryKey")]
     public ShortcutKey QuickHistoryKey { get; set; } = new ShortcutKey(System.Windows.Input.Key.None);
 
+    /// <summary>
+    /// QuickTextWindow（テキストエディット）を表示するショートカットキー
+    /// </summary>
+    [JsonPropertyName("quickTextKey")]
+    public ShortcutKey QuickTextKey { get; set; } = new ShortcutKey(System.Windows.Input.Key.None);
+
 }
 
 

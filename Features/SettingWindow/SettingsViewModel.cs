@@ -221,6 +221,9 @@ public class SettingsViewModel : INotifyPropertyChanged
     /// <summary>Quick History ウィンドウを表示するショートカットキー</summary>
     public ShortcutKey QuickHistoryKey => _settingsService.Settings.ShortcutSettings.QuickHistoryKey;
 
+    /// <summary>QuickText ウィンドウを表示するショートカットキー</summary>
+    public ShortcutKey QuickTextKey => _settingsService.Settings.ShortcutSettings.QuickTextKey;
+
     private PopWindowSettings Pw => _settingsService.Settings.PopWindow;
 
     public Models.LinkDropFormat PwLinkDropFormat
@@ -299,6 +302,7 @@ public class SettingsViewModel : INotifyPropertyChanged
     {
         OnPropertyChanged(nameof(DefaultOpenKey));
         OnPropertyChanged(nameof(QuickHistoryKey));
+        OnPropertyChanged(nameof(QuickTextKey));
     }
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)

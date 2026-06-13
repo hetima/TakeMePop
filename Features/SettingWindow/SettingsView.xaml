@@ -206,6 +206,29 @@
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="0"
+                                               Text="{x:Static res:Strings.QuickTextActionLabel}"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding QuickTextKey, Converter={StaticResource ShortcutKeyToStringConverter}}"
+                                               VerticalAlignment="Center"
+                                               Margin="16,0,8,0"
+                                               FontFamily="Consolas"
+                                               FontSize="13"/>
+                                    <Button Grid.Column="2"
+                                            Content="{x:Static res:Strings.EditButtonLabel}"
+                                            Padding="12,6"
+                                            Click="EditQuickTextKey_Click"
+                                            MinWidth="60"/>
+                                </Grid>
+                            </ListViewItem>
+                            <ListViewItem>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0"
                                                Text="{x:Static res:Strings.QuickHistoryActionLabel}"
                                                VerticalAlignment="Center"/>
                                     <TextBlock Grid.Column="1"

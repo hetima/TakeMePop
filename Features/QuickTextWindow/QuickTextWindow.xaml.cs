@@ -45,6 +45,17 @@ public partial class QuickTextWindow : Window
         TextEditor.Focus();
     }
 
+    /// <summary>
+    /// クリップボードを反映せずに表示し、入力欄へフォーカスする。
+    /// すでに表示中の場合はテキストを変えず、アクティブにするだけ。
+    /// </summary>
+    public void ShowWithoutClipboard()
+    {
+        base.Show();
+        Activate();
+        TextEditor.Focus();
+    }
+
     /// <summary>アプリ終了時に実際に閉じる</summary>
     public void ForceClose()
     {

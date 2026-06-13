@@ -416,6 +416,10 @@
     <value>ClipBoard History</value>
   </data>
 
+  <data name="QuickTextActionLabel" xml:space="preserve">
+    <value>Quick Text Edit</value>
+  </data>
+
   <data name="QuickHistoryWindowTitle" xml:space="preserve">
     <value>ClipBoard History</value>
   </data>

@@ -448,6 +448,12 @@ namespace Listhing {
             }
         }
 
+        public static string QuickTextActionLabel {
+            get {
+                return ResourceManager.GetString("QuickTextActionLabel", resourceCulture);
+            }
+        }
+
         public static string QuickTextWindowTitle {
             get {
                 return ResourceManager.GetString("QuickTextWindowTitle", resourceCulture);

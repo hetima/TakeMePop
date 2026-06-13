@@ -274,6 +274,9 @@ public partial class App : Application
         if (!shortcuts.DefaultOpenKey.IsEmpty)
             KeyboardHookService.RegisterHotkey(shortcuts.DefaultOpenKey, OnDefaultOpenHotkey);
 
+        if (!shortcuts.QuickTextKey.IsEmpty)
+            KeyboardHookService.RegisterHotkey(shortcuts.QuickTextKey, ShowQuickTextWindowEmpty);
+
         if (!shortcuts.QuickHistoryKey.IsEmpty)
         {
             KeyboardHookService.RegisterQuickHistoryHotkey(shortcuts.QuickHistoryKey, ToggleQuickHistoryWindow);
@@ -290,6 +293,25 @@ public partial class App : Application
     /// QuickText ウィンドウをマウスカーソル付近に表示する。
     /// </summary>
     public static void ShowQuickTextWindow()
+    {
+        EnsureQuickTextWindowPlaced();
+        _quickTextWindow!.ShowAndActivate();
+    }
+
+    /// <summary>
+    /// QuickText ウィンドウをクリップボードを反映せずに表示する（ショートカット用）。
+    /// すでに表示中ならアクティブにするだけ。
+    /// </summary>
+    public static void ShowQuickTextWindowEmpty()
+    {
+        EnsureQuickTextWindowPlaced();
+        _quickTextWindow!.ShowWithoutClipboard();
+    }
+
+    /// <summary>
+    /// QuickText ウィンドウを必要なら生成し、未表示の場合のみマウスカーソル付近へ配置する。
+    /// </summary>
+    private static void EnsureQuickTextWindowPlaced()
     {
         if (_quickTextWindow == null)
         {
@@ -312,7 +334,6 @@ public partial class App : Application
             _quickTextWindow.Left = dipPos.X - _quickTextWindow.Width / 2;
             _quickTextWindow.Top  = dipPos.Y - _quickTextWindow.Height / 2;
         }
-        _quickTextWindow.ShowAndActivate();
     }
 
     public static void ToggleQuickHistoryWindow()

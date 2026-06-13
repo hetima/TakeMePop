@@ -416,6 +416,10 @@
     <value>クリップボード履歴</value>
   </data>
 
+  <data name="QuickTextActionLabel" xml:space="preserve">
+    <value>テキストエディット</value>
+  </data>
+
   <data name="QuickHistoryWindowTitle" xml:space="preserve">
     <value>クリップボード履歴</value>
   </data>
