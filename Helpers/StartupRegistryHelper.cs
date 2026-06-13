@@ -37,6 +37,21 @@ public static class StartupRegistryHelper
     }
 
     /// <summary>
+    /// レジストリに書き込む値（実行パスを引用符で囲んだもの）を組み立てる。
+    /// </summary>
+    private static string BuildRegistryValue(string exePath) => $"\"{exePath}\"";
+
+    /// <summary>
+    /// 指定パスで登録済みの状態になっているか判定する。
+    /// 未登録、パス不一致、パス不明の場合は false。
+    /// </summary>
+    public static bool IsRegisteredAs(string? exePath)
+    {
+        if (string.IsNullOrEmpty(exePath)) return false;
+        return GetRegisteredPath() == BuildRegistryValue(exePath);
+    }
+
+    /// <summary>
     /// 既存の TakeMePop 項目を取り除いてから、現在の実行ファイルパスで登録し直す。
     /// </summary>
     public static void Register()
@@ -53,7 +68,7 @@ public static class StartupRegistryHelper
             using var key = Registry.CurrentUser.OpenSubKey(RunKeyPath, writable: true)
                 ?? Registry.CurrentUser.CreateSubKey(RunKeyPath);
             // 既存を取り除いてから（=上書き）登録。パスは引用符で囲む
-            key.SetValue(ValueName, $"\"{exePath}\"");
+            key.SetValue(ValueName, BuildRegistryValue(exePath));
         }
         catch (Exception ex)
         {

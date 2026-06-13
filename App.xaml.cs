@@ -152,32 +152,37 @@ public partial class App : Application
 
     /// <summary>
     /// 起動時のスタートアップ登録同期。
-    /// 実行ファイルパスが前回と変わっていたら
-    /// 既存のスタートアップ項目を取り除き、RunAtStartup が有効なら現在のパスで登録し直す。
+    /// 「あるべき状態（RunAtStartup と現在の実行パス）」と「実レジストリの現状」を比較し、
+    /// ズレているときだけレジストリを書き換える。レジストリ自体を真実の情報源とするため、
+    /// 毎回チェックしても変化がなければ書き込みは発生しない。
+    ///
+    /// これにより以下のケースをすべてカバーする:
+    /// - パスが変わった（scoop アップデート等）→ 登録し直す
+    /// - 設定ファイルを直接編集して RunAtStartup を変えた → レジストリへ反映する
+    /// - 設定が削除されてまっさらになった → RunAtStartup=false なので残骸を除去する
     /// </summary>
     private void SyncStartupRegistration()
     {
-        var settings = SettingsService.Settings;
+        var shouldBeRegistered = SettingsService.Settings.RunAtStartup;
         var currentPath = Helpers.StartupRegistryHelper.GetCurrentExePath();
+        var registeredPath = Helpers.StartupRegistryHelper.GetRegisteredPath();
 
-        // パスが前回と同じなら何もしない（毎回の登録チェックは行わない）。
-        // 設定が削除されてまっさらな状態で起動した場合は LastLaunchedPath が null となり
-        // currentPath と必ず不一致になるため、下の Unregister が走る。
-        // これにより過去に登録されたスタートアップ項目の残骸も除去される。
-        if (settings.LastLaunchedPath == currentPath)
+        if (shouldBeRegistered)
         {
-            return;
+            // 未登録、またはパスがずれている場合のみ登録し直す
+            if (!Helpers.StartupRegistryHelper.IsRegisteredAs(currentPath))
+            {
+                Helpers.StartupRegistryHelper.Register();
+            }
         }
-
-        // 古い（=自身と異なるパスの）項目を取り除いてから、有効なら登録し直す
-        Helpers.StartupRegistryHelper.Unregister();
-        if (settings.RunAtStartup)
+        else
         {
-            Helpers.StartupRegistryHelper.Register();
+            // 登録されていれば取り除く
+            if (registeredPath != null)
+            {
+                Helpers.StartupRegistryHelper.Unregister();
+            }
         }
-
-        settings.LastLaunchedPath = currentPath;
-        SettingsService.Save();
     }
 
     /// <summary>
