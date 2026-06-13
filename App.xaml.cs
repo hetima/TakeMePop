@@ -253,7 +253,6 @@ public partial class App : Application
         GlobalHookService.Start();
 
         KeyboardHookService.CtrlCDoubleTapped += OnCtrlCDoubleTapped;
-        KeyboardHookService.CtrlXDoubleTapped += OnCtrlXDoubleTapped;
 
         ApplyHotkeySettings();
     }
@@ -404,11 +403,6 @@ public partial class App : Application
     [DllImport("user32.dll")]
     private static extern bool GetCursorPos(out System.Drawing.Point lpPoint);
 
-
-    private static void OnCtrlXDoubleTapped(object? sender, EventArgs e)
-    {
-        ShowQuickTextWindow();
-    }
 
     /// <summary>
     /// Ctrl+C ダブルタップ時にクリップボード内容を PopWindow へ表示する。

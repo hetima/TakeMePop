@@ -110,7 +110,6 @@
                         <MenuItem x:Name="ClipboardHistoryMenuItem" Header="{x:Static res:Strings.MenuItemClipBoardHistory}"/>
                         <Separator/>
                         <MenuItem Header="{x:Static res:Strings.MenuItemSetting}" Click="Setting_Click"/>
-                        <MenuItem Header="{x:Static res:Strings.MenuItemQuit}" Click="Quit_Click"/>
                     </ContextMenu>
                 </Border.ContextMenu>
                 <Grid>

@@ -15,10 +15,6 @@ public class KeyboardHookService
     private DateTime _lastCtrlCTime = DateTime.MinValue;
     private bool _cKeyReleased = true;
 
-    // Ctrl+X ダブルタップの状態
-    private DateTime _lastCtrlXTime = DateTime.MinValue;
-    private bool _xKeyReleased = true;
-
     // グローバルホットキー登録リスト（スナップショット方式でスレッドセーフに読み取る）
     private readonly List<(ShortcutKey key, Action callback)> _hotkeys = new();
     private volatile (ShortcutKey key, Action callback)[] _hotkeySnapshot = [];
@@ -42,7 +38,6 @@ public class KeyboardHookService
     public Action? QuickHistoryCancel { get; set; }
 
     public event EventHandler? CtrlCDoubleTapped;
-    public event EventHandler? CtrlXDoubleTapped;
 
     public KeyboardHookService(GlobalHookService globalHook, Dispatcher dispatcher, ClipboardService clipboard)
     {
@@ -149,23 +144,6 @@ public class KeyboardHookService
             return;
         }
 
-        // Ctrl+X ダブルタップ検出
-        bool isCtrl = e.RawEvent.Mask.HasFlag(EventMask.LeftCtrl) || e.RawEvent.Mask.HasFlag(EventMask.RightCtrl);
-        if (isCtrl && e.Data.KeyCode == KeyCode.VcX && _xKeyReleased)
-        {
-            _xKeyReleased = false;
-            var nowX = DateTime.UtcNow;
-            if (nowX - _lastCtrlXTime <= _doublePressInterval)
-            {
-                _lastCtrlXTime = DateTime.MinValue;
-                _dispatcher.BeginInvoke(() => CtrlXDoubleTapped?.Invoke(this, EventArgs.Empty));
-            }
-            else
-            {
-                _lastCtrlXTime = nowX;
-            }
-        }
-
         if (e.Data.KeyCode != KeyCode.VcC) return;
         if (!e.RawEvent.Mask.HasFlag(EventMask.LeftCtrl) &&
             !e.RawEvent.Mask.HasFlag(EventMask.RightCtrl)) return;
@@ -199,9 +177,6 @@ public class KeyboardHookService
 
         if (e.Data.KeyCode == KeyCode.VcC)
             _cKeyReleased = true;
-
-        if (e.Data.KeyCode == KeyCode.VcX)
-            _xKeyReleased = true;
 
         if (e.Data.KeyCode == _quickHistoryMainKeyCode)
             _quickHistoryMainKeyReleased = true;
