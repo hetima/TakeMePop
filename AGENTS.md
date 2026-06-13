@@ -104,8 +104,6 @@ App.xaml.cs で生成し、`App.XXX` 静的プロパティ経由で参照する:
 
 ## バグの可能性が高いもの
 
-1. **ホットキー変更時に旧キーが残る** — [SettingsView.xaml.cs](Features/SettingWindow/SettingsView.xaml.cs) は設定値を新キーで上書きしてから `App.ApplyHotkeySettings()` を呼ぶが、`ApplyHotkeySettings` は「現在の（=新しい）設定値」で `UnregisterHotkey` するため、変更前のキーの登録が解除されず残り続ける。変更前のキーを控えて解除するか、`UnregisterAll` 方式にすべき。
-
 2. **DPI スケーリング非対応の座標計算** — `GetCursorPos` や SharpHook が返す物理ピクセル座標を、WPF の `Left`/`Top`（DIP 単位）へそのまま代入している。スケール 100% 以外の環境ではウィンドウがカーソルからずれる。該当箇所: App.xaml.cs（`ShowQuickTextWindow`, `OnDefaultOpenHotkey`, `CreatePopWindow`）、TransparentWindow.ShowNearPoint、ToastWindow.PlaceWindow。`PresentationSource.CompositionTarget.TransformFromDevice` 等での変換が必要。
 
 3. **仮想ファイルのみのアイテムがコピーできない** — [PopWindow.xaml.cs](Features/PopWindow/PopWindow.xaml.cs) の `CopyButton_Click` は `item.Files` を見るが、ブラウザからの仮想ファイルは `TempFiles` にしか入らないため（`Files == null`）何もコピーされない。ドラッグ出力と同様に `AllFiles` を使うべき。`OnRevealHotkey`（App.xaml.cs）の `GetFiles()` も同様に `Files` のみ参照。

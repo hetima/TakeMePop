@@ -125,7 +125,7 @@
                     IconSource="Properties\tray-icon.ico"
                     LeftClickCommand="">
                 <tb:TaskbarIcon.ContextMenu>
-                    <ContextMenu>
+                    <ContextMenu FontSize="14">
                         <MenuItem Header="{x:Static helpers:AppConstants.AppName}"
                                   IsEnabled="False"
                                   />
