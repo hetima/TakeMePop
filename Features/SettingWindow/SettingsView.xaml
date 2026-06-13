@@ -51,6 +51,11 @@
                                 Margin="42,8"
                                 MaxWidth="600"
                                 Visibility="Visible">
+                        <!-- Run at Startup -->
+                        <CheckBox Content="{x:Static res:Strings.RunAtStartupLabel}"
+                                  IsChecked="{Binding RunAtStartup}"
+                                  Margin="0,0,0,24"/>
+
                         <!-- Theme Selection -->
                         <TextBlock Text="{x:Static res:Strings.ThemeLabel}"
                                    FontWeight="SemiBold"

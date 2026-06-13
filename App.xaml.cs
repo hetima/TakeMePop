@@ -141,10 +141,40 @@ public partial class App : Application
         // Load settings
         SettingsService.Load();
 
+        // パスが変わっていたらスタートアップ登録パスを更新する
+        SyncStartupRegistration();
+
         // Apply language culture
         ApplyLanguage(SettingsService.Settings.Language);
 
         base.OnStartup(e);
+    }
+
+    /// <summary>
+    /// 起動時のスタートアップ登録同期。
+    /// 実行ファイルパスが前回と変わっていたら
+    /// 既存のスタートアップ項目を取り除き、RunAtStartup が有効なら現在のパスで登録し直す。
+    /// </summary>
+    private void SyncStartupRegistration()
+    {
+        var settings = SettingsService.Settings;
+        var currentPath = Helpers.StartupRegistryHelper.GetCurrentExePath();
+
+        // パスが前回と同じなら何もしない（毎回の登録チェックは行わない）
+        if (settings.LastLaunchedPath == currentPath)
+        {
+            return;
+        }
+
+        // 古い（=自身と異なるパスの）項目を取り除いてから、有効なら登録し直す
+        Helpers.StartupRegistryHelper.Unregister();
+        if (settings.RunAtStartup)
+        {
+            Helpers.StartupRegistryHelper.Register();
+        }
+
+        settings.LastLaunchedPath = currentPath;
+        SettingsService.Save();
     }
 
     /// <summary>

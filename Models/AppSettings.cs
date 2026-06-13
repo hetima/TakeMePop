@@ -66,6 +66,18 @@ public class AppSettings
     /// </summary>
     [JsonPropertyName("popupFontFamily")]
     public string PopupFontFamily { get; set; } = "";
+
+    /// <summary>
+    /// Windows スタートアップ時に自動実行するかどうか。
+    /// </summary>
+    [JsonPropertyName("runAtStartup")]
+    public bool RunAtStartup { get; set; } = false;
+
+    /// <summary>
+    /// 最後に起動したときの実行ファイルパス。スタートアップ登録パスの更新判定に使う。
+    /// </summary>
+    [JsonPropertyName("lastLaunchedPath")]
+    public string? LastLaunchedPath { get; set; } = null;
 }
 
 public class QuickHistorySettings

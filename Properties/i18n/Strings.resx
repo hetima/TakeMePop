@@ -48,6 +48,10 @@
     <value>Theme</value>
   </data>
 
+  <data name="RunAtStartupLabel" xml:space="preserve">
+    <value>Run at startup</value>
+  </data>
+
   <data name="ThemeAuto" xml:space="preserve">
     <value>System</value>
   </data>

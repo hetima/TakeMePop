@@ -114,6 +114,33 @@ public class SettingsViewModel : INotifyPropertyChanged
         }
     }
 
+    /// <summary>
+    /// Windows スタートアップ時に自動実行するか。
+    /// オンにしたら既存項目を取り除いてから登録、オフにしたら取り除く。
+    /// </summary>
+    public bool RunAtStartup
+    {
+        get => _settingsService.Settings.RunAtStartup;
+        set
+        {
+            if (_settingsService.Settings.RunAtStartup != value)
+            {
+                _settingsService.Settings.RunAtStartup = value;
+                _settingsService.Save();
+
+                if (value)
+                {
+                    Helpers.StartupRegistryHelper.Register();
+                }
+                else
+                {
+                    Helpers.StartupRegistryHelper.Unregister();
+                }
+                OnPropertyChanged();
+            }
+        }
+    }
+
     /// <summary>Font size (8-48)</summary>
     public double FontSize
     {

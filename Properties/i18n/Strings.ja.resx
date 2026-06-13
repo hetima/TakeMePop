@@ -48,6 +48,10 @@
     <value>テーマ</value>
   </data>
 
+  <data name="RunAtStartupLabel" xml:space="preserve">
+    <value>スタートアップ時に実行</value>
+  </data>
+
   <data name="ThemeAuto" xml:space="preserve">
     <value>システム</value>
   </data>

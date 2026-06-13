@@ -460,6 +460,12 @@ namespace Listhing {
             }
         }
 
+        public static string RunAtStartupLabel {
+            get {
+                return ResourceManager.GetString("RunAtStartupLabel", resourceCulture);
+            }
+        }
+
         public static string SelectOtherButton {
             get {
                 return ResourceManager.GetString("SelectOtherButton", resourceCulture);
