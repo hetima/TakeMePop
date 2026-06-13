@@ -29,6 +29,8 @@ public class KeyboardHookService
     private ShortcutKey? _quickHistoryKey;
     private bool _quickHistoryMainKeyReleased = true;
     private KeyCode _quickHistoryMainKeyCode;
+    // 押下を抑制したキャンセルキー。対応する解放イベントも抑制するために記録する。
+    private KeyCode? _suppressReleaseFor;
     // 各修飾キーの押下状態（SharpHookスレッドからのみアクセス）
     private bool _ctrlPressed;
     private bool _altPressed;
@@ -37,6 +39,7 @@ public class KeyboardHookService
 
     public Action? QuickHistorySelectNext { get; set; }
     public Action? QuickHistoryCommit { get; set; }
+    public Action? QuickHistoryCancel { get; set; }
 
     public event EventHandler? CtrlCDoubleTapped;
     public event EventHandler? CtrlXDoubleTapped;
@@ -100,12 +103,15 @@ public class KeyboardHookService
         TrackModifierPressed(e.Data.KeyCode);
 
         // グローバルホットキー照合（スナップショットを使ってスレッドセーフに読み取る）
+        bool hotkeyMatched = false;
         foreach (var (key, callback) in _hotkeySnapshot)
         {
             if (key.MatchesHook(e))
             {
+                hotkeyMatched = true;
                 e.SuppressEvent = true;
-                if (key.HasModifiers && key.Equals(_quickHistoryKey) && QuickHistorySelectNext != null)
+                bool modifierSelect = App.SettingsService.Settings.QuickHistory.ModifierSelect;
+                if (modifierSelect && key.HasModifiers && key.Equals(_quickHistoryKey) && QuickHistorySelectNext != null)
                 {
                     if (!_quickHistoryMainKeyReleased && e.Data.KeyCode == _quickHistoryMainKeyCode)
                     {
@@ -126,6 +132,21 @@ public class KeyboardHookService
                 }
                 break;
             }
+        }
+
+        // モデファイキーセレクト中に対象キー以外を押したらキャンセル（設定が ON のとき）
+        if (!hotkeyMatched
+            && _quickHistoryModifierMode
+            && App.SettingsService.Settings.QuickHistory.CancelOnOtherKey
+            && !IsModifierKey(e.Data.KeyCode))
+        {
+            _quickHistoryModifierMode = false;
+            // キャンセルキーは押下・解放とも他プロセスへ流さない
+            e.SuppressEvent = true;
+            _suppressReleaseFor = e.Data.KeyCode;
+            if (QuickHistoryCancel != null)
+                _dispatcher.BeginInvoke(QuickHistoryCancel);
+            return;
         }
 
         // Ctrl+X ダブルタップ検出
@@ -169,6 +190,13 @@ public class KeyboardHookService
 
     private void OnKeyReleased(object? sender, KeyboardHookEventArgs e)
     {
+        // キャンセルで押下を抑制したキーは、対応する解放も抑制する
+        if (_suppressReleaseFor == e.Data.KeyCode)
+        {
+            _suppressReleaseFor = null;
+            e.SuppressEvent = true;
+        }
+
         if (e.Data.KeyCode == KeyCode.VcC)
             _cKeyReleased = true;
 

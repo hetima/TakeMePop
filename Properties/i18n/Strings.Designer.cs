@@ -364,6 +364,42 @@ namespace Listhing {
             }
         }
 
+        public static string QhCancelOnOtherKeyDescription {
+            get {
+                return ResourceManager.GetString("QhCancelOnOtherKeyDescription", resourceCulture);
+            }
+        }
+
+        public static string QhCancelOnOtherKeyLabel {
+            get {
+                return ResourceManager.GetString("QhCancelOnOtherKeyLabel", resourceCulture);
+            }
+        }
+
+        public static string QhDisplayCountLabel {
+            get {
+                return ResourceManager.GetString("QhDisplayCountLabel", resourceCulture);
+            }
+        }
+
+        public static string QhModifierSelectDescription {
+            get {
+                return ResourceManager.GetString("QhModifierSelectDescription", resourceCulture);
+            }
+        }
+
+        public static string QhModifierSelectLabel {
+            get {
+                return ResourceManager.GetString("QhModifierSelectLabel", resourceCulture);
+            }
+        }
+
+        public static string QhSectionTitle {
+            get {
+                return ResourceManager.GetString("QhSectionTitle", resourceCulture);
+            }
+        }
+
         public static string QuickHistoryActionLabel {
             get {
                 return ResourceManager.GetString("QuickHistoryActionLabel", resourceCulture);

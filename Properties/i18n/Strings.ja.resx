@@ -436,4 +436,28 @@
     <value>これは「クリックしたつもりがドラッグになってしまい隣のフォルダに放り込んでしまった」というようなミスを軽減させる機能です。ドラッグが始まったらごく短い間、マウスポインタのある場所に透明なウィンドウを出します。このウィンドウがドロップを吸い込み、何もなかったことにします。</value>
   </data>
 
+  <data name="QhSectionTitle" xml:space="preserve">
+    <value>クリップボード履歴</value>
+  </data>
+
+  <data name="QhModifierSelectLabel" xml:space="preserve">
+    <value>モデファイキーセレクト</value>
+  </data>
+
+  <data name="QhModifierSelectDescription" xml:space="preserve">
+    <value>モデファイキーを伴うショートカットを設定している場合に有効です。モデファイキーを押している間対象キーを押すことで選択を変更、モデファイキーを離すと選択項目をペーストします。</value>
+  </data>
+
+  <data name="QhCancelOnOtherKeyLabel" xml:space="preserve">
+    <value>モデファイキーセレクトを他のキーでキャンセル</value>
+  </data>
+
+  <data name="QhCancelOnOtherKeyDescription" xml:space="preserve">
+    <value>モデファイキーを押している間対象キー以外を押すと動作キャンセルしてパネルを閉じます</value>
+  </data>
+
+  <data name="QhDisplayCountLabel" xml:space="preserve">
+    <value>履歴表示数</value>
+  </data>
+
 </root>

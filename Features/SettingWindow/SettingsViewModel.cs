@@ -191,6 +191,29 @@ public class SettingsViewModel : INotifyPropertyChanged
         set { if (Tg.DismissDelayMs != value) { Tg.DismissDelayMs = value; _settingsService.Save(); _settingsService.NotifyTransparentGuardChanged(); OnPropertyChanged(); } }
     }
 
+    private QuickHistorySettings Qh => _settingsService.Settings.QuickHistory;
+
+    /// <summary>モデファイキーセレクト（修飾キーを押している間に選択移動する動作）</summary>
+    public bool QhModifierSelect
+    {
+        get => Qh.ModifierSelect;
+        set { if (Qh.ModifierSelect != value) { Qh.ModifierSelect = value; _settingsService.Save(); OnPropertyChanged(); } }
+    }
+
+    /// <summary>モデファイキーセレクト中、対象キー以外でキャンセルする</summary>
+    public bool QhCancelOnOtherKey
+    {
+        get => Qh.CancelOnOtherKey;
+        set { if (Qh.CancelOnOtherKey != value) { Qh.CancelOnOtherKey = value; _settingsService.Save(); OnPropertyChanged(); } }
+    }
+
+    /// <summary>履歴リストの表示件数（4〜10）</summary>
+    public int QhDisplayCount
+    {
+        get => Qh.DisplayCount;
+        set { if (Qh.DisplayCount != value) { Qh.DisplayCount = value; _settingsService.Save(); App.RefreshQuickHistoryItems(); OnPropertyChanged(); } }
+    }
+
     /// <summary>ショートカットキーの表示を更新する</summary>
     public void RefreshShortcutKeys()
     {

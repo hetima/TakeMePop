@@ -90,7 +90,8 @@ public class QuickHistoryWindowViewModel : ObservableObject
         Items.Add(HistoryDisplayItem.CreateCancel());
 
         var history = App.ClipboardService.History;
-        int count = Math.Min(history.Count, 5);
+        int displayCount = App.SettingsService.Settings.QuickHistory.DisplayCount;
+        int count = Math.Min(history.Count, displayCount);
         for (int i = 0; i < count; i++)
         {
             // 最新が先頭（history の末尾から逆順）
@@ -105,7 +106,8 @@ public class QuickHistoryWindowViewModel : ObservableObject
         if (displayItem.IsCancel || displayItem.Item == null) return -1;
 
         int index = Items.IndexOf(displayItem);
-        int nextCount = Math.Min(Math.Max(App.ClipboardService.History.Count - 1, 0), 5) + 1;
+        int displayCount = App.SettingsService.Settings.QuickHistory.DisplayCount;
+        int nextCount = Math.Min(Math.Max(App.ClipboardService.History.Count - 1, 0), displayCount) + 1;
         App.ClipboardService.RemoveFromHistory(displayItem.Item);
         return Math.Min(index, nextCount - 1);
     }

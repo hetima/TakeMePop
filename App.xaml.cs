@@ -248,6 +248,7 @@ public partial class App : Application
             KeyboardHookService.RegisterQuickHistoryHotkey(shortcuts.QuickHistoryKey, ToggleQuickHistoryWindow);
             KeyboardHookService.QuickHistorySelectNext = ShowOrSelectNextQuickHistory;
             KeyboardHookService.QuickHistoryCommit = CommitQuickHistorySelection;
+            KeyboardHookService.QuickHistoryCancel = CancelQuickHistory;
         }
     }
 
@@ -329,6 +330,23 @@ public partial class App : Application
     public static void CommitQuickHistorySelection()
     {
         _quickHistoryWindow?.CommitSelection();
+    }
+
+    /// <summary>
+    /// 表示件数設定の変更などを QuickHistory ウィンドウのリストへ反映する。
+    /// </summary>
+    public static void RefreshQuickHistoryItems()
+    {
+        _quickHistoryWindow?.RefreshItems();
+    }
+
+    /// <summary>
+    /// モデファイキーセレクトを対象キー以外でキャンセルし、パネルを閉じる。
+    /// </summary>
+    public static void CancelQuickHistory()
+    {
+        if (_quickHistoryWindow != null && _quickHistoryWindow.IsVisible)
+            _quickHistoryWindow.Hide();
     }
 
     /// <summary>

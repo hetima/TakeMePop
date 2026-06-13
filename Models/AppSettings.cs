@@ -58,11 +58,34 @@ public class AppSettings
     [JsonPropertyName("quickTextWindow")]
     public QuickTextWindowSettings QuickTextWindow { get; set; } = new QuickTextWindowSettings();
 
+    [JsonPropertyName("quickHistory")]
+    public QuickHistorySettings QuickHistory { get; set; } = new QuickHistorySettings();
+
     /// <summary>
     /// QuickTextWindow・QuickHistoryWindow で使うフォント名。空文字列はシステムデフォルト。
     /// </summary>
     [JsonPropertyName("popupFontFamily")]
     public string PopupFontFamily { get; set; } = "";
+}
+
+public class QuickHistorySettings
+{
+    /// <summary>
+    /// モデファイキーセレクト。ON のとき、修飾キーを押している間に対象キーで選択移動し、
+    /// 修飾キーを離すとペーストする。OFF のときはホットキーでトグル表示するだけ。
+    /// </summary>
+    [JsonPropertyName("modifierSelect")]
+    public bool ModifierSelect { get; set; } = true;
+
+    /// <summary>
+    /// モデファイキーセレクト中、対象キー以外を押したら動作をキャンセルしてパネルを閉じる。
+    /// </summary>
+    [JsonPropertyName("cancelOnOtherKey")]
+    public bool CancelOnOtherKey { get; set; } = true;
+
+    /// <summary>履歴リストの表示件数（4〜10）。</summary>
+    [JsonPropertyName("displayCount")]
+    public int DisplayCount { get; set; } = 5;
 }
 
 public class QuickTextWindowSettings

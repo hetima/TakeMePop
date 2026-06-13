@@ -433,7 +433,31 @@
   </data>
 
   <data name="TgSectionDescription" xml:space="preserve">
-    <value>This feature reduces mistakes such as "I meant to click but ended up dragging and dropped it into the wrong folder." When a drag begins, a transparent window briefly appears at the mouse pointer. This window absorbs the drop and makes it as if nothing happened.</value>
+    <value>This feature reduces mistakes such as &quot;I meant to click but ended up dragging and dropped it into the wrong folder.&quot; When a drag begins, a transparent window briefly appears at the mouse pointer. This window absorbs the drop and makes it as if nothing happened.</value>
+  </data>
+
+  <data name="QhSectionTitle" xml:space="preserve">
+    <value>Clipboard History</value>
+  </data>
+
+  <data name="QhModifierSelectLabel" xml:space="preserve">
+    <value>Modifier Key Select</value>
+  </data>
+
+  <data name="QhModifierSelectDescription" xml:space="preserve">
+    <value>Enable this when you have assigned a shortcut that includes a modifier key. While holding the modifier key, press the trigger key to change the selection; release the modifier key to paste the selected item.</value>
+  </data>
+
+  <data name="QhCancelOnOtherKeyLabel" xml:space="preserve">
+    <value>Cancel Modifier Key Select with Another Key</value>
+  </data>
+
+  <data name="QhCancelOnOtherKeyDescription" xml:space="preserve">
+    <value>While holding the modifier key, pressing any key other than the trigger key cancels the action and closes the panel.</value>
+  </data>
+
+  <data name="QhDisplayCountLabel" xml:space="preserve">
+    <value>Number of Items to Display</value>
   </data>
 
 </root>

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:res="clr-namespace:Listhing"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:converters="clr-namespace:Listhing.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" 
@@ -34,6 +35,7 @@
                 <ListBoxItem Content="{x:Static res:Strings.SettingsSectionGeneral}"/>
                 <ListBoxItem Content="{x:Static res:Strings.SettingsSectionAction}"/>
                 <ListBoxItem Content="{x:Static res:Strings.PwSectionTitle}"/>
+                <ListBoxItem Content="{x:Static res:Strings.QhSectionTitle}"/>
                 <ListBoxItem Content="{x:Static res:Strings.TgSectionTitle}"/>
                 <ListBoxItem Content="{x:Static res:Strings.SettingsSectionOther}"/>
             </ListBox>
@@ -111,30 +113,6 @@
                                        TextAlignment="Right"
                                        VerticalAlignment="Center"/>
                         </Grid>
-
-                        <!-- Clipboard History Limit -->
-                        <TextBlock Text="{x:Static res:Strings.ClipboardHistoryLimitLabel}"
-                                   FontWeight="SemiBold"
-                                   Margin="0,24,0,4"/>
-                        <TextBlock Text="{x:Static res:Strings.ClipboardHistoryLimitDescription}"
-                                   FontStyle="Italic"
-                                   Opacity="0.75"
-                                   Margin="0,4,0,8"
-                                   TextWrapping="Wrap"/>
-                        <ComboBox x:Name="ClipboardHistoryLimitCombo"
-                                  HorizontalAlignment="Stretch"
-                                  Padding="12,8"
-                                  SelectionChanged="ClipboardHistoryLimitCombo_SelectionChanged">
-                            <ComboBoxItem Content="10"
-                                    Tag="10"/>
-                            <ComboBoxItem Content="20"
-                                    Tag="20"/>
-                            <ComboBoxItem Content="50"
-                                    Tag="50"/>
-                            <ComboBoxItem Content="100"
-                                    Tag="100"/>
-                        </ComboBox>
-
 
                     </StackPanel>
 
@@ -353,6 +331,94 @@
                             <ComboBoxItem Content="{x:Static res:Strings.PwLinkDropFormatTitleAndUrl}"/>
                             <ComboBoxItem Content="{x:Static res:Strings.PwLinkDropFormatMarkdown}"/>
                             <ComboBoxItem Content="{x:Static res:Strings.PwLinkDropFormatUrlOnly}"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <!-- Quick History Section -->
+                    <StackPanel x:Name="QuickHistorySection" Margin="42,8" MaxWidth="600" Visibility="Collapsed">
+                        <!-- Modifier Key Select -->
+                        <CheckBox Content="{x:Static res:Strings.QhModifierSelectLabel}"
+                                  IsChecked="{Binding QhModifierSelect}"
+                                  Margin="0,0,0,4"/>
+                        <TextBlock Text="{x:Static res:Strings.QhModifierSelectDescription}"
+                                   FontStyle="Italic"
+                                   Opacity="0.75"
+                                   Margin="0,0,0,20"
+                                   TextWrapping="Wrap"/>
+
+                        <!-- Cancel On Other Key -->
+                        <CheckBox Content="{x:Static res:Strings.QhCancelOnOtherKeyLabel}"
+                                  IsChecked="{Binding QhCancelOnOtherKey}"
+                                  Margin="0,0,0,4"/>
+                        <TextBlock Text="{x:Static res:Strings.QhCancelOnOtherKeyDescription}"
+                                   FontStyle="Italic"
+                                   Opacity="0.75"
+                                   Margin="0,0,0,20"
+                                   TextWrapping="Wrap"/>
+
+                        <!-- Display Count -->
+                        <TextBlock Text="{x:Static res:Strings.QhDisplayCountLabel}"
+                                   FontWeight="SemiBold"
+                                   Margin="0,0,0,8"/>
+                        <ComboBox SelectedValue="{Binding QhDisplayCount, Mode=TwoWay}"
+                                  SelectedValuePath="Tag"
+                                  HorizontalAlignment="Stretch"
+                                  Padding="12,8"
+                                  Margin="0,0,0,20">
+                            <ComboBoxItem Content="4">
+                                <ComboBoxItem.Tag>
+                                    <sys:Int32>4</sys:Int32>
+                                </ComboBoxItem.Tag>
+                            </ComboBoxItem>
+                            <ComboBoxItem Content="5">
+                                <ComboBoxItem.Tag>
+                                    <sys:Int32>5</sys:Int32>
+                                </ComboBoxItem.Tag>
+                            </ComboBoxItem>
+                            <ComboBoxItem Content="6">
+                                <ComboBoxItem.Tag>
+                                    <sys:Int32>6</sys:Int32>
+                                </ComboBoxItem.Tag>
+                            </ComboBoxItem>
+                            <ComboBoxItem Content="7">
+                                <ComboBoxItem.Tag>
+                                    <sys:Int32>7</sys:Int32>
+                                </ComboBoxItem.Tag>
+                            </ComboBoxItem>
+                            <ComboBoxItem Content="8">
+                                <ComboBoxItem.Tag>
+                                    <sys:Int32>8</sys:Int32>
+                                </ComboBoxItem.Tag>
+                            </ComboBoxItem>
+                            <ComboBoxItem Content="9">
+                                <ComboBoxItem.Tag>
+                                    <sys:Int32>9</sys:Int32>
+                                </ComboBoxItem.Tag>
+                            </ComboBoxItem>
+                            <ComboBoxItem Content="10">
+                                <ComboBoxItem.Tag>
+                                    <sys:Int32>10</sys:Int32>
+                                </ComboBoxItem.Tag>
+                            </ComboBoxItem>
+                        </ComboBox>
+
+                        <!-- Clipboard History Limit -->
+                        <TextBlock Text="{x:Static res:Strings.ClipboardHistoryLimitLabel}"
+                                   FontWeight="SemiBold"
+                                   Margin="0,0,0,4"/>
+                        <TextBlock Text="{x:Static res:Strings.ClipboardHistoryLimitDescription}"
+                                   FontStyle="Italic"
+                                   Opacity="0.75"
+                                   Margin="0,4,0,8"
+                                   TextWrapping="Wrap"/>
+                        <ComboBox x:Name="ClipboardHistoryLimitCombo"
+                                  HorizontalAlignment="Stretch"
+                                  Padding="12,8"
+                                  SelectionChanged="ClipboardHistoryLimitCombo_SelectionChanged">
+                            <ComboBoxItem Content="50"/>
+                            <ComboBoxItem Content="100"/>
+                            <ComboBoxItem Content="500"/>
+                            <ComboBoxItem Content="1000"/>
                         </ComboBox>
                     </StackPanel>
                 </Grid>

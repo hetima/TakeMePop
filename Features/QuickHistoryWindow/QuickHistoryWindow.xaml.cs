@@ -34,6 +34,9 @@ public partial class QuickHistoryWindow : Window
         HistoryListBox.SelectedIndex = 0;
     }
 
+    /// <summary>履歴リストを再構築する（表示件数設定の変更反映用）。</summary>
+    public void RefreshItems() => _viewModel.RefreshItems();
+
     /// <summary>選択を次のアイテムへ進める（末尾なら先頭に戻る）</summary>
     public void SelectNext()
     {
