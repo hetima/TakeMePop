@@ -1,7 +1,9 @@
 # Change Log
 
 
-## [Unreleased]
+## [1.0.0]
 - Initial release
-- Pop Window
-- Transparent Guard
+- Drop Panel
+- ClipBoard History
+- Quick Text Edit
+- Drop Guard
