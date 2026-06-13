@@ -1,4 +1,4 @@
-# TakeMePop
+# TakeMePop for Windows
 
 ![Screenshot](https://raw.githubusercontent.com/hetima/TakeMePop/main/assets/ss01.jpg)
 

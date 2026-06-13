@@ -1,4 +1,4 @@
-# TakeMePop
+# TakeMePop for Windows
 
 [ English | [日本語](https://github.com/hetima/TakeMePop/blob/main/README-ja.md) ]
 
