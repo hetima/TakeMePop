@@ -108,6 +108,10 @@
     <value>この件数に達したら履歴を半分まで減らします</value>
   </data>
 
+  <data name="PreferencesWindowTitle" xml:space="preserve">
+    <value>TakeMePop 環境設定</value>
+  </data>
+
   <data name="MenuSave" xml:space="preserve">
     <value>保存</value>
   </data>
@@ -181,7 +185,7 @@
   </data>
 
   <data name="DefaultOpenActionLabel" xml:space="preserve">
-    <value>ドロップパネルを表示</value>
+    <value>ドロップパネル</value>
   </data>
 
   <data name="RevealActionLabel" xml:space="preserve">
@@ -321,7 +325,7 @@
   </data>
 
   <data name="MenuItemGitHub" xml:space="preserve">
-    <value>GitHub</value>
+    <value>ホームページを開く</value>
   </data>
 
   <data name="MenuItemSetting" xml:space="preserve">

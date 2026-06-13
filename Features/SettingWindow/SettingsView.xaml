@@ -480,10 +480,10 @@
                                   HorizontalAlignment="Stretch"
                                   Padding="12,8"
                                   SelectionChanged="ClipboardHistoryLimitCombo_SelectionChanged">
+                            <ComboBoxItem Content="10"/>
+                            <ComboBoxItem Content="20"/>
                             <ComboBoxItem Content="50"/>
                             <ComboBoxItem Content="100"/>
-                            <ComboBoxItem Content="500"/>
-                            <ComboBoxItem Content="1000"/>
                         </ComboBox>
                     </StackPanel>
                 </Grid>

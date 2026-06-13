@@ -340,6 +340,12 @@ namespace Listhing {
             }
         }
 
+        public static string PreferencesWindowTitle {
+            get {
+                return ResourceManager.GetString("PreferencesWindowTitle", resourceCulture);
+            }
+        }
+
         public static string PwAllowMultipleWindowsLabel {
             get {
                 return ResourceManager.GetString("PwAllowMultipleWindowsLabel", resourceCulture);

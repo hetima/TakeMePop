@@ -108,6 +108,10 @@
     <value>When this limit is reached, the history will be trimmed to half.</value>
   </data>
 
+  <data name="PreferencesWindowTitle" xml:space="preserve">
+    <value>TakeMePop Settings</value>
+  </data>
+
   <data name="MenuSave" xml:space="preserve">
     <value>Save</value>
   </data>
@@ -181,7 +185,7 @@
   </data>
 
   <data name="DefaultOpenActionLabel" xml:space="preserve">
-    <value>Show Drop Panel</value>
+    <value>Drop Panel</value>
   </data>
 
   <data name="RevealActionLabel" xml:space="preserve">
@@ -325,7 +329,7 @@
   </data>
 
   <data name="MenuItemGitHub" xml:space="preserve">
-    <value>GitHub</value>
+    <value>Visit Homepage</value>
   </data>
 
   <data name="MenuItemSetting" xml:space="preserve">

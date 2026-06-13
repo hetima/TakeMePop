@@ -54,7 +54,7 @@ public enum SettingsSection
 /// </summary>
 public partial class SettingsView : UserControl
 {
-    private static readonly int[] ClipboardHistoryLimitValues = [50, 100, 500, 1000];
+    private static readonly int[] ClipboardHistoryLimitValues = [10, 20, 50, 100];
 
     /// <summary>
     /// コンストラクタ
@@ -77,7 +77,7 @@ public partial class SettingsView : UserControl
     private void SyncClipboardHistoryLimitCombo(int limit)
     {
         var idx = Array.IndexOf(ClipboardHistoryLimitValues, limit);
-        ClipboardHistoryLimitCombo.SelectedIndex = idx >= 0 ? idx : 1; // デフォルト100
+        ClipboardHistoryLimitCombo.SelectedIndex = idx >= 0 ? idx : 0; // デフォルト10
     }
 
     /// <summary>

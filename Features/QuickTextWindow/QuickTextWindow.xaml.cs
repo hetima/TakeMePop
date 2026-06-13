@@ -52,6 +52,8 @@ public partial class QuickTextWindow : Window
     public void ShowWithoutClipboard()
     {
         base.Show();
+        if (WindowState == WindowState.Minimized)
+            WindowState = WindowState.Normal;
         Activate();
         TextEditor.Focus();
     }

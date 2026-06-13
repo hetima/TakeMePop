@@ -160,7 +160,10 @@ public partial class App : Application
         var settings = SettingsService.Settings;
         var currentPath = Helpers.StartupRegistryHelper.GetCurrentExePath();
 
-        // パスが前回と同じなら何もしない（毎回の登録チェックは行わない）
+        // パスが前回と同じなら何もしない（毎回の登録チェックは行わない）。
+        // 設定が削除されてまっさらな状態で起動した場合は LastLaunchedPath が null となり
+        // currentPath と必ず不一致になるため、下の Unregister が走る。
+        // これにより過去に登録されたスタートアップ項目の残骸も除去される。
         if (settings.LastLaunchedPath == currentPath)
         {
             return;
