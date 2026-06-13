@@ -199,8 +199,7 @@ public class EditShortcutKeyViewModel : ModalContentViewModel
 
         // 他のショートカットキーと競合していないかチェック
         var shortcutSettings = _settingsService.Settings.ShortcutSettings;
-        if (_currentShortcut.Equals(shortcutSettings.DefaultOpenKey) ||
-            _currentShortcut.Equals(shortcutSettings.RevealKey))
+        if (_currentShortcut.Equals(shortcutSettings.DefaultOpenKey))
         {
             WarningMessage = Strings.DuplicateShortcutMessage;
             ShortcutConflicted = true;
@@ -295,10 +294,6 @@ public class EditShortcutKeyViewModel : ModalContentViewModel
         if (_currentShortcut.Equals(shortcutSettings.DefaultOpenKey))
         {
             shortcutSettings.DefaultOpenKey = new ShortcutKey(Key.None);
-        }
-        else if (_currentShortcut.Equals(shortcutSettings.RevealKey))
-        {
-            shortcutSettings.RevealKey = new ShortcutKey(Key.None);
         }
 
         // 設定を保存

@@ -240,9 +240,6 @@ public partial class App : Application
         if (!shortcuts.DefaultOpenKey.IsEmpty)
             KeyboardHookService.RegisterHotkey(shortcuts.DefaultOpenKey, OnDefaultOpenHotkey);
 
-        if (!shortcuts.RevealKey.IsEmpty)
-            KeyboardHookService.RegisterHotkey(shortcuts.RevealKey, OnRevealHotkey);
-
         if (!shortcuts.QuickHistoryKey.IsEmpty)
         {
             KeyboardHookService.RegisterQuickHistoryHotkey(shortcuts.QuickHistoryKey, ToggleQuickHistoryWindow);
@@ -367,24 +364,6 @@ public partial class App : Application
         else
         {
             CreatePopWindow(pos);
-        }
-    }
-
-    /// <summary>
-    /// RevealKey ホットキー押下時の処理。
-    /// 開いている PopWindow の最初のファイルをエクスプローラーで表示する。
-    /// </summary>
-    private static void OnRevealHotkey()
-    {
-        // 開いている PopWindow から最初のファイルを探してエクスプローラーで表示
-        foreach (var win in _popWindows)
-        {
-            var files = win.GetFiles();
-            if (files is { Count: > 0 })
-            {
-                FileSystemHelper.OpenFolderAndSelect(files[0]);
-                return;
-            }
         }
     }
 

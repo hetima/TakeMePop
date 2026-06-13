@@ -151,9 +151,6 @@ public class SettingsViewModel : INotifyPropertyChanged
     /// <summary>デフォルトのアイテムを開くショートカットキー</summary>
     public ShortcutKey DefaultOpenKey => _settingsService.Settings.ShortcutSettings.DefaultOpenKey;
 
-    /// <summary>アイテムの場所を表示するショートカットキー</summary>
-    public ShortcutKey RevealKey => _settingsService.Settings.ShortcutSettings.RevealKey;
-
     /// <summary>Quick History ウィンドウを表示するショートカットキー</summary>
     public ShortcutKey QuickHistoryKey => _settingsService.Settings.ShortcutSettings.QuickHistoryKey;
 
@@ -234,7 +231,6 @@ public class SettingsViewModel : INotifyPropertyChanged
     public void RefreshShortcutKeys()
     {
         OnPropertyChanged(nameof(DefaultOpenKey));
-        OnPropertyChanged(nameof(RevealKey));
         OnPropertyChanged(nameof(QuickHistoryKey));
     }
 

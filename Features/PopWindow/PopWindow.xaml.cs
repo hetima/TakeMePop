@@ -72,6 +72,11 @@ public partial class PopWindow : Window
 
     private void ContextMenu_Opened(object sender, RoutedEventArgs e)
     {
+        // 対象が実在するファイル・フォルダのときだけ「エクスプローラーで表示」を出す
+        bool hasRealFile = GetRevealTargetPath() != null;
+        ShowInExplorerMenuItem.Visibility = hasRealFile ? Visibility.Visible : Visibility.Collapsed;
+        ShowInExplorerSeparator.Visibility = hasRealFile ? Visibility.Visible : Visibility.Collapsed;
+
         if (sender is not System.Windows.Controls.ContextMenu contextMenu) return;
         var historyItem = contextMenu.Items
             .OfType<System.Windows.Controls.MenuItem>()
@@ -106,6 +111,28 @@ public partial class PopWindow : Window
     {
         if (sender is System.Windows.Controls.MenuItem { Tag: ClipboardItem item })
             SetItem(item);
+    }
+
+    /// <summary>
+    /// エクスプローラーで表示する対象パスを返す。実在するファイル・フォルダがなければ null。
+    /// 一時ファイル（TempFiles）は対象外。
+    /// </summary>
+    private string? GetRevealTargetPath()
+    {
+        var files = _viewModel.Item?.Files;
+        if (files == null) return null;
+        foreach (var path in files)
+        {
+            if (File.Exists(path) || Directory.Exists(path)) return path;
+        }
+        return null;
+    }
+
+    private void ShowInExplorer_Click(object sender, RoutedEventArgs e)
+    {
+        var path = GetRevealTargetPath();
+        if (path != null)
+            FileSystemHelper.OpenFolderAndSelect(path);
     }
 
     private void OpenMainWindow_Click(object sender, RoutedEventArgs e)

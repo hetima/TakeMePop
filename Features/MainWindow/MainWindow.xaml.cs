@@ -227,11 +227,6 @@ public partial class MainWindow : Window
 
                 break;
 
-            case AppConstants.ShortcutActions.Reveal:
-                handled = true;
-
-                break;
-
 
         }
         return handled;

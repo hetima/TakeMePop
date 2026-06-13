@@ -152,12 +152,6 @@ public class SettingsService
             return ShortcutMatchResult.DefaultOpen;
         }
 
-        // アイテムの場所を表示するショートカットキーをチェック
-        if (shortcutSettings.RevealKey.Matches(e))
-        {
-            return ShortcutMatchResult.Reveal;
-        }
-
         // マッチしなかった場合
         return ShortcutMatchResult.None;
     }

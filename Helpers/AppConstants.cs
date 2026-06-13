@@ -201,10 +201,5 @@ public static class AppConstants
         /// </summary>
         public const string DefaultOpen = "default";
 
-        /// <summary>
-        /// アイテムの場所を表示するアクション
-        /// </summary>
-        public const string Reveal = "reveal";
-
     }
 }

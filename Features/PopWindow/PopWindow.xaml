@@ -102,6 +102,11 @@
                     Drop="ContentArea_Drop">
                 <Border.ContextMenu>
                     <ContextMenu Opened="ContextMenu_Opened">
+                        <MenuItem x:Name="ShowInExplorerMenuItem"
+                                  Header="{x:Static res:Strings.ContextMenuShowInExplorer}"
+                                  Click="ShowInExplorer_Click"
+                                  Visibility="Collapsed"/>
+                        <Separator x:Name="ShowInExplorerSeparator" Visibility="Collapsed"/>
                         <MenuItem x:Name="ClipboardHistoryMenuItem" Header="{x:Static res:Strings.MenuItemClipBoardHistory}"/>
                         <Separator/>
                         <MenuItem Header="{x:Static res:Strings.MenuItemSetting}" Click="Setting_Click"/>

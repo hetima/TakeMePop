@@ -199,26 +199,6 @@ public partial class SettingsView : UserControl
     }
 
     /// <summary>
-    /// アイテムの場所を表示するショートカットキー編集ボタンクリックイベント
-    /// </summary>
-    private void EditRevealKey_Click(object sender, RoutedEventArgs e)
-    {
-        ShowEditShortcutKeyModal(Listhing.Strings.RevealActionLabel, App.SettingsService.Settings.ShortcutSettings.RevealKey, (shortcut) =>
-        {
-            if (shortcut != null)
-            {
-                App.SettingsService.Settings.ShortcutSettings.RevealKey = shortcut;
-                App.SettingsService.Save();
-                App.ApplyHotkeySettings();
-
-                // ListViewの表示を更新
-                var viewModel = DataContext as ViewModels.SettingsViewModel;
-                viewModel?.RefreshShortcutKeys();
-            }
-        });
-    }
-
-    /// <summary>
     /// Quick History ショートカットキー編集ボタンクリックイベント
     /// </summary>
     private void EditQuickHistoryKey_Click(object sender, RoutedEventArgs e)

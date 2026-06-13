@@ -233,11 +233,6 @@ public class ShortcutMatchResult
     /// デフォルトのアイテムを開くアクション
     /// </summary>
     public static ShortcutMatchResult DefaultOpen => new ShortcutMatchResult(AppConstants.ShortcutActions.DefaultOpen);
-
-    /// <summary>
-    /// アイテムの場所を表示するアクション
-    /// </summary>
-    public static ShortcutMatchResult Reveal => new ShortcutMatchResult(AppConstants.ShortcutActions.Reveal);
 }
 
 /// <summary>
@@ -250,12 +245,6 @@ public class ShortcutSetting
     /// </summary>
     [JsonPropertyName("defaultOpenKey")]
     public ShortcutKey DefaultOpenKey { get; set; } = new ShortcutKey(System.Windows.Input.Key.None);
-
-    /// <summary>
-    /// アイテムの場所を表示するショートカットキー
-    /// </summary>
-    [JsonPropertyName("revealKey")]
-    public ShortcutKey RevealKey { get; set; } = new ShortcutKey(System.Windows.Input.Key.None);
 
     /// <summary>
     /// クイック履歴ウィンドウを表示するショートカットキー
