@@ -406,7 +406,6 @@
                                   IsChecked="{Binding QhModifierSelect}"
                                   Margin="0,0,0,4"/>
                         <TextBlock Text="{x:Static res:Strings.QhModifierSelectDescription}"
-                                   FontStyle="Italic"
                                    Opacity="0.75"
                                    Margin="0,0,0,20"
                                    TextWrapping="Wrap"/>
@@ -416,7 +415,6 @@
                                   IsChecked="{Binding QhCancelOnOtherKey}"
                                   Margin="0,0,0,4"/>
                         <TextBlock Text="{x:Static res:Strings.QhCancelOnOtherKeyDescription}"
-                                   FontStyle="Italic"
                                    Opacity="0.75"
                                    Margin="0,0,0,20"
                                    TextWrapping="Wrap"/>
@@ -472,7 +470,6 @@
                                    FontWeight="SemiBold"
                                    Margin="0,0,0,4"/>
                         <TextBlock Text="{x:Static res:Strings.ClipboardHistoryLimitDescription}"
-                                   FontStyle="Italic"
                                    Opacity="0.75"
                                    Margin="0,4,0,8"
                                    TextWrapping="Wrap"/>

@@ -181,7 +181,7 @@
   </data>
 
   <data name="SettingsSectionAction" xml:space="preserve">
-    <value>Shortcut</value>
+    <value>Shortcuts</value>
   </data>
 
   <data name="DefaultOpenActionLabel" xml:space="preserve">
@@ -333,7 +333,7 @@
   </data>
 
   <data name="MenuItemSetting" xml:space="preserve">
-    <value>Setting</value>
+    <value>Settings</value>
   </data>
 
   <data name="MenuItemOpenMainWindow" xml:space="preserve">
