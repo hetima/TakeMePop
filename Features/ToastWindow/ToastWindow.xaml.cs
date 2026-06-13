@@ -4,6 +4,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Documents; // Run クラスに必要
 using System.Windows.Media;
 using System.Drawing;     // FontFamily クラスに必要
+using Listhing.Helpers;
 
 namespace Listhing.Features.ToastWindow;
 
@@ -120,8 +121,9 @@ public partial class ToastWindow : Window
         if (_position == ToastPosition.NearMouse)
         {
             GetCursorPos(out var pt);
-            Left = pt.X - ActualWidth / 2;
-            Top = pt.Y - ActualHeight - 20;
+            var dipPoint = ScreenCoordinateHelper.PhysicalToDip(pt);
+            Left = dipPoint.X - ActualWidth / 2;
+            Top = dipPoint.Y - ActualHeight - 20;
             // スクリーン外補正
             Left = Math.Clamp(Left, screen.Left, screen.Right - ActualWidth);
             Top = Math.Clamp(Top, screen.Top, screen.Bottom - ActualHeight);
