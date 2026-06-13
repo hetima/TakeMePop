@@ -16,9 +16,22 @@ public partial class QuickTextWindow : Window
             if (!_forceClose)
             {
                 e.Cancel = true;
-                Hide();
+                HideWindow();
             }
         };
+    }
+
+    /// <summary>
+    /// 設定に応じて自動コピーしてからウィンドウを隠す。閉じる経路はすべてここを通す。
+    /// </summary>
+    private void HideWindow()
+    {
+        if (App.SettingsService.Settings.QuickTextWindow.AutoCopyOnClose
+            && !string.IsNullOrEmpty(TextEditor.Text))
+        {
+            Clipboard.SetText(TextEditor.Text);
+        }
+        Hide();
     }
 
     /// <summary>クリップボードのテキストをセットして表示する</summary>
@@ -45,13 +58,20 @@ public partial class QuickTextWindow : Window
             DragMove();
     }
 
-    private void CloseButton_Click(object sender, RoutedEventArgs e) => Hide();
+    private void CloseButton_Click(object sender, RoutedEventArgs e) => HideWindow();
 
     private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
     {
         if (e.Key == Key.OemComma && (Keyboard.Modifiers & ModifierKeys.Control) != 0)
         {
             App.ShowSettingsWindow();
+            e.Handled = true;
+            return;
+        }
+
+        if (e.Key == Key.Escape && App.SettingsService.Settings.QuickTextWindow.CloseOnEsc)
+        {
+            HideWindow();
             e.Handled = true;
         }
     }

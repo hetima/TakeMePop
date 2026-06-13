@@ -400,6 +400,24 @@ namespace Listhing {
             }
         }
 
+        public static string QtAutoCopyOnCloseLabel {
+            get {
+                return ResourceManager.GetString("QtAutoCopyOnCloseLabel", resourceCulture);
+            }
+        }
+
+        public static string QtCloseOnEscLabel {
+            get {
+                return ResourceManager.GetString("QtCloseOnEscLabel", resourceCulture);
+            }
+        }
+
+        public static string QtSectionTitle {
+            get {
+                return ResourceManager.GetString("QtSectionTitle", resourceCulture);
+            }
+        }
+
         public static string QuickHistoryActionLabel {
             get {
                 return ResourceManager.GetString("QuickHistoryActionLabel", resourceCulture);

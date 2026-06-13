@@ -460,4 +460,16 @@
     <value>Number of Items to Display</value>
   </data>
 
+  <data name="QtSectionTitle" xml:space="preserve">
+    <value>Quick Text Edit</value>
+  </data>
+
+  <data name="QtAutoCopyOnCloseLabel" xml:space="preserve">
+    <value>Copy automatically on close</value>
+  </data>
+
+  <data name="QtCloseOnEscLabel" xml:space="preserve">
+    <value>Close with the ESC key</value>
+  </data>
+
 </root>

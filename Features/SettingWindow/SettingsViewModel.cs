@@ -214,6 +214,22 @@ public class SettingsViewModel : INotifyPropertyChanged
         set { if (Qh.DisplayCount != value) { Qh.DisplayCount = value; _settingsService.Save(); App.RefreshQuickHistoryItems(); OnPropertyChanged(); } }
     }
 
+    private QuickTextWindowSettings Qt => _settingsService.Settings.QuickTextWindow;
+
+    /// <summary>閉じる時にテキストをクリップボードへコピーする</summary>
+    public bool QtAutoCopyOnClose
+    {
+        get => Qt.AutoCopyOnClose;
+        set { if (Qt.AutoCopyOnClose != value) { Qt.AutoCopyOnClose = value; _settingsService.Save(); OnPropertyChanged(); } }
+    }
+
+    /// <summary>ESC キーでウィンドウを閉じる</summary>
+    public bool QtCloseOnEsc
+    {
+        get => Qt.CloseOnEsc;
+        set { if (Qt.CloseOnEsc != value) { Qt.CloseOnEsc = value; _settingsService.Save(); OnPropertyChanged(); } }
+    }
+
     /// <summary>ショートカットキーの表示を更新する</summary>
     public void RefreshShortcutKeys()
     {

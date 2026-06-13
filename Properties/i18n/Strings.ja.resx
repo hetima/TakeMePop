@@ -460,4 +460,16 @@
     <value>履歴表示数</value>
   </data>
 
+  <data name="QtSectionTitle" xml:space="preserve">
+    <value>Quick Text Edit</value>
+  </data>
+
+  <data name="QtAutoCopyOnCloseLabel" xml:space="preserve">
+    <value>閉じる時に自動コピー</value>
+  </data>
+
+  <data name="QtCloseOnEscLabel" xml:space="preserve">
+    <value>ESC キーで閉じる</value>
+  </data>
+
 </root>

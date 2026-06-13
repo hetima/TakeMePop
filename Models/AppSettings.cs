@@ -95,6 +95,14 @@ public class QuickTextWindowSettings
 
     [JsonPropertyName("height")]
     public double Height { get; set; } = 200;
+
+    /// <summary>閉じる時にテキストの内容をクリップボードへコピーする。</summary>
+    [JsonPropertyName("autoCopyOnClose")]
+    public bool AutoCopyOnClose { get; set; } = false;
+
+    /// <summary>ESC キーでウィンドウを閉じる。</summary>
+    [JsonPropertyName("closeOnEsc")]
+    public bool CloseOnEsc { get; set; } = true;
 }
 
 public class PopWindowSettings

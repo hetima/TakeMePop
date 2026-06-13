@@ -35,6 +35,7 @@
                 <ListBoxItem Content="{x:Static res:Strings.SettingsSectionGeneral}"/>
                 <ListBoxItem Content="{x:Static res:Strings.SettingsSectionAction}"/>
                 <ListBoxItem Content="{x:Static res:Strings.PwSectionTitle}"/>
+                <ListBoxItem Content="{x:Static res:Strings.QtSectionTitle}"/>
                 <ListBoxItem Content="{x:Static res:Strings.QhSectionTitle}"/>
                 <ListBoxItem Content="{x:Static res:Strings.TgSectionTitle}"/>
                 <ListBoxItem Content="{x:Static res:Strings.SettingsSectionOther}"/>
@@ -332,6 +333,16 @@
                             <ComboBoxItem Content="{x:Static res:Strings.PwLinkDropFormatMarkdown}"/>
                             <ComboBoxItem Content="{x:Static res:Strings.PwLinkDropFormatUrlOnly}"/>
                         </ComboBox>
+                    </StackPanel>
+
+                    <!-- Quick Text Edit Section -->
+                    <StackPanel x:Name="QuickTextSection" Margin="42,8" MaxWidth="600" Visibility="Collapsed">
+                        <CheckBox Content="{x:Static res:Strings.QtAutoCopyOnCloseLabel}"
+                                  IsChecked="{Binding QtAutoCopyOnClose}"
+                                  Margin="0,0,0,16"/>
+                        <CheckBox Content="{x:Static res:Strings.QtCloseOnEscLabel}"
+                                  IsChecked="{Binding QtCloseOnEsc}"
+                                  Margin="0,0,0,16"/>
                     </StackPanel>
 
                     <!-- Quick History Section -->

@@ -29,19 +29,24 @@ public enum SettingsSection
     PopWindow = 2,
 
     /// <summary>
+    /// Quick Text Edit セクション
+    /// </summary>
+    QuickText = 3,
+
+    /// <summary>
     /// クリップボード履歴セクション
     /// </summary>
-    QuickHistory = 3,
+    QuickHistory = 4,
 
     /// <summary>
     /// Transparent Guard セクション
     /// </summary>
-    TransparentGuard = 4,
+    TransparentGuard = 5,
 
     /// <summary>
     /// その他セクション
     /// </summary>
-    Other = 5
+    Other = 6
 }
 
 /// <summary>
@@ -128,7 +133,7 @@ public partial class SettingsView : UserControl
     private void SectionListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         // コントロール初期化前はnullの場合がある
-        if (GeneralSection == null || ActionSection == null || OtherSection == null || TransparentGuardSection == null || PopWindowSection == null || QuickHistorySection == null)
+        if (GeneralSection == null || ActionSection == null || OtherSection == null || TransparentGuardSection == null || PopWindowSection == null || QuickHistorySection == null || QuickTextSection == null)
             return;
 
         var selectedSection = (SettingsSection)SectionListBox.SelectedIndex;
@@ -140,6 +145,7 @@ public partial class SettingsView : UserControl
         TransparentGuardSection.Visibility = Visibility.Collapsed;
         PopWindowSection.Visibility = Visibility.Collapsed;
         QuickHistorySection.Visibility = Visibility.Collapsed;
+        QuickTextSection.Visibility = Visibility.Collapsed;
 
         // 選択されたセクションのみを表示する
         switch (selectedSection)
@@ -158,6 +164,9 @@ public partial class SettingsView : UserControl
                 break;
             case SettingsSection.PopWindow:
                 PopWindowSection.Visibility = Visibility.Visible;
+                break;
+            case SettingsSection.QuickText:
+                QuickTextSection.Visibility = Visibility.Visible;
                 break;
             case SettingsSection.QuickHistory:
                 QuickHistorySection.Visibility = Visibility.Visible;
