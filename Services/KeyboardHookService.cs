@@ -10,7 +10,12 @@ public class KeyboardHookService
 {
     private readonly Dispatcher _dispatcher;
     private readonly ClipboardService _clipboard;
-    private readonly TimeSpan _doublePressInterval = TimeSpan.FromMilliseconds(400);
+
+    // Ctrl+C 2回押しの判定間隔（設定から反映）。SharpHookスレッドから読むため volatile。
+    private volatile int _doublePressIntervalMs = 500;
+    // Ctrl+C 2回押しが有効かどうか（設定から反映）。
+    private volatile bool _ctrlCDoubleTapEnabled = true;
+    private TimeSpan DoublePressInterval => TimeSpan.FromMilliseconds(_doublePressIntervalMs);
 
     private DateTime _lastCtrlCTime = DateTime.MinValue;
     private bool _cKeyReleased = true;
@@ -46,6 +51,15 @@ public class KeyboardHookService
         globalHook.KeyPressed += OnKeyPressed;
         globalHook.KeyReleased += OnKeyReleased;
         globalHook.MousePressed += OnMousePressed;
+    }
+
+    /// <summary>
+    /// Ctrl+C 2回押しの有効・無効と判定間隔（ミリ秒）を反映する。
+    /// </summary>
+    public void ApplyCtrlCDoubleTapSettings(bool enabled, int intervalMs)
+    {
+        _ctrlCDoubleTapEnabled = enabled;
+        _doublePressIntervalMs = intervalMs;
     }
 
     /// <summary>
@@ -144,6 +158,8 @@ public class KeyboardHookService
             return;
         }
 
+        if (!_ctrlCDoubleTapEnabled) return;
+
         if (e.Data.KeyCode != KeyCode.VcC) return;
         if (!e.RawEvent.Mask.HasFlag(EventMask.LeftCtrl) &&
             !e.RawEvent.Mask.HasFlag(EventMask.RightCtrl)) return;
@@ -154,7 +170,7 @@ public class KeyboardHookService
         var now = DateTime.UtcNow;
         var elapsed = now - _lastCtrlCTime;
 
-        if (elapsed <= _doublePressInterval)
+        if (elapsed <= DoublePressInterval)
         {
             _lastCtrlCTime = DateTime.MinValue;
             // クリップボードの内容変化に関わらず発火する

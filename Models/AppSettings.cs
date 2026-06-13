@@ -44,6 +44,18 @@ public class AppSettings
     public ShortcutSetting ShortcutSettings { get; set; } = new ShortcutSetting();
 
     /// <summary>
+    /// Ctrl+C 2回押しでの発動を有効にするかどうか。
+    /// </summary>
+    [JsonPropertyName("ctrlCDoubleTapEnabled")]
+    public bool CtrlCDoubleTapEnabled { get; set; } = true;
+
+    /// <summary>
+    /// Ctrl+C 2回押しの判定間隔（ミリ秒）。300〜1000。
+    /// </summary>
+    [JsonPropertyName("ctrlCDoublePressIntervalMs")]
+    public int CtrlCDoublePressIntervalMs { get; set; } = 500;
+
+    /// <summary>
     /// 開いているワークスペース名のリスト
     /// </summary>
     [JsonPropertyName("openedWorkspaceNames")]

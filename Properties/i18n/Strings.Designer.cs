@@ -130,6 +130,18 @@ namespace Listhing {
             }
         }
 
+        public static string CtrlCDoublePressIntervalLabel {
+            get {
+                return ResourceManager.GetString("CtrlCDoublePressIntervalLabel", resourceCulture);
+            }
+        }
+
+        public static string CtrlCDoubleTapLabel {
+            get {
+                return ResourceManager.GetString("CtrlCDoubleTapLabel", resourceCulture);
+            }
+        }
+
         public static string DefaultLabel {
             get {
                 return ResourceManager.GetString("DefaultLabel", resourceCulture);

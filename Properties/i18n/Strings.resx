@@ -436,6 +436,14 @@
     <value>Press Ctrl+C twice in a row to show the drop palette or Quick Text Edit. It switches depending on whether the clipboard contains files or text.</value>
   </data>
 
+  <data name="CtrlCDoubleTapLabel" xml:space="preserve">
+    <value>Activate by pressing Ctrl+C twice</value>
+  </data>
+
+  <data name="CtrlCDoublePressIntervalLabel" xml:space="preserve">
+    <value>Double-press detection interval</value>
+  </data>
+
   <data name="TgSectionDescription" xml:space="preserve">
     <value>This feature reduces mistakes such as &quot;I meant to click but ended up dragging and dropped it into the wrong folder.&quot; When a drag begins, a transparent window briefly appears at the mouse pointer. This window absorbs the drop and makes it as if nothing happened.</value>
   </data>

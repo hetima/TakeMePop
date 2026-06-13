@@ -175,6 +175,46 @@ public class SettingsViewModel : INotifyPropertyChanged
         }
     }
 
+    /// <summary>Ctrl+C 2回押しで発動するか</summary>
+    public bool CtrlCDoubleTapEnabled
+    {
+        get => _settingsService.Settings.CtrlCDoubleTapEnabled;
+        set
+        {
+            if (_settingsService.Settings.CtrlCDoubleTapEnabled != value)
+            {
+                _settingsService.Settings.CtrlCDoubleTapEnabled = value;
+                _settingsService.Save();
+                ApplyCtrlCDoubleTapSettings();
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    /// <summary>Ctrl+C 2回押しの判定間隔（300〜1000ms）</summary>
+    public int CtrlCDoublePressIntervalMs
+    {
+        get => _settingsService.Settings.CtrlCDoublePressIntervalMs;
+        set
+        {
+            if (_settingsService.Settings.CtrlCDoublePressIntervalMs != value)
+            {
+                _settingsService.Settings.CtrlCDoublePressIntervalMs = value;
+                _settingsService.Save();
+                ApplyCtrlCDoubleTapSettings();
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    /// <summary>Ctrl+C 2回押し設定を KeyboardHookService に反映する</summary>
+    private void ApplyCtrlCDoubleTapSettings()
+    {
+        App.KeyboardHookService.ApplyCtrlCDoubleTapSettings(
+            _settingsService.Settings.CtrlCDoubleTapEnabled,
+            _settingsService.Settings.CtrlCDoublePressIntervalMs);
+    }
+
     /// <summary>デフォルトのアイテムを開くショートカットキー</summary>
     public ShortcutKey DefaultOpenKey => _settingsService.Settings.ShortcutSettings.DefaultOpenKey;
 

@@ -238,6 +238,9 @@ public partial class App : Application
         // HwndSource を使うため WPF 初期化後に生成する
         ClipboardService = new ClipboardService();
         KeyboardHookService = new KeyboardHookService(GlobalHookService, Dispatcher, ClipboardService);
+        KeyboardHookService.ApplyCtrlCDoubleTapSettings(
+            SettingsService.Settings.CtrlCDoubleTapEnabled,
+            SettingsService.Settings.CtrlCDoublePressIntervalMs);
 
         _transparentWindow = new TransparentWindow();
 

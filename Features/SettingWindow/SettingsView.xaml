@@ -127,11 +127,40 @@
                                 Margin="42,8"
                                 MaxWidth="600"
                                 Visibility="Collapsed">
-                        <!-- Section Description -->
+                        <!-- Ctrl+C 2回押しで発動 -->
+                        <CheckBox Content="{x:Static res:Strings.CtrlCDoubleTapLabel}"
+                                  IsChecked="{Binding CtrlCDoubleTapEnabled}"
+                                  Margin="0,0,0,8"/>
+
+                        <!-- Section Description（Ctrl+C 2回押しの説明） -->
                         <TextBlock Text="{x:Static res:Strings.ShortcutSectionDescription}"
                                    Opacity="0.75"
                                    Margin="0,0,0,16"
                                    TextWrapping="Wrap"/>
+
+                        <!-- 2回押しの判定間隔 -->
+                        <TextBlock Text="{x:Static res:Strings.CtrlCDoublePressIntervalLabel}"
+                                   FontWeight="SemiBold"
+                                   Margin="0,0,0,8"/>
+                        <Grid Margin="0,0,0,24">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Slider Grid.Column="0"
+                                    Minimum="300"
+                                    Maximum="1000"
+                                    Value="{Binding CtrlCDoublePressIntervalMs}"
+                                    TickFrequency="50"
+                                    IsSnapToTickEnabled="True"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,16,0"/>
+                            <TextBlock Grid.Column="1"
+                                       Text="{Binding CtrlCDoublePressIntervalMs, StringFormat={}{0} ms}"
+                                       Width="60"
+                                       TextAlignment="Right"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
 
                         <!-- Basic Action Label -->
                         <TextBlock Text="{x:Static res:Strings.BasicActionLabel}"

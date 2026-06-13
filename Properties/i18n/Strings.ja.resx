@@ -436,6 +436,14 @@
     <value>Ctrl+C を連続して2回押すことでドロップパレット、またはテキストエディットを表示します。クリップボードの中身がファイルかテキストかによって切り替わります。</value>
   </data>
 
+  <data name="CtrlCDoubleTapLabel" xml:space="preserve">
+    <value>Ctrl+C 2回押しで発動</value>
+  </data>
+
+  <data name="CtrlCDoublePressIntervalLabel" xml:space="preserve">
+    <value>2回押しの判定間隔</value>
+  </data>
+
   <data name="TgSectionDescription" xml:space="preserve">
     <value>これは「クリックしたつもりがドラッグになってしまい隣のフォルダに放り込んでしまった」というようなミスを軽減させる機能です。ドラッグが始まったらごく短い間、マウスポインタのある場所に透明なウィンドウを出します。このウィンドウがドロップを吸い込み、何もなかったことにします。</value>
   </data>
