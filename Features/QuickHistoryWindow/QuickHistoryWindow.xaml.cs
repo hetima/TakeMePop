@@ -36,7 +36,6 @@ public partial class QuickHistoryWindow : Window
             ? Listhing.Strings.QuickHistoryStatusBarText
             : Listhing.Strings.QuickHistoryStatusBarTextClick;
         base.Show();
-        Activate();
         HistoryListBox.SelectedIndex = 0;
     }
 
