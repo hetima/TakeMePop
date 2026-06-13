@@ -10,7 +10,7 @@
         Topmost="True"
         ResizeMode="CanResize"
         ShowInTaskbar="False"
-        MinWidth="120" MinHeight="120">
+        MinWidth="120" MinHeight="100">
     <Window.Resources>
         <Style x:Key="ContentAreaStyle" TargetType="Border">
             <Setter Property="Background" Value="Transparent"/>
@@ -130,31 +130,47 @@
                     </ScrollViewer>
 
                     <!-- ファイルアイテム表示 -->
-                    <StackPanel VerticalAlignment="Center"
-                                Visibility="{Binding IsFile, Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <!-- 単一画像ファイル: サムネイル -->
-                        <Image Source="{Binding Thumbnail}"
-                               MaxWidth="200" MaxHeight="200"
-                               HorizontalAlignment="Center"
-                               Stretch="Uniform"
-                               Visibility="{Binding Thumbnail, Converter={StaticResource NullToCollapsedConverter}}"/>
-                        <!-- 単一非画像ファイル: シェルアイコン -->
-                        <Image Source="{Binding FileIcon}"
-                               Width="32" Height="32"
-                               HorizontalAlignment="Center"
-                               Visibility="{Binding IsImageFile, Converter={StaticResource InverseBooleanToVisibilityConverter}}"/>
-                        <!-- 複数ファイル: Stack絵文字 -->
-                        <TextBlock Text="{Binding IconText}"
-                                   FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                   FontSize="48"
+                    <Grid x:Name="FileItemPanel"
+                          VerticalAlignment="Center"
+                          Visibility="{Binding IsFile, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition x:Name="FileIconColumn" Width="*"/>
+                            <ColumnDefinition x:Name="FileLabelColumn" Width="0"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition x:Name="FileIconRow" Height="Auto"/>
+                            <RowDefinition x:Name="FileLabelRow" Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid x:Name="FileIconHost"
+                              Grid.Row="0"
+                              Grid.Column="0">
+                            <!-- 単一画像ファイル: サムネイル -->
+                            <Image Source="{Binding Thumbnail}"
+                                   MaxWidth="200" MaxHeight="200"
                                    HorizontalAlignment="Center"
-                                   Visibility="{Binding IconText, Converter={StaticResource StringToVisibilityConverter}}"/>
-                        <TextBlock Text="{Binding FileLabel}"
+                                   Stretch="Uniform"
+                                   Visibility="{Binding Thumbnail, Converter={StaticResource NullToCollapsedConverter}}"/>
+                            <!-- 単一非画像ファイル: シェルアイコン -->
+                            <Image Source="{Binding FileIcon}"
+                                   Width="32" Height="32"
+                                   HorizontalAlignment="Center"
+                                   Visibility="{Binding IsImageFile, Converter={StaticResource InverseBooleanToVisibilityConverter}}"/>
+                            <!-- 複数ファイル: Stack絵文字 -->
+                            <TextBlock Text="{Binding IconText}"
+                                       FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                       FontSize="48"
+                                       HorizontalAlignment="Center"
+                                       Visibility="{Binding IconText, Converter={StaticResource StringToVisibilityConverter}}"/>
+                        </Grid>
+                        <TextBlock x:Name="FileLabelText"
+                                   Grid.Row="1"
+                                   Grid.Column="0"
+                                   Text="{Binding FileLabel}"
                                    TextAlignment="Center"
                                    TextWrapping="Wrap"
                                    TextTrimming="CharacterEllipsis"
                                    Margin="4,4,4,0"/>
-                    </StackPanel>
+                    </Grid>
                 </Grid>
             </Border>
         </Grid>

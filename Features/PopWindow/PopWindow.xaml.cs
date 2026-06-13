@@ -21,6 +21,7 @@ public partial class PopWindow : Window
         DataContext = _viewModel;
         Closed += (_, _) => { _viewModel.Item?.Dispose(); App.RemovePopWindow(this); };
         SizeChanged += (_, _) => App.SavePopWindowSize(Width, Height);
+        ContentArea.SizeChanged += (_, _) => UpdateFileItemLayout();
     }
 
     public void SetItem(ClipboardItem item) => _viewModel.Item = item;
@@ -68,6 +69,49 @@ public partial class PopWindow : Window
     private void CloseOnSuccessButton_Click(object sender, RoutedEventArgs e)
     {
         _viewModel.Pinned = !_viewModel.Pinned;
+    }
+
+    /// <summary>ファイル表示領域のサイズに応じてアイコン表示と並び方向を切り替える</summary>
+    private void UpdateFileItemLayout()
+    {
+        var contentWidth = ContentArea.ActualWidth;
+        var contentHeight = ContentArea.ActualHeight;
+        var hideIcon = contentWidth < 96 && contentHeight < 96;
+        var useHorizontalLayout = !hideIcon && contentWidth >= contentHeight * 2;
+
+        FileIconHost.Visibility = hideIcon ? Visibility.Collapsed : Visibility.Visible;
+        FileItemPanel.HorizontalAlignment = useHorizontalLayout
+            ? HorizontalAlignment.Center
+            : HorizontalAlignment.Stretch;
+        FileIconColumn.Width = useHorizontalLayout
+            ? GridLength.Auto
+            : new GridLength(1, GridUnitType.Star);
+        FileLabelColumn.Width = useHorizontalLayout
+            ? new GridLength(1, GridUnitType.Star)
+            : new GridLength(0);
+        FileIconRow.Height = useHorizontalLayout
+            ? new GridLength(1, GridUnitType.Star)
+            : GridLength.Auto;
+        FileLabelRow.Height = useHorizontalLayout
+            ? new GridLength(0)
+            : GridLength.Auto;
+        System.Windows.Controls.Grid.SetRow(FileIconHost, 0);
+        System.Windows.Controls.Grid.SetColumn(FileIconHost, 0);
+        System.Windows.Controls.Grid.SetRow(FileLabelText, useHorizontalLayout ? 0 : 1);
+        System.Windows.Controls.Grid.SetColumn(FileLabelText, useHorizontalLayout ? 1 : 0);
+        FileIconHost.Margin = useHorizontalLayout
+            ? new Thickness(0, 0, 4, 0)
+            : new Thickness(0);
+        FileLabelText.Margin = useHorizontalLayout
+            ? new Thickness(4, 0, 4, 0)
+            : new Thickness(4, 4, 4, 0);
+        FileLabelText.TextAlignment = useHorizontalLayout
+            ? TextAlignment.Left
+            : TextAlignment.Center;
+        FileLabelText.VerticalAlignment = useHorizontalLayout
+            ? VerticalAlignment.Center
+            : VerticalAlignment.Stretch;
+        FileLabelText.MaxWidth = double.PositiveInfinity;
     }
 
     private void ContextMenu_Opened(object sender, RoutedEventArgs e)
