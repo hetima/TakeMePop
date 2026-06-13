@@ -69,6 +69,48 @@
                 <Setter Property="CornerRadius" Value="6"/>
             </Style>
 
+            <!-- 共通 ListBoxItem: 選択時にアクセント色、ホバーでサブトル色 -->
+            <Style x:Key="MyListBoxItemStyle" TargetType="ListBoxItem">
+                <Setter Property="Padding" Value="8,5,8,5"/>
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextControlForeground}"/>
+                <Setter Property="OverridesDefaultStyle" Value="True"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ListBoxItem">
+                            <Border x:Name="Border"
+                                    Padding="{TemplateBinding Padding}"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="4">
+                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsSelected" Value="False"/>
+                                        <Condition Property="IsMouseOver" Value="True"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter TargetName="Border" Property="Background"
+                                            Value="{DynamicResource SubtleFillColorSecondaryBrush}"/>
+                                </MultiTrigger>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter TargetName="Border" Property="Background"
+                                            Value="{DynamicResource AccentFillColorDefaultBrush}"/>
+                                    <Setter Property="Foreground"
+                                            Value="{DynamicResource TextOnAccentFillColorPrimaryBrush}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
             <!-- Converters -->
             <converters:ThemeToIndexConverter x:Key="ThemeToIndexConverter"/>
             <converters:LanguageToIndexConverter x:Key="LanguageToIndexConverter"/>

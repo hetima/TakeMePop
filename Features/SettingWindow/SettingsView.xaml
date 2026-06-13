@@ -29,6 +29,7 @@
                      Grid.Column="0"
                      SelectedIndex="0"
                      SelectionMode="Single"
+                     ItemContainerStyle="{StaticResource MyListBoxItemStyle}"
                      SelectionChanged="SectionListBox_SelectionChanged">
                 <ListBoxItem Content="{x:Static res:Strings.SettingsSectionGeneral}"/>
                 <ListBoxItem Content="{x:Static res:Strings.SettingsSectionAction}"/>

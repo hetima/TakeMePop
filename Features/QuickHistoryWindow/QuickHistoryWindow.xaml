@@ -14,12 +14,6 @@
         ShowInTaskbar="False"
         ShowActivated="False"
         PreviewKeyDown="Window_PreviewKeyDown">
-    <Window.Resources>
-        <Style x:Key="HistoryListBoxItemStyle" TargetType="ListBoxItem">
-            <Setter Property="Padding" Value="8,5,8,5"/>
-            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-        </Style>
-    </Window.Resources>
     <Border Style="{StaticResource PopupWindowChromeStyle}">
         <Grid>
             <Grid.RowDefinitions>
@@ -58,7 +52,7 @@
                      BorderThickness="0"
                      Background="Transparent"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                     ItemContainerStyle="{StaticResource HistoryListBoxItemStyle}"
+                     ItemContainerStyle="{StaticResource MyListBoxItemStyle}"
                      Margin="5,0,5,0"
                      MouseLeftButtonUp="HistoryListBox_MouseLeftButtonUp">
                 <ListBox.ItemTemplate>
