@@ -135,6 +135,8 @@ public partial class App : Application
             }
         }
 
+        // 前回終了時に残った仮想ファイル用の一時ファイルを削除
+        ClipboardItem.CleanupTempFiles();
 
         // Load settings
         SettingsService.Load();

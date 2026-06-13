@@ -11,12 +11,15 @@ namespace Listhing.Services;
 /// </summary>
 public class ClipboardItem : IDisposable
 {
+    private const string TempRootDirectoryName = "TakeMePop";
+
     public DateTime Timestamp { get; }
     public string? Text { get; }
     public IReadOnlyList<string>? Files { get; }
 
     /// <summary>仮想ファイルから生成した一時ファイルのパスリスト。Dispose 時に削除される。</summary>
     public IReadOnlyList<string>? TempFiles { get; }
+    private readonly string? _tempDirectory;
 
     public bool HasImage { get; }
 
@@ -38,12 +41,40 @@ public class ClipboardItem : IDisposable
 
     public void Dispose()
     {
-        if (_disposed || TempFiles == null) return;
+        if (_disposed) return;
         _disposed = true;
+        if (TempFiles == null) return;
+
         foreach (var path in TempFiles)
         {
             try { File.Delete(path); } catch { }
         }
+
+        if (_tempDirectory != null)
+        {
+            try { Directory.Delete(_tempDirectory, recursive: true); } catch { }
+        }
+    }
+
+    /// <summary>
+    /// 前回終了時に残った一時ファイルを削除する。
+    /// </summary>
+    public static void CleanupTempFiles()
+    {
+        var tempRoot = Path.Combine(Path.GetTempPath(), TempRootDirectoryName);
+        if (!Directory.Exists(tempRoot)) return;
+
+        foreach (var directory in Directory.EnumerateDirectories(tempRoot))
+        {
+            try { Directory.Delete(directory, recursive: true); } catch { }
+        }
+
+        foreach (var file in Directory.EnumerateFiles(tempRoot))
+        {
+            try { File.Delete(file); } catch { }
+        }
+
+        try { Directory.Delete(tempRoot, recursive: false); } catch { }
     }
 
     /// <summary>
@@ -70,12 +101,13 @@ public class ClipboardItem : IDisposable
         return text;
     }
 
-    private ClipboardItem(DateTime timestamp, string? text, IReadOnlyList<string>? files, IReadOnlyList<string>? tempFiles, bool hasImage)
+    private ClipboardItem(DateTime timestamp, string? text, IReadOnlyList<string>? files, IReadOnlyList<string>? tempFiles, string? tempDirectory, bool hasImage)
     {
         Timestamp = timestamp;
         Text = text;
         Files = files;
         TempFiles = tempFiles;
+        _tempDirectory = tempDirectory;
         HasImage = hasImage;
     }
 
@@ -131,11 +163,12 @@ public class ClipboardItem : IDisposable
             // CF_HDROP がなく仮想ファイル（ブラウザからの画像等）の場合は一時ファイルに書き出す
             // URL の場合は .url ファイルを一時展開しない
             IReadOnlyList<string>? tempFiles = null;
+            string? tempDirectory = null;
             if (files == null && urlInfo == null && data.GetDataPresent("FileGroupDescriptorW"))
-                tempFiles = ExtractVirtualFiles(data);
+                tempFiles = ExtractVirtualFiles(data, out tempDirectory);
 
             if (text == null && files == null && tempFiles == null) return null;
-            return new ClipboardItem(now, text, files, tempFiles, false);
+            return new ClipboardItem(now, text, files, tempFiles, tempDirectory, false);
         }
         catch
         {
@@ -147,8 +180,10 @@ public class ClipboardItem : IDisposable
     /// FileGroupDescriptorW + FileContents から一時ファイルを生成してパスリストを返す。
     /// COM IDataObject を直接呼んで IStream / HGLOBAL でデータを取得する。
     /// </summary>
-    private static IReadOnlyList<string>? ExtractVirtualFiles(System.Windows.IDataObject wpfData)
+    private static IReadOnlyList<string>? ExtractVirtualFiles(System.Windows.IDataObject wpfData, out string? tempDirectory)
     {
+        tempDirectory = null;
+
         // WPF の IDataObject ラッパーの裏にある COM IDataObject を取得
         if (wpfData is not System.Runtime.InteropServices.ComTypes.IDataObject comData)
             return null;
@@ -177,18 +212,28 @@ public class ClipboardItem : IDisposable
 
         if (fileNames.Count == 0) return null;
 
-        var tempDir = Path.Combine(Path.GetTempPath(), "TakeMePop");
+        var tempDir = Path.Combine(Path.GetTempPath(), TempRootDirectoryName, Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(tempDir);
 
         var result = new List<string>();
         for (int i = 0; i < fileNames.Count; i++)
         {
-            var tempPath = Path.Combine(tempDir, fileNames[i]);
+            var fileName = Path.GetFileName(fileNames[i]);
+            if (string.IsNullOrWhiteSpace(fileName)) continue;
+
+            var tempPath = Path.Combine(tempDir, fileName);
             if (TryExtractFileContents(comData, i, tempPath))
                 result.Add(tempPath);
         }
 
-        return result.Count > 0 ? result : null;
+        if (result.Count > 0)
+        {
+            tempDirectory = tempDir;
+            return result;
+        }
+
+        try { Directory.Delete(tempDir, recursive: true); } catch { }
+        return null;
     }
 
     /// <summary>URLとタイトルを設定に従ってテキスト形式に変換する</summary>
@@ -366,7 +411,7 @@ public class ClipboardItem : IDisposable
             // 何も入っていなければ null
             if (text == null && files == null && !hasImage) return null;
 
-            return new ClipboardItem(now, text, files, null, hasImage);
+            return new ClipboardItem(now, text, files, null, null, hasImage);
         }
         catch
         {

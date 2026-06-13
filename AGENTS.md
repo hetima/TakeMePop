@@ -106,21 +106,19 @@ App.xaml.cs で生成し、`App.XXX` 静的プロパティ経由で参照する:
 
 1. **仮想ファイルのみのアイテムがコピーできない** — [PopWindow.xaml.cs](Features/PopWindow/PopWindow.xaml.cs) の `CopyButton_Click` は `item.Files` を見るが、ブラウザからの仮想ファイルは `TempFiles` にしか入らないため（`Files == null`）何もコピーされない。ドラッグ出力と同様に `AllFiles` を使うべき。`OnRevealHotkey`（App.xaml.cs）の `GetFiles()` も同様に `Files` のみ参照。
 
-2. **一時ファイルのパス衝突** — ClipboardItem.ExtractVirtualFiles は `%TEMP%\TakeMePop\<元ファイル名>` 固定なので、同名ファイルを再ドロップすると前のアイテムの実体が上書きされ、さらに片方の `Dispose()` でもう片方のファイルも消える。アイテムごとに GUID サブフォルダを切るのが安全。
-
-3. **TransparentWindow がドロップを処理しない** — `AllowDrop="True"` だが DragOver/Drop ハンドラが未実装のため、ドロップしても受け取れない（カーソルが禁止マークになる）。CLAUDE.md の想定機能（ドロップを受けて PopWindow へ渡す）が未完。
+2. **TransparentWindow がドロップを処理しない** — `AllowDrop="True"` だが DragOver/Drop ハンドラが未実装のため、ドロップしても受け取れない（カーソルが禁止マークになる）。CLAUDE.md の想定機能（ドロップを受けて PopWindow へ渡す）が未完。
 
 ## 改善した方がよいもの
 
-4. **PopWindow のリサイズで毎回設定ファイル保存** — `SizeChanged += App.SavePopWindowSize`（即ファイル I/O）はウィンドウ生成時の `Width` 代入やリサイズドラッグ中も連続発火する。デバウンスするか Closed 時にまとめて保存する方がよい。
+3. **PopWindow のリサイズで毎回設定ファイル保存** — `SizeChanged += App.SavePopWindowSize`（即ファイル I/O）はウィンドウ生成時の `Width` 代入やリサイズドラッグ中も連続発火する。デバウンスするか Closed 時にまとめて保存する方がよい。
 
-5. **ClipboardItem の所有権が曖昧** — PopWindow は履歴中の ClipboardItem をそのまま保持し、Item 差し替え時・Close 時に `Dispose()` する。現状は履歴アイテムが TempFiles を持たないため実害がないが、将来 TempFiles 持ちのアイテムが履歴に入ると、履歴に残ったまま一時ファイルが削除される。また `ClipboardService.TrimHistoryIfNeeded` も削除アイテムを Dispose していない。
+4. **ClipboardItem の所有権が曖昧** — PopWindow は履歴中の ClipboardItem をそのまま保持し、Item 差し替え時・Close 時に `Dispose()` する。現状は履歴アイテムが TempFiles を持たないため実害がないが、将来 TempFiles 持ちのアイテムが履歴に入ると、履歴に残ったまま一時ファイルが削除される。また `ClipboardService.TrimHistoryIfNeeded` も削除アイテムを Dispose していない。
 
-6. **QuickHistoryWindow.CopyItem の挙動** — 履歴から削除してから `Clipboard.SetText` するため、WM_CLIPBOARDUPDATE で同じ内容が履歴の最新として再追加される（「先頭に移動」相当）。意図的ならコメントで明示すべき。
+5. **QuickHistoryWindow.CopyItem の挙動** — 履歴から削除してから `Clipboard.SetText` するため、WM_CLIPBOARDUPDATE で同じ内容が履歴の最新として再追加される（「先頭に移動」相当）。意図的ならコメントで明示すべき。
 
-7. **`App.ApplyFontSize` のコメントと実装の不一致** — コメント・XMLドキュメントは「8-48」だが判定は `> 40`。
+6. **`App.ApplyFontSize` のコメントと実装の不一致** — コメント・XMLドキュメントは「8-48」だが判定は `> 40`。
 
-8. **`new` によるメソッド隠蔽** — QuickHistoryWindow / QuickTextWindow の `public new void Show()` は `Window` 型の参照経由だと呼ばれない。動作はしているが壊れやすいので、別名メソッド（`ShowAndActivate` 等）が安全。
+7. **`new` によるメソッド隠蔽** — QuickHistoryWindow / QuickTextWindow の `public new void Show()` は `Window` 型の参照経由だと呼ばれない。動作はしているが壊れやすいので、別名メソッド（`ShowAndActivate` 等）が安全。
 
 ## 前身プロジェクト（Listhing）の残骸
 
