@@ -1,5 +1,6 @@
 # TakeMePop
 
+![Screenshot](https://raw.githubusercontent.com/hetima/TakeMePop/main/assets/ss01.jpg)
 
 ドラッグ・アンド・ドロップの中継地点となるフローティングウィンドウを出すWindows専用アプリケーションです。クリップボード履歴や一時的なテキスト編集機能も備わっています。
 

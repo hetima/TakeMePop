@@ -2,6 +2,8 @@
 
 [ English | [日本語](https://github.com/hetima/TakeMePop/blob/main/README-ja.md) ]
 
+![Screenshot](https://raw.githubusercontent.com/hetima/TakeMePop/main/assets/ss01.jpg)
+
 An application for Windows that pops up a floating window to serve as a relay point for drag-and-drop operations. It also provides clipboard history and temporary text editing features.
 
 When launched, it runs in the system tray. To quit, right-click the tray icon and choose Exit. You can customize its behavior in Settings.
