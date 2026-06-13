@@ -199,6 +199,26 @@
                                 Padding="24,12"
                                 Click="OpenSettingsFolder_Click"
                                 Margin="0,0,0,16"/>
+
+                        <!-- クリップボード調査 -->
+                        <Button Content="Inspect Clipboard"
+                                HorizontalAlignment="Center"
+                                Padding="24,12"
+                                Click="InspectClipboard_Click"
+                                Margin="0,0,0,8"/>
+                        <TextBox x:Name="ClipboardInspectBox"
+                                 IsReadOnly="True"
+                                 FontFamily="HackGen35, HackGen, Consolas"
+                                 FontSize="15"
+                                 MinHeight="160"
+                                 MaxHeight="{Binding ViewportHeight, RelativeSource={RelativeSource AncestorType=ScrollViewer}}"
+                                 TextWrapping="Wrap"
+                                 VerticalScrollBarVisibility="Auto"
+                                 AllowDrop="True"
+                                 Text = "Press [Inspect Clipboard] or drop anything here to inspect"
+                                 PreviewDragOver="ClipboardInspectBox_PreviewDragOver"
+                                 PreviewDrop="ClipboardInspectBox_PreviewDrop"
+                                 Margin="0,0,0,16"/>
                     </StackPanel>
 
                     <!-- Transparent Guard Section -->

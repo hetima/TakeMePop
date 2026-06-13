@@ -127,6 +127,118 @@ public partial class SettingsView : UserControl
     }
 
     /// <summary>
+    /// クリップボードの内容を調査してテキストエリアに表示する
+    /// </summary>
+    private void InspectClipboard_Click(object sender, RoutedEventArgs e)
+    {
+        ClipboardInspectBox.Text = InspectDataObject(System.Windows.Clipboard.GetDataObject());
+    }
+
+    /// <summary>
+    /// テキストエリアへのドラッグオーバー。Drop を発火させるため受け入れ可（Copy）にしておく
+    /// </summary>
+    private void ClipboardInspectBox_PreviewDragOver(object sender, System.Windows.DragEventArgs e)
+    {
+        // None にすると Drop 自体が発火しないため、ここでは受け入れ可にする
+        e.Effects = System.Windows.DragDropEffects.Copy;
+        e.Handled = true;
+    }
+
+    /// <summary>
+    /// テキストエリアへのドロップ。ドロップされたデータの中身を調査して表示しつつ、ドロップ操作自体は不成立にする
+    /// </summary>
+    private void ClipboardInspectBox_PreviewDrop(object sender, System.Windows.DragEventArgs e)
+    {
+        ClipboardInspectBox.Text = InspectDataObject(e.Data);
+        e.Effects = System.Windows.DragDropEffects.None; // ドロップ元には「コピーされなかった」と通知
+        e.Handled = true; // 既定のテキスト挿入を抑止
+    }
+
+    /// <summary>
+    /// IDataObject の格納フォーマット一覧と各データの概要を文字列化する
+    /// </summary>
+    private static string InspectDataObject(System.Windows.IDataObject? data)
+    {
+        var sb = new System.Text.StringBuilder();
+        try
+        {
+            if (data == null)
+            {
+                return "(empty)";
+            }
+
+            var formats = data.GetFormats();
+            sb.AppendLine($"Formats ({formats.Length}): {string.Join(", ", formats)}");
+            sb.AppendLine(new string('-', 40));
+
+            foreach (var format in formats)
+            {
+                object? value;
+                try
+                {
+                    value = data.GetData(format);
+                }
+                catch (Exception ex)
+                {
+                    sb.AppendLine($"[{format}] <取得エラー: {ex.GetType().Name}>");
+                    continue;
+                }
+
+                sb.AppendLine($"[{format}] {DescribeValue(value)}");
+            }
+        }
+        catch (Exception ex)
+        {
+            sb.AppendLine($"<error: {ex.GetType().Name}: {ex.Message}>");
+        }
+        return sb.ToString();
+    }
+
+    /// <summary>
+    /// クリップボードデータの型・サイズ・先頭プレビューを1行（必要に応じ複数行）に整形する
+    /// </summary>
+    private static string DescribeValue(object? value)
+    {
+        if (value == null)
+            return "<null>";
+
+        switch (value)
+        {
+            case string s:
+                return $"(string, {s.Length} chars)\n{Preview(s)}";
+
+            case string[] arr:
+                var items = string.Join("\n", arr);
+                return $"(string[], {arr.Length} items)\n{items}";
+
+            case System.Collections.Specialized.StringCollection sc:
+                var paths = string.Join("\n", sc.Cast<string>());
+                return $"(StringCollection, {sc.Count} items)\n{paths}";
+
+            case System.IO.MemoryStream ms:
+                return $"(MemoryStream, {ms.Length} bytes)";
+
+            case System.Windows.Interop.InteropBitmap bmp:
+                return $"(Bitmap, {bmp.PixelWidth} x {bmp.PixelHeight})";
+
+            case System.Windows.Media.Imaging.BitmapSource src:
+                return $"({value.GetType().Name}, {src.PixelWidth} x {src.PixelHeight})";
+
+            default:
+                return $"({value.GetType().FullName})";
+        }
+    }
+
+    /// <summary>
+    /// 文字列を最大200文字でトリミングしたプレビューを返す
+    /// </summary>
+    private static string Preview(string s)
+    {
+        const int max = 200;
+        return s.Length <= max ? s : s.Substring(0, max) + "…";
+    }
+
+    /// <summary>
     /// セクション選択ListBoxの選択変更イベント
     /// 選択されたセクションに応じて表示を切り替える
     /// </summary>
