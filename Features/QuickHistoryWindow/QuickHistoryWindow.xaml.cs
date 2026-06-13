@@ -31,6 +31,10 @@ public partial class QuickHistoryWindow : Window
     public void ShowAndActivate()
     {
         _viewModel.RefreshItems();
+        // モデファイキーセレクトの有効・無効でステータスバーの案内文を切り替える
+        StatusBarText.Text = App.SettingsService.Settings.QuickHistory.ModifierSelect
+            ? Listhing.Strings.QuickHistoryStatusBarText
+            : Listhing.Strings.QuickHistoryStatusBarTextClick;
         base.Show();
         Activate();
         HistoryListBox.SelectedIndex = 0;

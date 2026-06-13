@@ -448,6 +448,12 @@ namespace Listhing {
             }
         }
 
+        public static string QuickHistoryStatusBarTextClick {
+            get {
+                return ResourceManager.GetString("QuickHistoryStatusBarTextClick", resourceCulture);
+            }
+        }
+
         public static string QuickHistoryWindowTitle {
             get {
                 return ResourceManager.GetString("QuickHistoryWindowTitle", resourceCulture);

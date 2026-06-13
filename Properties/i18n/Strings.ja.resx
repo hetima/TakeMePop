@@ -436,6 +436,10 @@
     <value>ショートカットを押して選択</value>
   </data>
 
+  <data name="QuickHistoryStatusBarTextClick" xml:space="preserve">
+    <value>クリックしてコピー</value>
+  </data>
+
   <data name="MenuItemClipBoardHistory" xml:space="preserve">
     <value>クリップボード履歴 </value>
   </data>

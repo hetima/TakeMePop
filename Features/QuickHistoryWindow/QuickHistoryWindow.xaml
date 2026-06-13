@@ -32,7 +32,7 @@
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
                            FontWeight="SemiBold"
-                           FontSize="12"/>
+                           FontSize="14"/>
                 <Button x:Name="CloseButton"
                         FontFamily="{StaticResource SymbolThemeFontFamily}"
                         Style="{StaticResource PopupWindowIconButtonStyle}"
@@ -84,7 +84,8 @@
                     BorderThickness="0,0,0,0"
                     BorderBrush="{DynamicResource SurfaceStrokeColorDefaultBrush}"
                     Padding="8,5">
-                <TextBlock Text="{x:Static res:Strings.QuickHistoryStatusBarText}"
+                <TextBlock x:Name="StatusBarText"
+                           Text="{x:Static res:Strings.QuickHistoryStatusBarText}"
                            FontSize="12"
                            Opacity="0.7"
                            TextWrapping="Wrap"/>

@@ -436,6 +436,10 @@
     <value>Press the shortcut key to select</value>
   </data>
 
+  <data name="QuickHistoryStatusBarTextClick" xml:space="preserve">
+    <value>Click to copy</value>
+  </data>
+
   <data name="MenuItemClipBoardHistory" xml:space="preserve">
     <value>ClipBoard History </value>
   </data>
