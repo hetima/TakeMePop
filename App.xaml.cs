@@ -470,13 +470,12 @@ public partial class App : Application
     }
 
     /// <summary>
-    /// PopWindow のサイズを設定に保存する。
+    /// PopWindow のサイズをメモリ上の設定に反映する（ファイル保存はアプリ終了時）。
     /// </summary>
-    public static void SavePopWindowSize(double width, double height)
+    public static void UpdatePopWindowSize(double width, double height)
     {
         SettingsService.Settings.PopWindow.Width = width;
         SettingsService.Settings.PopWindow.Height = height;
-        SettingsService.Save();
     }
 
     /// <summary>

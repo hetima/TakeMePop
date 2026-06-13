@@ -20,7 +20,7 @@ public partial class PopWindow : Window
         _viewModel = new PopWindowViewModel();
         DataContext = _viewModel;
         Closed += (_, _) => { _viewModel.Item?.Dispose(); App.RemovePopWindow(this); };
-        SizeChanged += (_, _) => App.SavePopWindowSize(Width, Height);
+        SizeChanged += (_, _) => App.UpdatePopWindowSize(Width, Height);
         ContentArea.SizeChanged += (_, _) => UpdateFileItemLayout();
     }
 
