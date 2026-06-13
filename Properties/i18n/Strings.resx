@@ -177,7 +177,7 @@
   </data>
 
   <data name="DefaultOpenActionLabel" xml:space="preserve">
-    <value>Show Pop Panel</value>
+    <value>Show Drop Panel</value>
   </data>
 
   <data name="RevealActionLabel" xml:space="preserve">
@@ -385,7 +385,7 @@
   </data>
 
   <data name="PwSectionTitle" xml:space="preserve">
-    <value>Pop Panel</value>
+    <value>Drop Panel</value>
   </data>
 
   <data name="PwAllowMultipleWindowsLabel" xml:space="preserve">

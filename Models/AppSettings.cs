@@ -98,7 +98,7 @@ public class QuickTextWindowSettings
 
     /// <summary>閉じる時にテキストの内容をクリップボードへコピーする。</summary>
     [JsonPropertyName("autoCopyOnClose")]
-    public bool AutoCopyOnClose { get; set; } = false;
+    public bool AutoCopyOnClose { get; set; } = true;
 
     /// <summary>ESC キーでウィンドウを閉じる。</summary>
     [JsonPropertyName("closeOnEsc")]

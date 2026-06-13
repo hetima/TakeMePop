@@ -177,7 +177,7 @@
   </data>
 
   <data name="DefaultOpenActionLabel" xml:space="preserve">
-    <value>ポップパネルを表示</value>
+    <value>ドロップパネルを表示</value>
   </data>
 
   <data name="RevealActionLabel" xml:space="preserve">
@@ -385,7 +385,7 @@
   </data>
 
   <data name="PwSectionTitle" xml:space="preserve">
-    <value>ポップパネル</value>
+    <value>ドロップパネル</value>
   </data>
 
   <data name="PwAllowMultipleWindowsLabel" xml:space="preserve">
@@ -417,7 +417,7 @@
   </data>
 
   <data name="QuickTextWindowTitle" xml:space="preserve">
-    <value>Quick Text Edit</value>
+    <value>テキストエディット</value>
   </data>
 
   <data name="QuickHistoryStatusBarText" xml:space="preserve">
@@ -429,7 +429,7 @@
   </data>
 
   <data name="ShortcutSectionDescription" xml:space="preserve">
-    <value>Ctrl+C を連続して2回押すことでドロップパレット、または Quick Text Edit を表示します。クリップボードの中身がファイルかテキストかによって切り替わります。</value>
+    <value>Ctrl+C を連続して2回押すことでドロップパレット、またはテキストエディットを表示します。クリップボードの中身がファイルかテキストかによって切り替わります。</value>
   </data>
 
   <data name="TgSectionDescription" xml:space="preserve">
@@ -461,7 +461,7 @@
   </data>
 
   <data name="QtSectionTitle" xml:space="preserve">
-    <value>Quick Text Edit</value>
+    <value>テキストエディット</value>
   </data>
 
   <data name="QtAutoCopyOnCloseLabel" xml:space="preserve">
