@@ -338,9 +338,9 @@ public partial class App : Application
         if (!_quickTextWindow.IsVisible)
         {
             GetCursorPos(out var pos);
-            var dipPos = ScreenCoordinateHelper.PhysicalToDip(pos);
-            _quickTextWindow.Left = dipPos.X - _quickTextWindow.Width / 2;
-            _quickTextWindow.Top  = dipPos.Y - _quickTextWindow.Height / 2;
+            var topLeft = ScreenCoordinateHelper.ClampedTopLeft(pos, _quickTextWindow.Width, _quickTextWindow.Height);
+            _quickTextWindow.Left = topLeft.X;
+            _quickTextWindow.Top  = topLeft.Y;
         }
     }
 
@@ -417,13 +417,13 @@ public partial class App : Application
     private static void OnDefaultOpenHotkey()
     {
         GetCursorPos(out var pos);
-        var dipPos = ScreenCoordinateHelper.PhysicalToDip(pos);
         var existing = _popWindows.FirstOrDefault();
         if (existing != null)
         {
             var pw = SettingsService.Settings.PopWindow;
-            existing.Left = dipPos.X - pw.Width / 2;
-            existing.Top  = dipPos.Y - pw.Height / 2;
+            var topLeft = ScreenCoordinateHelper.ClampedTopLeft(pos, pw.Width, pw.Height);
+            existing.Left = topLeft.X;
+            existing.Top  = topLeft.Y;
             existing.Activate();
         }
         else
@@ -493,11 +493,11 @@ public partial class App : Application
 
         var pw = SettingsService.Settings.PopWindow;
         var win = new PopWindow();
-        var dipPoint = ScreenCoordinateHelper.PhysicalToDip(nearPoint);
+        var topLeft = ScreenCoordinateHelper.ClampedTopLeft(nearPoint, pw.Width, pw.Height);
         win.Width = pw.Width;
         win.Height = pw.Height;
-        win.Left = dipPoint.X - pw.Width / 2;
-        win.Top = dipPoint.Y - pw.Height / 2;
+        win.Left = topLeft.X;
+        win.Top = topLeft.Y;
         _popWindows.Add(win);
         win.FontSize = SettingsService.Settings.FontSize;
         win.Show();
